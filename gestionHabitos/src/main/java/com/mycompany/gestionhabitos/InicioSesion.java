@@ -15,14 +15,14 @@ import javax.swing.JPanel;
  */
 public class InicioSesion extends javax.swing.JFrame {
 
-    private ImageIcon backgroundImage;
+    private final ImageIcon backgroundImage;
 
     /**
      * Creates new form InicioSesion
      */
     public InicioSesion() {
         initComponents();
-        backgroundImage = new ImageIcon("src/main/resources/img/bg.png");
+        backgroundImage = new ImageIcon("src/main/resources/img/background.png");
         BackgroundPanel backgroundPanel = new BackgroundPanel(backgroundImage);
         setContentPane(backgroundPanel);
         backgroundPanel.setLayout(new BorderLayout());
@@ -32,7 +32,8 @@ public class InicioSesion extends javax.swing.JFrame {
     private JPanel initComponentsPanel() {
         JPanel panel = new JPanel();
         panel.setOpaque(false);
-        panel.add(lblTitulo);
+
+        panel.add(panelMargen);
         panel.add(panelBlanco);
 
         return panel;
@@ -64,20 +65,23 @@ public class InicioSesion extends javax.swing.JFrame {
         panelBlanco = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         tituloSesion = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        lblTitulo = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        panelMargen = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new javax.swing.OverlayLayout(getContentPane()));
 
-        jPanel1.setBackground(new java.awt.Color(238, 242, 234));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(480, 520));
 
-        panelBlanco.setBackground(new java.awt.Color(255, 255, 255));
+        panelBlanco.setBackground(new java.awt.Color(255, 255, 255, 180));
+        panelBlanco.setVerifyInputWhenFocusTarget(false);
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(69, 38, 38));
@@ -87,14 +91,6 @@ public class InicioSesion extends javax.swing.JFrame {
         tituloSesion.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         tituloSesion.setForeground(new java.awt.Color(69, 38, 38));
         tituloSesion.setText("Iniciar Sesión");
-
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(69, 38, 38));
-        jLabel3.setText("Usuario");
-
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(69, 38, 38));
-        jLabel4.setText("Contraseña");
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(69, 38, 38));
@@ -107,77 +103,111 @@ public class InicioSesion extends javax.swing.JFrame {
         });
 
         jLabel7.setIcon(new javax.swing.ImageIcon("C:\\Users\\user\\Documents\\GitHub\\GestionHabitos\\gestionHabitos\\src\\main\\resources\\img\\botonIniciarSesion.png")); // NOI18N
+        jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel7MouseClicked(evt);
+            }
+        });
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(69, 38, 38));
+        jLabel4.setText("Contraseña");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(69, 38, 38));
+        jLabel3.setText("Usuario");
 
         javax.swing.GroupLayout panelBlancoLayout = new javax.swing.GroupLayout(panelBlanco);
         panelBlanco.setLayout(panelBlancoLayout);
         panelBlancoLayout.setHorizontalGroup(
             panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBlancoLayout.createSequentialGroup()
-                .addGroup(panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelBlancoLayout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addGroup(panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(panelBlancoLayout.createSequentialGroup()
-                        .addGap(144, 144, 144)
-                        .addComponent(tituloSesion))
-                    .addGroup(panelBlancoLayout.createSequentialGroup()
-                        .addGap(87, 87, 87)
-                        .addGroup(panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBlancoLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(34, 34, 34))
-                            .addGroup(panelBlancoLayout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel6)))))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGroup(panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelBlancoLayout.createSequentialGroup()
+                            .addGap(142, 142, 142)
+                            .addComponent(tituloSesion))
+                        .addGroup(panelBlancoLayout.createSequentialGroup()
+                            .addGap(41, 41, 41)
+                            .addComponent(jLabel3))
+                        .addGroup(panelBlancoLayout.createSequentialGroup()
+                            .addGap(41, 41, 41)
+                            .addComponent(jLabel4))
+                        .addGroup(panelBlancoLayout.createSequentialGroup()
+                            .addGap(41, 41, 41)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelBlancoLayout.createSequentialGroup()
+                            .addGap(87, 87, 87)
+                            .addComponent(jLabel5)
+                            .addGap(6, 6, 6)
+                            .addComponent(jLabel6))
+                        .addGroup(panelBlancoLayout.createSequentialGroup()
+                            .addGap(129, 129, 129)
+                            .addComponent(jLabel7))))
+                .addGap(39, 39, 39))
         );
         panelBlancoLayout.setVerticalGroup(
             panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBlancoLayout.createSequentialGroup()
-                .addGap(38, 38, 38)
+            .addGroup(panelBlancoLayout.createSequentialGroup()
+                .addGap(36, 36, 36)
                 .addComponent(tituloSesion)
-                .addGap(41, 41, 41)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(6, 6, 6)
                 .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
-                .addGroup(panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(26, 26, 26)
+                .addGroup(panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel7)
-                .addGap(33, 33, 33))
+                .addGap(29, 29, 29))
         );
 
-        lblTitulo.setIcon(new javax.swing.ImageIcon("C:\\Users\\user\\Documents\\GitHub\\GestionHabitos\\gestionHabitos\\src\\main\\resources\\img\\tituloRamas.png")); // NOI18N
+        panelMargen.setOpaque(false);
+
+        javax.swing.GroupLayout panelMargenLayout = new javax.swing.GroupLayout(panelMargen);
+        panelMargen.setLayout(panelMargenLayout);
+        panelMargenLayout.setHorizontalGroup(
+            panelMargenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMargenLayout.createSequentialGroup()
+                .addGap(174, 174, 174)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(194, Short.MAX_VALUE))
+        );
+        panelMargenLayout.setVerticalGroup(
+            panelMargenLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelMargenLayout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(50, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(panelBlanco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
-            .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGap(38, 38, 38)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(panelBlanco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelMargen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addComponent(lblTitulo)
-                .addGap(18, 18, 18)
-                .addComponent(panelBlanco, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(32, 32, 32))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(panelMargen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(panelBlanco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1);
@@ -190,6 +220,10 @@ public class InicioSesion extends javax.swing.JFrame {
         new RegistrarUsuario().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel7MouseClicked
 
     /**
      * @param args the command line arguments
@@ -227,6 +261,7 @@ public class InicioSesion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -235,8 +270,8 @@ public class InicioSesion extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel panelBlanco;
+    private javax.swing.JPanel panelMargen;
     private javax.swing.JLabel tituloSesion;
     // End of variables declaration//GEN-END:variables
 }
