@@ -4,6 +4,7 @@
  */
 package org.itson.pruebas.gestionhabitos.controller;
 
+
 import java.util.List;
 
 /**
@@ -13,12 +14,10 @@ import java.util.List;
 public interface IGestionarHabitosNegocio {
 
     public void crearHabito(HabitoDTO habito) throws ControllerException;
-
+    
     public HabitoDTO actualizarHabito(HabitoDTO habito) throws ControllerException;
-
-    public boolean eliminarHabito(Long id) throws ControllerException;
-
-    public List<HabitoDTO> obtenerHabitos(CuentaDTO cuenta) throws ControllerException;
-
-    public void crearCuenta(CuentaDTO cuentaDTO) throws ControllerException;
+    
+    public boolean eliminarHabito(Long id)throws ControllerException;
+    
+    public List <HabitoDTO> obtenerHabitos(CuentaDTO cuenta)throws ControllerException;
 }

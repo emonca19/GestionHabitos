@@ -1,9 +1,5 @@
 package org.itson.pruebas.gestionhabitos.view;
 
-import org.itson.pruebas.gestionhabitos.controller.CuentaDTO;
-import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
-import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
-
 /**
  *
  * @author Eliana Monge
@@ -12,31 +8,15 @@ import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
  * @author Roberto García
  */
 public class RegistrarUsuario extends javax.swing.JPanel {
-    
+
     private final FrameContenedor frameContenedor;
 
     /**
      * Creates new form InicioSesion
-     *
-     * @param frameContenedor
      */
     public RegistrarUsuario(FrameContenedor frameContenedor) {
         this.frameContenedor = frameContenedor;
         initComponents();
-    }
-    
-    public void registrar() {
-        if (txtContraseña.getText().equals(txtConfirmarContraseña.getText())) {
-            CuentaDTO cuenta = new CuentaDTO(txtNombre.getText(), txtUsuario.getText(), txtContraseña.getText());
-            new GestionarHabitosNegocio().crearCuenta(cuenta);
-        }
-    }
-    
-    public void limpiar() {
-        txtNombre.setText("");
-        txtUsuario.setText("");
-        txtContraseña.setText("");
-        txtConfirmarContraseña.setText("");
     }
 
     /**
@@ -49,16 +29,16 @@ public class RegistrarUsuario extends javax.swing.JPanel {
         panelBlanco = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         tituloSesion = new javax.swing.JLabel();
-        btnIniciarSesion = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        txtUsuario = new javax.swing.JTextField();
+        jTextField2 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtNombre = new javax.swing.JTextField();
-        btnRegistrar = new javax.swing.JButton();
-        txtConfirmarContraseña = new javax.swing.JTextField();
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jTextField3 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        txtContraseña = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(750, 750));
@@ -78,13 +58,13 @@ public class RegistrarUsuario extends javax.swing.JPanel {
         tituloSesion.setForeground(new java.awt.Color(69, 38, 38));
         tituloSesion.setText("Registrate");
 
-        btnIniciarSesion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnIniciarSesion.setForeground(new java.awt.Color(69, 38, 38));
-        btnIniciarSesion.setText("Iniciar Sesión");
-        btnIniciarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnIniciarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(69, 38, 38));
+        jLabel6.setText("Iniciar Sesión");
+        jLabel6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnIniciarSesionMouseClicked(evt);
+                jLabel6MouseClicked(evt);
             }
         });
 
@@ -99,31 +79,31 @@ public class RegistrarUsuario extends javax.swing.JPanel {
         jLabel4.setForeground(new java.awt.Color(69, 38, 38));
         jLabel4.setText("Usuario");
 
-        txtUsuario.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jTextField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(69, 38, 38));
         jLabel3.setText("Nombre");
 
-        txtNombre.setActionCommand("<Not Set>");
-        txtNombre.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jTextField1.setActionCommand("<Not Set>");
+        jTextField1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        btnRegistrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/botonRegistrar.png"))); // NOI18N
-        btnRegistrar.setBorder(null);
-        btnRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/botonRegistrar.png"))); // NOI18N
+        jButton1.setBorder(null);
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnRegistrarMouseClicked(evt);
+                jButton1MouseClicked(evt);
             }
         });
 
-        txtConfirmarContraseña.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jTextField3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(69, 38, 38));
         jLabel8.setText("Confirmar contraseña");
 
-        txtContraseña.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jTextField4.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(69, 38, 38));
@@ -141,35 +121,35 @@ public class RegistrarUsuario extends javax.swing.JPanel {
                 .addComponent(jLabel3))
             .addGroup(panelBlancoLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
-                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(panelBlancoLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(jLabel4))
             .addGroup(panelBlancoLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
-                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(panelBlancoLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(jLabel9))
             .addGroup(panelBlancoLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
-                .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(panelBlancoLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(jLabel8))
             .addGroup(panelBlancoLayout.createSequentialGroup()
                 .addGap(50, 50, 50)
-                .addComponent(txtConfirmarContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(panelBlancoLayout.createSequentialGroup()
                 .addGap(129, 129, 129)
                 .addComponent(jLabel7)
                 .addGap(1, 1, 1)
-                .addComponent(btnRegistrar))
+                .addComponent(jButton1))
             .addGroup(panelBlancoLayout.createSequentialGroup()
                 .addGap(90, 90, 90)
                 .addComponent(jLabel5)
                 .addGap(11, 11, 11)
-                .addComponent(btnIniciarSesion))
+                .addComponent(jLabel6))
         );
         panelBlancoLayout.setVerticalGroup(
             panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,29 +159,29 @@ public class RegistrarUsuario extends javax.swing.JPanel {
                 .addGap(9, 9, 9)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel4)
                 .addGap(4, 4, 4)
-                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel9)
                 .addGap(4, 4, 4)
-                .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel8)
                 .addGap(4, 4, 4)
-                .addComponent(txtConfirmarContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelBlancoLayout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addComponent(jLabel7))
-                    .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(10, 10, 10)
                 .addGroup(panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
-                    .addComponent(btnIniciarSesion)))
+                    .addComponent(jLabel6)))
         );
 
         add(panelBlanco, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 420, 380));
@@ -213,30 +193,29 @@ public class RegistrarUsuario extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel7MouseClicked
 
-    private void btnIniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseClicked
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         frameContenedor.mostrarInicioSesion();
-    }//GEN-LAST:event_btnIniciarSesionMouseClicked
+    }//GEN-LAST:event_jLabel6MouseClicked
 
-    private void btnRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarMouseClicked
-        registrar();
-        limpiar();
-    }//GEN-LAST:event_btnRegistrarMouseClicked
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+
+    }//GEN-LAST:event_jButton1MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel btnIniciarSesion;
-    private javax.swing.JButton btnRegistrar;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     private javax.swing.JPanel panelBlanco;
     private javax.swing.JLabel tituloSesion;
-    private javax.swing.JTextField txtConfirmarContraseña;
-    private javax.swing.JTextField txtContraseña;
-    private javax.swing.JTextField txtNombre;
-    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

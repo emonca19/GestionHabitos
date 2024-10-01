@@ -10,7 +10,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
-import org.itson.pruebas.gestionhabitos.model.Conexion;
 import org.itson.pruebas.gestionhabitos.model.Cuenta;
 import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
 import org.itson.pruebas.gestionhabitos.model.Habito;
@@ -45,7 +44,7 @@ public class GestionarHabitosTest {
         when(conexionMock.crearConexion()).thenReturn(entityManagerMock);
         when(entityManagerMock.getTransaction()).thenReturn(transactionMock);
 
-        gestionarHabitos = new GestionarHabitosDAO();
+        gestionarHabitos = new GestionarHabitosDAO(conexionMock);
     }
 
     @Test

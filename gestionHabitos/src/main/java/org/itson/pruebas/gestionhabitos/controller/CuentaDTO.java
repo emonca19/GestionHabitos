@@ -9,7 +9,7 @@ package org.itson.pruebas.gestionhabitos.controller;
  * @author crist
  */
 public class CuentaDTO {
-
+   
     private String nombre;
     private String usuario;
     private String contraseña;
@@ -44,4 +44,6 @@ public class CuentaDTO {
         this.contraseña = contraseña;
     }
 
+
+    
 }

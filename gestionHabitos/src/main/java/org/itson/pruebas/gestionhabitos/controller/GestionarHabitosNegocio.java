@@ -5,8 +5,6 @@
 package org.itson.pruebas.gestionhabitos.controller;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.itson.pruebas.gestionhabitos.model.Cuenta;
 import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
@@ -18,14 +16,15 @@ import org.itson.pruebas.gestionhabitos.model.ModelException;
  */
 public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
 
-    private final GestionarHabitosDAO habitoDAO;
+    private GestionarHabitosDAO habitoDAO;
 
     /**
      * Constructor de la clase.
      *
+     * @param habitoDAO el objeto DAO para la gestión de los hábitos
      */
-    public GestionarHabitosNegocio() {
-        this.habitoDAO = new GestionarHabitosDAO();
+    public GestionarHabitosNegocio(GestionarHabitosDAO habitoDAO) {
+        this.habitoDAO = habitoDAO;
     }
 
     /**
@@ -141,14 +140,5 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         cuenta.setContrasena(cuentaDTO.getContraseña());
         cuenta.setNombre(cuentaDTO.getNombre());
         return cuenta;
-    }
-
-    @Override
-    public void crearCuenta(CuentaDTO cuentaDTO) {
-        try {
-            habitoDAO.crearCuenta(cuentaDTOAEntidad(cuentaDTO));
-        } catch (ModelException ex) {
-            Logger.getLogger(GestionarHabitosNegocio.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 }
