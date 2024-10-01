@@ -4,7 +4,7 @@
  */
 package org.itson.pruebas.gestionhabitos.model;
 
-import java.awt.List;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
@@ -146,7 +146,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      * @throws ModelException si ocurre un error al obtener la lista de hábitos
      */
     @Override
-    public List verHabitos() throws ModelException {
+    public List <Habito> verHabitos() throws ModelException {
         EntityManager entityManager = null;
 
         try {

@@ -4,7 +4,8 @@
  */
 package org.itson.pruebas.gestionhabitos.model;
 
-import java.awt.List;
+import java.util.List;
+
 
 /**
  *
@@ -18,6 +19,6 @@ public interface IGestionarHabitosDAO {
     
     public boolean eliminarHabito(Habito habito)throws ModelException;
     
-    public List verHabitos()throws ModelException;
+    public List <Habito> verHabitos()throws ModelException;
     
 }
