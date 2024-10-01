@@ -113,9 +113,13 @@ public class InicioSesionF extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(69, 38, 38));
         jLabel4.setText("Contraseña");
 
+        jTextField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(69, 38, 38));
         jLabel3.setText("Usuario");
+
+        jTextField1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         javax.swing.GroupLayout panelBlancoLayout = new javax.swing.GroupLayout(panelBlanco);
         panelBlanco.setLayout(panelBlancoLayout);
@@ -206,7 +210,7 @@ public class InicioSesionF extends javax.swing.JFrame {
                 .addComponent(panelMargen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(panelBlanco, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1);

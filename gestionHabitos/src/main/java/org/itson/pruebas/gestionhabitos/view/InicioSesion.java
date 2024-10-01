@@ -1,7 +1,5 @@
 package org.itson.pruebas.gestionhabitos.view;
 
-import java.awt.Color;
-
 /**
  *
  * @author Eliana Monge
@@ -14,6 +12,7 @@ public class InicioSesion extends javax.swing.JPanel {
     private final FrameContenedor frameContenedor;
     /**
      * Creates new form InicioSesion
+     * @param frameContenedor
      */
     public InicioSesion(FrameContenedor frameContenedor) {
         this.frameContenedor = frameContenedor;
@@ -45,20 +44,17 @@ public class InicioSesion extends javax.swing.JPanel {
         setRequestFocusEnabled(false);
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        panelBlanco.setBackground(new java.awt.Color(255, 255, 255));
+        panelBlanco.setBackground(new java.awt.Color(255, 255, 255, 190));
         panelBlanco.setVerifyInputWhenFocusTarget(false);
-        panelBlanco.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(69, 38, 38));
         jLabel5.setText("¿No tienes una cuenta?");
-        panelBlanco.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 270, -1, -1));
 
         tituloSesion.setBackground(new java.awt.Color(69, 38, 38));
         tituloSesion.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         tituloSesion.setForeground(new java.awt.Color(69, 38, 38));
         tituloSesion.setText("Iniciar Sesión");
-        panelBlanco.add(tituloSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, -1, -1));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(69, 38, 38));
@@ -69,7 +65,6 @@ public class InicioSesion extends javax.swing.JPanel {
                 jLabel6MouseClicked(evt);
             }
         });
-        panelBlanco.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 270, -1, -1));
 
         jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -77,19 +72,18 @@ public class InicioSesion extends javax.swing.JPanel {
                 jLabel7MouseClicked(evt);
             }
         });
-        panelBlanco.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(129, 296, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(69, 38, 38));
         jLabel4.setText("Contraseña");
-        panelBlanco.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 161, -1, -1));
-        panelBlanco.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 187, 322, -1));
+
+        jTextField2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(69, 38, 38));
         jLabel3.setText("Usuario");
-        panelBlanco.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 95, -1, -1));
-        panelBlanco.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(47, 121, 322, -1));
+
+        jTextField1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/botonIniciarSesion.png"))); // NOI18N
         jButton1.setBorder(null);
@@ -99,9 +93,57 @@ public class InicioSesion extends javax.swing.JPanel {
                 jButton1MouseClicked(evt);
             }
         });
-        panelBlanco.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 230, -1, -1));
 
-        add(panelBlanco, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 90, 420, 390));
+        javax.swing.GroupLayout panelBlancoLayout = new javax.swing.GroupLayout(panelBlanco);
+        panelBlanco.setLayout(panelBlancoLayout);
+        panelBlancoLayout.setHorizontalGroup(
+            panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBlancoLayout.createSequentialGroup()
+                .addGap(150, 150, 150)
+                .addComponent(tituloSesion))
+            .addGroup(panelBlancoLayout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addComponent(jLabel3))
+            .addGroup(panelBlancoLayout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(panelBlancoLayout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addComponent(jLabel4))
+            .addGroup(panelBlancoLayout.createSequentialGroup()
+                .addGap(47, 47, 47)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(panelBlancoLayout.createSequentialGroup()
+                .addGap(130, 130, 130)
+                .addComponent(jButton1))
+            .addGroup(panelBlancoLayout.createSequentialGroup()
+                .addGap(90, 90, 90)
+                .addComponent(jLabel5)
+                .addGap(8, 8, 8)
+                .addComponent(jLabel6))
+        );
+        panelBlancoLayout.setVerticalGroup(
+            panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelBlancoLayout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(tituloSesion)
+                .addGap(20, 20, 20)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1)
+                .addGap(4, 4, 4)
+                .addGroup(panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)))
+        );
+
+        add(panelBlanco, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 420, 350));
 
         getAccessibleContext().setAccessibleName("");
     }// </editor-fold>//GEN-END:initComponents
