@@ -22,4 +22,6 @@ public interface IGestionarHabitosDAO {
 
     public Cuenta crearCuenta(Cuenta cuenta) throws ModelException;
 
+    public boolean consultarCuenta(String usuario, String contraseña) throws ModelException;
+
 }

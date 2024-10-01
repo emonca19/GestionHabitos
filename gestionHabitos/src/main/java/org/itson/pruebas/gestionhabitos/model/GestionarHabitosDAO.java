@@ -180,4 +180,41 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
         }
     }
 
+    @Override
+    public boolean consultarCuenta(String usuario, String contraseña) throws ModelException {
+        EntityManager entityManager = null;
+
+        try {
+            logger.log(Level.INFO, "Consultando la cuenta para el usuario: {0}", usuario);
+            entityManager = this.conexion.crearConexion();
+
+            // Realizar la consulta para encontrar una cuenta con el usuario y la contraseña proporcionados
+            TypedQuery<Cuenta> query = entityManager.createQuery(
+                    "SELECT c FROM Cuenta c WHERE c.usuario = :usuario AND c.contrasena = :contrasena", Cuenta.class
+            );
+            query.setParameter("usuario", usuario);
+            query.setParameter("contrasena", contraseña);
+
+            // Obtener la cuenta si existe
+            List<Cuenta> cuentas = query.getResultList();
+
+            // Si se encontró al menos una cuenta, retornar true, de lo contrario false
+            if (!cuentas.isEmpty()) {
+                logger.log(Level.INFO, "Cuenta encontrada para el usuario: {0}", usuario);
+                return true;
+            } else {
+                logger.log(Level.WARNING, "No se encontró una cuenta para el usuario: {0}", usuario);
+                return false;
+            }
+
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error al consultar la cuenta para el usuario: " + usuario, e);
+            throw new ModelException("Error al consultar la cuenta para el usuario: " + usuario, e);
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
 }

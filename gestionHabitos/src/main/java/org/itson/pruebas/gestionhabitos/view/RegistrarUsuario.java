@@ -63,6 +63,7 @@ public class RegistrarUsuario extends javax.swing.JPanel {
 
         setMaximumSize(new java.awt.Dimension(750, 750));
         setMinimumSize(new java.awt.Dimension(750, 750));
+        setPreferredSize(new java.awt.Dimension(450, 480));
         setRequestFocusEnabled(false);
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 

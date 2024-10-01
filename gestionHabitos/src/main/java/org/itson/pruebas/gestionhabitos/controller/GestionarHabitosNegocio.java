@@ -151,4 +151,14 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
             Logger.getLogger(GestionarHabitosNegocio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    @Override
+    public boolean consultarCuenta(String usuario, String contraseña) throws ControllerException {
+        try {
+            return habitoDAO.consultarCuenta(usuario, contraseña);
+        } catch (ModelException ex) {
+            Logger.getLogger(GestionarHabitosNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
 }

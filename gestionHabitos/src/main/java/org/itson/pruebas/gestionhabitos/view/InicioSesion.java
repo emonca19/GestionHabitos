@@ -1,5 +1,10 @@
 package org.itson.pruebas.gestionhabitos.view;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.itson.pruebas.gestionhabitos.controller.ControllerException;
+import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
+
 /**
  *
  * @author Eliana Monge
@@ -19,6 +24,20 @@ public class InicioSesion extends javax.swing.JPanel {
     public InicioSesion(FrameContenedor frameContenedor) {
         this.frameContenedor = frameContenedor;
         initComponents();
+    }
+
+    public boolean consultarCuenta() {
+        try {
+            return new GestionarHabitosNegocio().consultarCuenta(txtUsuario.getText(), txtContraseña.getText());
+        } catch (ControllerException ex) {
+            Logger.getLogger(InicioSesion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
+    public void limpiar() {
+        txtUsuario.setText("");
+        txtContraseña.setText("");
     }
 
     /**
@@ -149,7 +168,10 @@ public class InicioSesion extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarMouseClicked
-
+        if (consultarCuenta()) {
+            frameContenedor.mostrarInicio();
+        }
+        limpiar();
     }//GEN-LAST:event_btnIngresarMouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
