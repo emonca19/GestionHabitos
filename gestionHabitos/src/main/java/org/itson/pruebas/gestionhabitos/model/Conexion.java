@@ -1,4 +1,4 @@
-package org.itson.pruebas.gestionhabitos.modelo;
+package org.itson.pruebas.gestionhabitos.model;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

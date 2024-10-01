@@ -2,8 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package org.itson.pruebas.gestionhabitos.modelo;
-
+package org.itson.pruebas.gestionhabitos.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,15 +10,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
  * @author elimo
  */
 @Entity
-public class Habitos implements Serializable {
+public class Habito implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -32,18 +34,62 @@ public class Habitos implements Serializable {
     @Column(nullable = false, length = 50)
     private String frecuencia;
 
-    // Nombre de la actividad (no nulo)
+    @Column(nullable = false)
+    private boolean realizado;
+
+    // Fecha de la actividad (no nulo)
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
+
     @Column(nullable = false, length = 100)
     private String nombre;
 
-     // Relación con la entidad Cuenta (clave foránea)
+    // Relación con la entidad Cuenta (clave foránea)
     @ManyToOne
     @JoinColumn(name = "usuario", referencedColumnName = "usuario", nullable = false)
     private Cuenta cuenta;
 
     /**
+     * Obtiene el estado de la actividad, indicando si se ha realizado o no.
+     *
+     * @return true si la actividad se ha realizado, false en caso contrario
+     */
+    public boolean isRealizado() {
+        return realizado;
+    }
+
+    /**
+     * Establece el estado de la actividad, indicando si se ha realizado o no.
+     *
+     * @param realizado el nuevo estado de la actividad; true si se ha
+     * realizado, false si no
+     */
+    public void setRealizado(boolean realizado) {
+        this.realizado = realizado;
+    }
+
+    /**
+     * Obtiene la fecha de la actividad.
+     *
+     * @return la fecha en que se programó la actividad
+     */
+    public Date getFecha() {
+        return fecha;
+    }
+
+    /**
+     * Establece la fecha de la actividad.
+     *
+     * @param fecha la nueva fecha en que se programó la actividad
+     */
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+
+    /**
      * Obtiene el identificador de la actividad.
-     * 
+     *
      * @return el identificador de la actividad
      */
     public Long getId() {
@@ -52,7 +98,7 @@ public class Habitos implements Serializable {
 
     /**
      * Establece el identificador de la actividad.
-     * 
+     *
      * @param id el identificador de la actividad
      */
     public void setId(Long id) {
@@ -61,7 +107,7 @@ public class Habitos implements Serializable {
 
     /**
      * Obtiene la frecuencia de la actividad.
-     * 
+     *
      * @return la frecuencia de la actividad
      */
     public String getFrecuencia() {
@@ -70,7 +116,7 @@ public class Habitos implements Serializable {
 
     /**
      * Establece la frecuencia de la actividad.
-     * 
+     *
      * @param frecuencia la frecuencia de la actividad
      */
     public void setFrecuencia(String frecuencia) {
@@ -79,7 +125,7 @@ public class Habitos implements Serializable {
 
     /**
      * Obtiene el nombre de la actividad.
-     * 
+     *
      * @return el nombre de la actividad
      */
     public String getNombre() {
@@ -88,7 +134,7 @@ public class Habitos implements Serializable {
 
     /**
      * Establece el nombre de la actividad.
-     * 
+     *
      * @param nombre el nombre de la actividad
      */
     public void setNombre(String nombre) {
@@ -97,7 +143,7 @@ public class Habitos implements Serializable {
 
     /**
      * Obtiene la cuenta asociada a la actividad.
-     * 
+     *
      * @return la cuenta asociada a la actividad
      */
     public Cuenta getCuenta() {
@@ -106,7 +152,7 @@ public class Habitos implements Serializable {
 
     /**
      * Establece la cuenta asociada a la actividad.
-     * 
+     *
      * @param cuenta la cuenta asociada a la actividad
      */
     public void setCuenta(Cuenta cuenta) {
@@ -115,7 +161,7 @@ public class Habitos implements Serializable {
 
     /**
      * Calcula el código hash de la actividad, basado en el identificador.
-     * 
+     *
      * @return el código hash de la actividad
      */
     @Override
@@ -126,18 +172,18 @@ public class Habitos implements Serializable {
     }
 
     /**
-     * Verifica si dos objetos Actividad son iguales.
-     * Dos actividades se consideran iguales si tienen el mismo identificador.
-     * 
+     * Verifica si dos objetos Actividad son iguales. Dos actividades se
+     * consideran iguales si tienen el mismo identificador.
+     *
      * @param object el objeto a comparar
      * @return true si los objetos son iguales, false en caso contrario
      */
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof Habitos)) {
+        if (!(object instanceof Habito)) {
             return false;
         }
-        Habitos other = (Habitos) object;
+        Habito other = (Habito) object;
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 }
