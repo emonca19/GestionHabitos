@@ -33,7 +33,6 @@ public class FrameContenedor extends javax.swing.JFrame {
             logger.log(Level.WARNING, "Failed to initialize LaF");
         }
 
-//        setUndecorated(true);
         initComponents();
         setBackgroundImage();  // Método para establecer la imagen de fondo
     }
