@@ -19,7 +19,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 
     // Constructor
     public GestionarHabitosDAO(IConexion conexion) {
-        this.conexion=conexion;
+        this.conexion = conexion;
     }
 
     /**
@@ -30,7 +30,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      * @throws org.itson.pruebas.gestionhabitos.model.ModelException
      */
     @Override
-    public Habito crearHabito(Habito nuevoHabito) throws ModelException{
+    public Habito crearHabito(Habito nuevoHabito) throws ModelException {
         EntityManager entityManager = null;
         EntityTransaction transaction = null;
 
@@ -38,18 +38,18 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             entityManager = this.conexion.crearConexion();
             transaction = entityManager.getTransaction();
 
-        transaction.begin();
-        entityManager.persist(nuevoHabito); // Persiste el nuevo hábito
-        entityManager.getTransaction().commit();
-        entityManager.close();
+            transaction.begin();
+            entityManager.persist(nuevoHabito); // Persiste el nuevo hábito
+            entityManager.getTransaction().commit();
+            entityManager.close();
 
-        return nuevoHabito;
-        
+            return nuevoHabito;
+
         } catch (Exception e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            throw new ModelException("Error al crear habito con id: "+nuevoHabito.getId(), e);
+            throw new ModelException("Error al crear habito con id: " + nuevoHabito.getId(), e);
         } finally {
             if (entityManager != null) {
                 entityManager.close();
@@ -103,12 +103,12 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     /**
      * Elimina un hábito de la base de datos.
      *
-     * @param habito el hábito a eliminar
+     * @param id id a eliminar
      * @return true si se eliminó correctamente, false en caso contrario
      * @throws ModelException si ocurre un error durante la eliminación
      */
     @Override
-    public boolean eliminarHabito(Habito habito) throws ModelException {
+    public boolean eliminarHabito(Long id) throws ModelException {
         EntityManager entityManager = null;
         EntityTransaction transaction = null;
 
@@ -117,21 +117,21 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             transaction = entityManager.getTransaction();
             transaction.begin();
 
-            Habito habitoEncontrado = entityManager.find(Habito.class, habito.getId());
+            Habito habitoEncontrado = entityManager.find(Habito.class, id);
             if (habitoEncontrado != null) {
                 entityManager.remove(habitoEncontrado); // Elimina el hábito
                 transaction.commit();
                 return true;
             } else {
                 transaction.rollback();
-                throw new ModelException("Hábito no encontrado con ID: " + habito.getId());
+                throw new ModelException("Hábito no encontrado con ID: " + id);
             }
 
         } catch (Exception e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            throw new ModelException("Error al eliminar hábito con id: " + habito.getId(), e);
+            throw new ModelException("Error al eliminar hábito con id: " + id, e);
         } finally {
             if (entityManager != null) {
                 entityManager.close();
@@ -140,25 +140,30 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     }
 
     /**
-     * Devuelve la lista de hábitos desde la base de datos.
-     *
-     * @return la lista de hábitos
-     * @throws ModelException si ocurre un error al obtener la lista de hábitos
-     */
-    @Override
-    public List <Habito> verHabitos() throws ModelException {
-        EntityManager entityManager = null;
+ * Devuelve la lista de hábitos asociados a un usuario específico desde la base de datos.
+ *
+ * @param cuenta la cuenta cuyo usuario se usará para obtener los hábitos
+ * @return la lista de hábitos asociados al usuario de la cuenta
+ * @throws ModelException si ocurre un error al obtener la lista de hábitos
+ */
+@Override
+public List<Habito> obtenerHabitos(Cuenta cuenta) throws ModelException {
+    EntityManager entityManager = null;
 
-        try {
-            entityManager = this.conexion.crearConexion();
-            TypedQuery<Habito> query = entityManager.createQuery("SELECT h FROM Habito h", Habito.class);
-            return (List) query.getResultList(); // Obtiene la lista de hábitos
-        } catch (Exception e) {
-            throw new ModelException("Error al obtener la lista de hábitos", e);
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
+    try {
+        entityManager = this.conexion.crearConexion();
+        TypedQuery<Habito> query = entityManager.createQuery(
+            "SELECT h FROM Habito h WHERE h.usuario = :usuario", Habito.class
+        );
+        query.setParameter("usuario", cuenta.getUsuario());
+        return query.getResultList(); // Obtiene la lista de hábitos asociados al usuario de la cuenta
+    } catch (Exception e) {
+        throw new ModelException("Error al obtener la lista de hábitos", e);
+    } finally {
+        if (entityManager != null) {
+            entityManager.close();
         }
     }
+}
+
 }

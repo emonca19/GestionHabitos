@@ -17,8 +17,8 @@ public interface IGestionarHabitosDAO {
     
     public Habito actualizarHabito(Habito habito) throws ModelException;
     
-    public boolean eliminarHabito(Habito habito)throws ModelException;
+    public boolean eliminarHabito(Long id)throws ModelException;
     
-    public List <Habito> verHabitos()throws ModelException;
+    public List <Habito> obtenerHabitos(Cuenta cuenta)throws ModelException;
     
 }
