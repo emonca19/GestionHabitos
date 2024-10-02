@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.itson.pruebas.gestionhabitos.model.Conexion;
 import org.itson.pruebas.gestionhabitos.model.Cuenta;
 import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
 import org.itson.pruebas.gestionhabitos.model.Habito;
+import org.itson.pruebas.gestionhabitos.model.IConexion;
 import org.itson.pruebas.gestionhabitos.model.ModelException;
 
 /**
@@ -25,7 +27,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      *
      */
     public GestionarHabitosNegocio() {
-        this.habitoDAO = new GestionarHabitosDAO();
+        IConexion conexion = new Conexion();
+        this.habitoDAO = new GestionarHabitosDAO(conexion);
     }
 
     /**
@@ -100,32 +103,50 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * Convierte una entidad Habito en un DTO HabitoDTO.
      *
      * @param habito la entidad Habito a convertir
-     * @return el DTO HabitoDTO
+     * @return el DTO HabitoDTO que representa el hábito
      */
     private HabitoDTO HabitoConvertirADTO(Habito habito) {
         return new HabitoDTO(
                 habito.getId(),
                 habito.getFrecuencia(),
                 habito.isRealizado(),
-                habito.getFecha(),
+                habito.getFechaRealizacion(),
+                habito.getFechaCreacion(),
+                habito.getDiasSemana(),
                 habito.getNombre(),
-                habito.getCuenta().getUsuario()
+                habito.getCuenta() // Asumiendo que 'cuenta' no es null
         );
+    }
+
+    /**
+     * Crea una cuenta
+     *
+     * @param cuentaDTO Cuenta a crear
+     */
+    @Override
+    public void crearCuenta(CuentaDTO cuentaDTO) {
+        try {
+            habitoDAO.crearCuenta(cuentaDTOAEntidad(cuentaDTO));
+        } catch (ModelException ex) {
+            Logger.getLogger(GestionarHabitosNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
      * Convierte un DTO HabitoDTO en una entidad Habito.
      *
      * @param habitoDTO el DTO HabitoDTO a convertir
-     * @return la entidad Habito
+     * @return la entidad Habito que representa el hábito
      */
     private Habito HabitoDTOConvertirAEntidad(HabitoDTO habitoDTO) {
         Habito habito = new Habito();
         habito.setId(habitoDTO.getId());
         habito.setFrecuencia(habitoDTO.getFrecuencia());
         habito.setRealizado(habitoDTO.isRealizado());
-        habito.setFecha(habitoDTO.getFecha());
+        habito.setFechaRealizacion(habitoDTO.getFechaRealizacion());
         habito.setNombre(habitoDTO.getNombre());
+        // Suponiendo que el objeto Cuenta es necesario, se debe establecer aquí, si es parte del DTO
+        // habito.setCuenta(obtenerCuentaPorUsuario(habitoDTO.getUsuario())); // Implementar esta lógica según sea necesario
         return habito;
     }
 
@@ -136,10 +157,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @return la entidad Cuenta
      */
     public Cuenta cuentaDTOAEntidad(CuentaDTO cuentaDTO) {
-        Cuenta cuenta = new Cuenta();
-        cuenta.setUsuario(cuentaDTO.getUsuario());
-        cuenta.setContrasena(cuentaDTO.getContraseña());
-        cuenta.setNombre(cuentaDTO.getNombre());
+        Cuenta cuenta = new Cuenta(cuentaDTO.getUsuario(), cuentaDTO.getContraseña(), cuentaDTO.getNombre());
+
         return cuenta;
     }
 
@@ -148,32 +167,5 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         return cuentaDTO;
     }
 
-    @Override
-    public void crearCuenta(CuentaDTO cuentaDTO) {
-        try {
-            habitoDAO.crearCuenta(cuentaDTOAEntidad(cuentaDTO));
-        } catch (ModelException ex) {
-            Logger.getLogger(GestionarHabitosNegocio.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
-    @Override
-    public CuentaDTO consultarCuenta(String usuario, String contraseña) throws ControllerException {
-        try {
-            return entidadACuentaDTO(habitoDAO.consultarCuenta(usuario, contraseña));
-        } catch (ModelException ex) {
-            Logger.getLogger(GestionarHabitosNegocio.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    @Override
-    public boolean iniciarSesion(String usuario, String contraseña) throws ControllerException {
-        if (consultarCuenta(usuario, contraseña) != null) {
-            Sesion.setNombre(contraseña);
-            Sesion.setUsuario(usuario);
-            return true;
-        }
-        return false;
-    }
 }

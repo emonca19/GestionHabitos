@@ -14,15 +14,12 @@ public interface IGestionarHabitosNegocio {
 
     public void crearHabito(HabitoDTO habito) throws ControllerException;
 
+    public void crearCuenta(CuentaDTO cuenta) throws ControllerException;
+
     public HabitoDTO actualizarHabito(HabitoDTO habito) throws ControllerException;
 
     public boolean eliminarHabito(Long id) throws ControllerException;
 
     public List<HabitoDTO> obtenerHabitos(CuentaDTO cuenta) throws ControllerException;
 
-    public void crearCuenta(CuentaDTO cuentaDTO) throws ControllerException;
-
-    public CuentaDTO consultarCuenta(String usuario, String contraseña) throws ControllerException;
-
-    public boolean iniciarSesion(String usuario, String contraseña) throws ControllerException;
 }

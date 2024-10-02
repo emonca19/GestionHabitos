@@ -13,8 +13,8 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     static final Logger logger = Logger.getLogger(GestionarHabitosDAO.class.getName());
 
     // Constructor
-    public GestionarHabitosDAO() {
-        this.conexion = new Conexion();
+    public GestionarHabitosDAO(IConexion conexion) {
+        this.conexion = conexion;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                 habitoExistente.setNombre(habito.getNombre());
                 habitoExistente.setFrecuencia(habito.getFrecuencia());
                 habitoExistente.setRealizado(habito.isRealizado());
-                habitoExistente.setFecha(habito.getFecha());
+                habitoExistente.setFechaRealizacion(habito.getFechaRealizacion());
                 transaction.commit();
                 logger.log(Level.INFO, "Habito actualizado con exito: {0}", habito.getId());
                 return habitoExistente; // Retorna el hábito actualizado
@@ -133,7 +133,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             logger.log(Level.INFO, "Obteniendo habitos asociados a la cuenta: {0}", cuenta.getUsuario());
             entityManager = this.conexion.crearConexion();
             TypedQuery<Habito> query = entityManager.createQuery(
-                    "SELECT h FROM Habito h WHERE h.usuario = :usuario", Habito.class
+                    "SELECT h FROM Habito h WHERE h.cuenta.usuario = :usuario", Habito.class
             );
             query.setParameter("usuario", cuenta.getUsuario());
             List<Habito> habitos = query.getResultList();

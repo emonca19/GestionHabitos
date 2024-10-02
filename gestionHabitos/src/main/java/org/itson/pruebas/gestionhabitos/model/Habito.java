@@ -40,8 +40,18 @@ public class Habito implements Serializable {
     // Fecha de la actividad (no nulo)
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date fecha;
+    private Date fechaRealizacion;
 
+    //Fecha de creación de hábito
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    private Date fechaCreacion;
+
+    // Dias de la semana en bits
+    @Column(nullable = false)
+    private Long diasSemana;
+
+    //Nombre del habito
     @Column(nullable = false, length = 100)
     private String nombre;
 
@@ -49,6 +59,64 @@ public class Habito implements Serializable {
     @ManyToOne
     @JoinColumn(name = "usuario", referencedColumnName = "usuario", nullable = false)
     private Cuenta cuenta;
+
+    /**
+     * Obtiene la fecha de realización del hábito.
+     *
+     * @return fechaRealizacion la fecha en la que se realizó el hábito.
+     */
+    public Date getFechaRealizacion() {
+        return fechaRealizacion;
+    }
+
+    /**
+     * Establece la fecha de realización del hábito.
+     *
+     * @param fechaRealizacion la fecha a establecer para la realización del
+     * hábito.
+     */
+    public void setFechaRealizacion(Date fechaRealizacion) {
+        this.fechaRealizacion = fechaRealizacion;
+    }
+
+    /**
+     * Obtiene la fecha de creación del hábito.
+     *
+     * @return fechaCreacion la fecha en la que se creó el hábito.
+     */
+    public Date getFechaCreacion() {
+        return fechaCreacion;
+    }
+
+    /**
+     * Establece la fecha de creación del hábito.
+     *
+     * @param fechaCreacion la fecha a establecer para la creación del hábito.
+     */
+    public void setFechaCreacion(Date fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
+    }
+
+    /**
+     * Obtiene los días de la semana en los que se puede realizar el hábito.
+     *
+     * @return diasSemana un valor Long que representa los días de la semana en
+     * los que se puede realizar el hábito, almacenado como un patrón de bits.
+     */
+    public Long getDiasSemana() {
+        return diasSemana;
+    }
+
+    /**
+     * Establece los días de la semana en los que se puede realizar el hábito.
+     *
+     * @param diasSemana el valor Long a establecer que representa los días de
+     * la semana en los que se puede realizar el hábito, almacenado como un
+     * patrón de bits.
+     */
+    public void setDiasSemana(Long diasSemana) {
+        this.diasSemana = diasSemana;
+    }
 
     /**
      * Obtiene el estado de la actividad, indicando si se ha realizado o no.
@@ -67,24 +135,6 @@ public class Habito implements Serializable {
      */
     public void setRealizado(boolean realizado) {
         this.realizado = realizado;
-    }
-
-    /**
-     * Obtiene la fecha de la actividad.
-     *
-     * @return la fecha en que se programó la actividad
-     */
-    public Date getFecha() {
-        return fecha;
-    }
-
-    /**
-     * Establece la fecha de la actividad.
-     *
-     * @param fecha la nueva fecha en que se programó la actividad
-     */
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
     }
 
     /**

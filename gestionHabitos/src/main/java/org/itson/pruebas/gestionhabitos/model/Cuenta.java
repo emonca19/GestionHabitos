@@ -32,6 +32,17 @@ public class Cuenta implements Serializable {
     @Column(nullable = false, length = 100)
     private String nombre;
 
+    public Cuenta() {
+    }
+
+    
+    public Cuenta(String usuario, String contrasena, String nombre) {
+        this.usuario = usuario;
+        this.contrasena = contrasena;
+        this.nombre = nombre;
+    }
+
+    
     /**
      * Obtiene el nombre de usuario.
      *

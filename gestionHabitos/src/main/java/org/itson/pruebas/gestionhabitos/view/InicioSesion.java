@@ -29,11 +29,11 @@ public class InicioSesion extends javax.swing.JPanel {
     }
 
     public CuentaDTO consultarCuenta() {
-        try {
-            return new GestionarHabitosNegocio().consultarCuenta(txtUsuario.getText(), txtContraseña.getText());
-        } catch (ControllerException ex) {
-            Logger.getLogger(InicioSesion.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            return new GestionarHabitosNegocio().consultarCuenta(txtUsuario.getText(), txtContraseña.getText());
+//        } catch (ControllerException ex) {
+//            Logger.getLogger(InicioSesion.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         return null;
     }
 

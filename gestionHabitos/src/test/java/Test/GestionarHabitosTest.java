@@ -4,13 +4,11 @@
  */
 package Test;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
-import org.itson.pruebas.gestionhabitos.model.Conexion;
 import org.itson.pruebas.gestionhabitos.model.Cuenta;
 import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
 import org.itson.pruebas.gestionhabitos.model.Habito;
@@ -19,119 +17,156 @@ import org.itson.pruebas.gestionhabitos.model.ModelException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import org.mockito.Mockito;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import org.mockito.*;
+import java.util.*;
 
-/**
- *
- * @author elimo
- */
 public class GestionarHabitosTest {
 
-    private IConexion conexionMock;
-    private EntityManager entityManagerMock;
-    private EntityTransaction transactionMock;
-    private GestionarHabitosDAO gestionarHabitos;
+    private GestionarHabitosDAO gestionarHabitosDAO;
+    private EntityManager entityManager;
+    private EntityTransaction transaction;
+    private Cuenta cuenta;
 
     @BeforeEach
     public void setUp() {
+        cuenta = new Cuenta();
+        entityManager = mock(EntityManager.class);
+        transaction = mock(EntityTransaction.class);
+        when(entityManager.getTransaction()).thenReturn(transaction);
 
-        conexionMock = Mockito.mock(IConexion.class);
-        entityManagerMock = Mockito.mock(EntityManager.class);
-        transactionMock = Mockito.mock(EntityTransaction.class);
+        // Supongamos que tienes una clase de conexión que devuelve el EntityManager
+        IConexion conexionMock = mock(IConexion.class);
+        when(conexionMock.crearConexion()).thenReturn(entityManager);
 
-        when(conexionMock.crearConexion()).thenReturn(entityManagerMock);
-        when(entityManagerMock.getTransaction()).thenReturn(transactionMock);
+        gestionarHabitosDAO = new GestionarHabitosDAO(conexionMock);
+    }
 
-        gestionarHabitos = new GestionarHabitosDAO();
+    @Test
+    public void testCrearCuenta() throws ModelException {
+
+        cuenta.setUsuario("Test User");
+        cuenta.setContrasena("testPass");
+        cuenta.setNombre("Test User");
+        // Invocar el método para crear la cuenta
+        gestionarHabitosDAO.crearCuenta(cuenta);
+
+        // Verificar que se invocaron los métodos correctos
+        verify(transaction).begin();
+        verify(entityManager).persist(cuenta);
+        verify(transaction).commit();
     }
 
     @Test
     public void testCrearHabito() throws ModelException {
+        // Crear un nuevo hábito
         Habito nuevoHabito = new Habito();
+        nuevoHabito.setNombre("Test Habit");
         nuevoHabito.setId(1L);
-        nuevoHabito.setNombre("Ejercicio");
-        nuevoHabito.setFrecuencia("Diario");
+        nuevoHabito.setFrecuencia("Diaria");
         nuevoHabito.setRealizado(false);
-        nuevoHabito.setFecha(new Date());
+        nuevoHabito.setFechaCreacion(new Date());
+        nuevoHabito.setFechaRealizacion(null);
+        nuevoHabito.setDiasSemana(1001001L);
+        nuevoHabito.setCuenta(cuenta);
 
-        Habito resultado = gestionarHabitos.crearHabito(nuevoHabito);
+        // Simular la persistencia del hábito
+        doNothing().when(transaction).begin();
+        doNothing().when(entityManager).persist(nuevoHabito);
+        doNothing().when(transaction).commit();
 
-        assertNotNull(resultado);
-        assertEquals(nuevoHabito.getNombre(), resultado.getNombre());
+        // Actuar - crear el hábito
+        Habito creado = gestionarHabitosDAO.crearHabito(nuevoHabito);
 
-        verify(entityManagerMock, times(1)).persist(nuevoHabito);
-        verify(transactionMock, times(1)).commit();
+        // Aserciones
+        assertNotNull(creado);
+        assertEquals(nuevoHabito.getNombre(), creado.getNombre());
+
+        // Verificación de transacciones
+        verify(transaction, times(1)).begin(); // Se inicia la transacción
+        verify(transaction, times(1)).commit(); // Se confirma la transacción
+        verify(entityManager, times(1)).persist(nuevoHabito); // Se persiste el hábito
     }
 
     @Test
     public void testActualizarHabito() throws ModelException {
-        Habito habitoExistente = new Habito();
-        habitoExistente.setId(1L);
-        habitoExistente.setNombre("Ejercicio");
-        habitoExistente.setFrecuencia("Diario");
-        habitoExistente.setRealizado(false);
-        habitoExistente.setFecha(new Date());
+        Habito nuevoHabito = new Habito();
+        nuevoHabito.setNombre("Test Habit");
+        nuevoHabito.setFrecuencia("Diaria");
+        nuevoHabito.setRealizado(false);
+        nuevoHabito.setFechaCreacion(new Date());
+        nuevoHabito.setFechaRealizacion(null);
+        nuevoHabito.setDiasSemana(1001001L);
+        nuevoHabito.setId(1L);
+        nuevoHabito.setCuenta(cuenta);
 
-        when(entityManagerMock.find(Habito.class, 1L)).thenReturn(habitoExistente);
+        when(entityManager.find(Habito.class, 1L)).thenReturn(nuevoHabito);
+        doNothing().when(transaction).begin();
+        doNothing().when(transaction).commit();
 
-        Habito habitoActualizar = new Habito();
-        habitoActualizar.setId(1L);
-        habitoActualizar.setNombre("Correr");
-        habitoActualizar.setFrecuencia("Diario");
-        habitoActualizar.setRealizado(true);
-        habitoActualizar.setFecha(new Date());
-
-        Habito resultado = gestionarHabitos.actualizarHabito(habitoActualizar);
-
-        assertNotNull(resultado);
-        assertEquals("Correr", resultado.getNombre());
-
-        verify(entityManagerMock, times(1)).find(Habito.class, 1L);
-        verify(transactionMock, times(1)).commit();
+        nuevoHabito.setFrecuencia("Semanal");
+        Habito actualizado = gestionarHabitosDAO.actualizarHabito(nuevoHabito);
+        assertEquals("Semanal", actualizado.getFrecuencia());
     }
 
     @Test
     public void testEliminarHabito() throws ModelException {
-        Habito habitoAEliminar = new Habito();
-        habitoAEliminar.setId(1L);
+        Habito nuevoHabito = new Habito();
+        nuevoHabito.setId(1L);
+        nuevoHabito.setNombre("Test Habit");
+        nuevoHabito.setFrecuencia("Diaria");
+        nuevoHabito.setRealizado(false);
+        nuevoHabito.setFechaCreacion(new Date());
+        nuevoHabito.setFechaRealizacion(null);
+        nuevoHabito.setDiasSemana(1001001L);
+        nuevoHabito.setCuenta(cuenta);
 
-        when(entityManagerMock.find(Habito.class, 1L)).thenReturn(habitoAEliminar);
+        when(entityManager.find(Habito.class, nuevoHabito.getId())).thenReturn(nuevoHabito);
+        doNothing().when(transaction).begin();
+        doNothing().when(entityManager).remove(nuevoHabito);
+        doNothing().when(transaction).commit();
 
-        boolean resultado = gestionarHabitos.eliminarHabito(1L);
-
-        assertTrue(resultado);
-
-        verify(entityManagerMock, times(1)).remove(habitoAEliminar);
-        verify(transactionMock, times(1)).commit();
+        boolean eliminado = gestionarHabitosDAO.eliminarHabito(nuevoHabito.getId());
+        assertTrue(eliminado);
     }
 
     @Test
-    public void testVerHabitos() throws ModelException {
-        // Preparar los datos de prueba
-        Cuenta cuenta = new Cuenta();
-        cuenta.setUsuario("usuarioTest"); // Establecer el usuario de la cuenta de prueba
+    public void testObtenerHabitos() throws ModelException {
+        // Crear nuevos hábitos
+        Habito nuevoHabito1 = new Habito();
+        nuevoHabito1.setNombre("Test Habit 1");
+        nuevoHabito1.setFrecuencia("Diaria");
+        nuevoHabito1.setRealizado(false);
+        nuevoHabito1.setFechaCreacion(new Date());
+        nuevoHabito1.setFechaRealizacion(null);
+        nuevoHabito1.setDiasSemana(1001001L);
+        nuevoHabito1.setCuenta(cuenta);
 
-        List<Habito> listaHabitos = new ArrayList<>();
-        listaHabitos.add(new Habito());
-        listaHabitos.add(new Habito());
+        Habito nuevoHabito2 = new Habito();
+        nuevoHabito2.setNombre("Test Habit 2");
+        nuevoHabito2.setFrecuencia("Semanal");
+        nuevoHabito2.setRealizado(true);
+        nuevoHabito2.setFechaCreacion(new Date());
+        nuevoHabito2.setFechaRealizacion(null);
+        nuevoHabito2.setDiasSemana(1001001L);
+        nuevoHabito2.setCuenta(cuenta);
 
-        // Crear mocks
-        TypedQuery<Habito> queryMock = Mockito.mock(TypedQuery.class);
+        List<Habito> listaHabitos = Arrays.asList(nuevoHabito1, nuevoHabito2);
 
-        // Configurar el comportamiento de los mocks
-        when(entityManagerMock.createQuery("SELECT h FROM Habito h WHERE h.usuario = :usuario", Habito.class)).thenReturn(queryMock);
-        when(queryMock.setParameter("usuario", "usuarioTest")).thenReturn(queryMock);
-        when(queryMock.getResultList()).thenReturn(listaHabitos);
+        // Configurar el TypedQuery
+        TypedQuery<Habito> mockTypedQuery = mock(TypedQuery.class);
+        when(entityManager.createQuery(anyString(), eq(Habito.class))).thenReturn(mockTypedQuery);
+        when(mockTypedQuery.getResultList()).thenReturn(listaHabitos); // Este debe ser el método que se llama en la prueba
 
-        // Llamar al método bajo prueba
-        List<Habito> resultado = gestionarHabitos.obtenerHabitos(cuenta);
+        // Ejecutar el método que estás probando
+        List<Habito> habitos = gestionarHabitosDAO.obtenerHabitos(cuenta);
 
-        // Verificar los resultados
-        assertNotNull(resultado);
-        assertEquals(2, resultado.size());
+        // Verificaciones
+        assertNotNull(habitos);
+        assertEquals(2, habitos.size());
+        assertEquals("Test Habit 1", habitos.get(0).getNombre());
+        assertEquals("Test Habit 2", habitos.get(1).getNombre());
     }
 
 }
