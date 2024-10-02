@@ -51,6 +51,8 @@ public class Inicio extends javax.swing.JPanel {
         jLabel13 = new javax.swing.JLabel();
         lblNombreUsuario = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(750, 750));
         setMinimumSize(new java.awt.Dimension(750, 750));
@@ -184,13 +186,23 @@ public class Inicio extends javax.swing.JPanel {
 
         add(panelBlanco, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 140, -1, -1));
 
-        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/casa (1).png"))); // NOI18N
-        add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 410, -1, -1));
+        jLabel13.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/house.png"))); // NOI18N
+        add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 400, 70, -1));
 
+        lblNombreUsuario.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblNombreUsuario.setForeground(new java.awt.Color(37, 52, 18));
         lblNombreUsuario.setText("nombreUsuario");
         lblNombreUsuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        add(lblNombreUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, -1, 30));
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 10, 20, 20));
+        add(lblNombreUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, 170, 30));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/user.png"))); // NOI18N
+        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 10, 30, 30));
+
+        jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/house.png"))); // NOI18N
+        add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 400, 70, -1));
+
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/house.png"))); // NOI18N
+        add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 400, 70, -1));
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel4MouseClicked
@@ -203,6 +215,8 @@ public class Inicio extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
