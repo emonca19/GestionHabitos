@@ -31,32 +31,7 @@ public class Inicio extends javax.swing.JPanel {
         this.frame = frame;
         initComponents();
         setFonts();
-        
-//        CÓDIGO PARA AGREGAR HÁBITOS AL PANEL (si funciona)
-//        pnlHabitosPendientes.setLayout(new BoxLayout(pnlHabitosPendientes, BoxLayout.Y_AXIS));
-
-//// Primer JPanel
-//        JPanel jPanel = new JPanel();
-//        jPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-//        jPanel.setPreferredSize(new Dimension(0, 30)); // Altura fija de 30, ancho ajustable
-//        jPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Establece la altura máxima
-//        JLabel lblImage1 = new JLabel(new ImageIcon(getClass().getResource("/img/checkVacio.png")));
-//        jPanel.add(lblImage1);
-//        jPanel.add(new JLabel("bañarme"));
-//
-//// Segundo JPanel
-//        JPanel jPanel2 = new JPanel();
-//        jPanel2.setLayout(new FlowLayout(FlowLayout.LEFT));
-//        jPanel2.setPreferredSize(new Dimension(0, 30)); // Altura fija de 30, ancho ajustable
-//        jPanel2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Establece la altura máxima
-//        JLabel lblImage2 = new JLabel(new ImageIcon(getClass().getResource("/img/checkVacio.png")));
-//        jPanel2.add(lblImage2);
-//        jPanel2.add(new JLabel("ducharme"));
-//
-//// Añadir paneles al contenedor principal
-//        pnlHabitosPendientes.add(jPanel);
-//        pnlHabitosPendientes.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre paneles
-//        pnlHabitosPendientes.add(jPanel2);
+        mostrarHabitos();
 
     }
 
@@ -346,6 +321,41 @@ public class Inicio extends javax.swing.JPanel {
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void mostrarHabitos() {
+        listarHabitosPendientes();
+    }
+
+    private void listarHabitosPendientes() {
+        pnlHabitosPendientes.setLayout(new BoxLayout(pnlHabitosPendientes, BoxLayout.Y_AXIS));
+
+        // Primer JPanel
+        JPanel jPanel = new JPanel();
+        jPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jPanel.setPreferredSize(new Dimension(0, 30)); // Altura fija de 30, ancho ajustable
+        jPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Establece la altura máxima
+        JLabel lblImage1 = new JLabel(new ImageIcon(getClass().getResource("/img/checkVacio.png")));
+        jPanel.add(lblImage1);
+        jPanel.add(new JLabel("bañarme"));
+
+        // Segundo JPanel
+        JPanel jPanel2 = new JPanel();
+        jPanel2.setLayout(new FlowLayout(FlowLayout.LEFT));
+        jPanel2.setPreferredSize(new Dimension(0, 30)); // Altura fija de 30, ancho ajustable
+        jPanel2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Establece la altura máxima
+        JLabel lblImage2 = new JLabel(new ImageIcon(getClass().getResource("/img/checkVacio.png")));
+        jPanel2.add(lblImage2);
+        jPanel2.add(new JLabel("ducharme"));
+
+        // Añadir paneles al contenedor principal
+        pnlHabitosPendientes.add(jPanel);
+        pnlHabitosPendientes.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre paneles
+        pnlHabitosPendientes.add(jPanel2);
+    }
+
+    private void listarHabitosRealizados() {
+
+    }
 
     private void setFonts() {
         try {

@@ -152,6 +152,20 @@ public class FrameContenedor extends javax.swing.JFrame {
         panelActual = progresoMensual;
     }
 
+    public void mostrarVerHabito() {
+        limpiarFrame();
+        VerHabito verHabito = new VerHabito(this);
+        ponerEnFrame(verHabito);
+        panelActual = verHabito;
+    }
+
+    public void mostrarCrearHabito() {
+        limpiarFrame();
+        CrearHabito crearHabito = new CrearHabito(this);
+        ponerEnFrame(crearHabito);
+        panelActual = crearHabito;
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
