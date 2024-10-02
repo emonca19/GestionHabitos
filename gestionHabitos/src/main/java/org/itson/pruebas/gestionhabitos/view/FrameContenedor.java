@@ -103,13 +103,12 @@ public class FrameContenedor extends javax.swing.JFrame {
     public void mostrarInformacion(String mensaje, String titulo) {
         JOptionPane.showMessageDialog(this, mensaje, titulo, JOptionPane.INFORMATION_MESSAGE);
     }
-    
+
     public Font cargarFuente(String fontPath, float fontSize) throws FontFormatException, IOException {
         InputStream fontStream = Inicio.class.getResourceAsStream(fontPath);
         Font font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
         return font.deriveFont(fontSize);
     }
-
 
     public void mostrarInicioSesion() {
         limpiarFrame();
@@ -123,7 +122,6 @@ public class FrameContenedor extends javax.swing.JFrame {
         Inicio inicio = new Inicio(this);
         ponerEnFrame(inicio);
         panelActual = inicio;
-
     }
 
     public void mostrarRegistrarUsuario() {
@@ -131,9 +129,28 @@ public class FrameContenedor extends javax.swing.JFrame {
         RegistrarUsuario registrarUsuario = new RegistrarUsuario(this);
         ponerEnFrame(registrarUsuario);
         panelActual = registrarUsuario;
-
     }
 
+    public void mostrarListaHabitos() {
+        limpiarFrame();
+        ListaHabitos listaHabitos = new ListaHabitos(this);
+        ponerEnFrame(listaHabitos);
+        panelActual = listaHabitos;
+    }
+
+    public void mostrarProgresoSemanal() {
+        limpiarFrame();
+        ProgresoSemanal progresoSemanal = new ProgresoSemanal(this);
+        ponerEnFrame(progresoSemanal);
+        panelActual = progresoSemanal;
+    }
+
+    public void mostrarProgresoMensual() {
+        limpiarFrame();
+        ProgresoMensual progresoMensual = new ProgresoMensual(this);
+        ponerEnFrame(progresoMensual);
+        panelActual = progresoMensual;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

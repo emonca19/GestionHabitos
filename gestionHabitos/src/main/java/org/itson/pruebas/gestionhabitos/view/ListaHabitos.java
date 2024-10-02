@@ -1,63 +1,27 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ */
 package org.itson.pruebas.gestionhabitos.view;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 
 /**
  *
- * @author Eliana Monge
- * @author Cristina Castro
- * @author Eduardo Talavera
- * @author Roberto García
+ * @author rover
  */
-public class Inicio extends javax.swing.JPanel {
+public class ListaHabitos extends javax.swing.JPanel {
 
-    private final FrameContenedor frame;
-
+    private FrameContenedor frame;
     /**
-     * Creates new form Inicio
-     *
-     * @param frameContenedor
+     * Creates new form Progreso
      */
-    public Inicio(FrameContenedor frame) {
+    public ListaHabitos(FrameContenedor frame) {
         this.frame = frame;
         initComponents();
         setFonts();
-        
-//        CÓDIGO PARA AGREGAR HÁBITOS AL PANEL (si funciona)
-//        pnlHabitosPendientes.setLayout(new BoxLayout(pnlHabitosPendientes, BoxLayout.Y_AXIS));
-
-//// Primer JPanel
-//        JPanel jPanel = new JPanel();
-//        jPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-//        jPanel.setPreferredSize(new Dimension(0, 30)); // Altura fija de 30, ancho ajustable
-//        jPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Establece la altura máxima
-//        JLabel lblImage1 = new JLabel(new ImageIcon(getClass().getResource("/img/checkVacio.png")));
-//        jPanel.add(lblImage1);
-//        jPanel.add(new JLabel("bañarme"));
-//
-//// Segundo JPanel
-//        JPanel jPanel2 = new JPanel();
-//        jPanel2.setLayout(new FlowLayout(FlowLayout.LEFT));
-//        jPanel2.setPreferredSize(new Dimension(0, 30)); // Altura fija de 30, ancho ajustable
-//        jPanel2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Establece la altura máxima
-//        JLabel lblImage2 = new JLabel(new ImageIcon(getClass().getResource("/img/checkVacio.png")));
-//        jPanel2.add(lblImage2);
-//        jPanel2.add(new JLabel("ducharme"));
-//
-//// Añadir paneles al contenedor principal
-//        pnlHabitosPendientes.add(jPanel);
-//        pnlHabitosPendientes.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre paneles
-//        pnlHabitosPendientes.add(jPanel2);
-
     }
 
     /**
@@ -80,19 +44,14 @@ public class Inicio extends javax.swing.JPanel {
         btnDia6 = new javax.swing.JButton();
         btnDia7 = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
+        lblListaHabitos = new javax.swing.JLabel();
         pnlHabitosPendientes = new javax.swing.JPanel();
-        pnlHabitosPendientes1 = new javax.swing.JPanel();
-        lblHabitosPendientes = new javax.swing.JLabel();
-        lblHabitosRealizados = new javax.swing.JLabel();
-        lblFecha = new javax.swing.JLabel();
-        lblDivision = new javax.swing.JLabel();
         btnHoy = new javax.swing.JButton();
         btnHabitos = new javax.swing.JButton();
         btnProgreso = new javax.swing.JButton();
         lblNombreUsuario = new javax.swing.JLabel();
         fondo = new javax.swing.JLabel();
 
-        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMaximumSize(new java.awt.Dimension(750, 750));
         setMinimumSize(new java.awt.Dimension(750, 750));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -228,27 +187,12 @@ public class Inicio extends javax.swing.JPanel {
         });
         add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 579, 50, 50));
 
+        lblListaHabitos.setForeground(new java.awt.Color(0, 0, 0));
+        lblListaHabitos.setText("LISTA DE HÁBITOS");
+        add(lblListaHabitos, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 198, -1, -1));
+
         pnlHabitosPendientes.setOpaque(false);
-        add(pnlHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 238, 700, 165));
-
-        pnlHabitosPendientes1.setOpaque(false);
-        add(pnlHabitosPendientes1, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 465, 700, 165));
-
-        lblHabitosPendientes.setForeground(new java.awt.Color(0, 0, 0));
-        lblHabitosPendientes.setText("HÁBITOS PENDIENTES");
-        add(lblHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 198, -1, -1));
-
-        lblHabitosRealizados.setForeground(new java.awt.Color(0, 0, 0));
-        lblHabitosRealizados.setText("HÁBITOS REALIZADOS");
-        add(lblHabitosRealizados, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 425, -1, -1));
-
-        lblFecha.setForeground(new java.awt.Color(0, 0, 0));
-        lblFecha.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblFecha.setText("fecha");
-        add(lblFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 193, 250, 25));
-
-        lblDivision.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/division.png"))); // NOI18N
-        add(lblDivision, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 415, -1, -1));
+        add(pnlHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 238, 700, 390));
 
         btnHoy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/hoy.png"))); // NOI18N
         btnHoy.setBorderPainted(false);
@@ -291,21 +235,15 @@ public class Inicio extends javax.swing.JPanel {
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo.png"))); // NOI18N
         add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
-
-        getAccessibleContext().setAccessibleName("");
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnHoyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoyActionPerformed
+    private void btnIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzquierdaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnHoyActionPerformed
+    }//GEN-LAST:event_btnIzquierdaActionPerformed
 
-    private void btnProgresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProgresoActionPerformed
-        frame.mostrarProgresoSemanal();
-    }//GEN-LAST:event_btnProgresoActionPerformed
-
-    private void btnHabitosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHabitosActionPerformed
-        frame.mostrarListaHabitos();
-    }//GEN-LAST:event_btnHabitosActionPerformed
+    private void btnDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDerechaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDerechaActionPerformed
 
     private void btnDia1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia1ActionPerformed
         // TODO add your handling code here:
@@ -335,13 +273,17 @@ public class Inicio extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnDia7ActionPerformed
 
-    private void btnIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzquierdaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnIzquierdaActionPerformed
+    private void btnHoyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoyActionPerformed
+        frame.mostrarInicio();
+    }//GEN-LAST:event_btnHoyActionPerformed
 
-    private void btnDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDerechaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDerechaActionPerformed
+    private void btnHabitosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHabitosActionPerformed
+        
+    }//GEN-LAST:event_btnHabitosActionPerformed
+
+    private void btnProgresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProgresoActionPerformed
+        frame.mostrarProgresoSemanal();
+    }//GEN-LAST:event_btnProgresoActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
@@ -351,11 +293,9 @@ public class Inicio extends javax.swing.JPanel {
         try {
             lblNombreUsuario.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Medium.ttf", 20F));
             lblMes.setFont(frame.cargarFuente("/fonts/Kurale/Kurale-Regular.ttf", 20F));
-            Font semiBoldFont = frame.cargarFuente("/fonts/Nunito/static/Nunito-SemiBold.ttf", 22F);
+            Font semiBoldFont = frame.cargarFuente("/fonts/Nunito/static/Nunito-SemiBold.ttf", 26F);
             Font nunitoRegular = frame.cargarFuente("/fonts/Nunito/static/Nunito-Regular.ttf", 18F);
-            lblHabitosPendientes.setFont(semiBoldFont);
-            lblHabitosRealizados.setFont(semiBoldFont);
-            lblFecha.setFont(nunitoRegular);
+            lblListaHabitos.setFont(semiBoldFont);
             btnDia1.setFont(nunitoRegular);
             btnDia2.setFont(nunitoRegular);
             btnDia3.setFont(nunitoRegular);
@@ -367,7 +307,6 @@ public class Inicio extends javax.swing.JPanel {
             frame.mostrarAviso(e.getMessage(), "Aviso");
         }
     }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -384,13 +323,9 @@ public class Inicio extends javax.swing.JPanel {
     private javax.swing.JButton btnIzquierda;
     private javax.swing.JButton btnProgreso;
     private javax.swing.JLabel fondo;
-    private javax.swing.JLabel lblDivision;
-    private javax.swing.JLabel lblFecha;
-    private javax.swing.JLabel lblHabitosPendientes;
-    private javax.swing.JLabel lblHabitosRealizados;
+    private javax.swing.JLabel lblListaHabitos;
     private javax.swing.JLabel lblMes;
     private javax.swing.JLabel lblNombreUsuario;
     private javax.swing.JPanel pnlHabitosPendientes;
-    private javax.swing.JPanel pnlHabitosPendientes1;
     // End of variables declaration//GEN-END:variables
 }
