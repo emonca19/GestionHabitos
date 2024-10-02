@@ -39,7 +39,7 @@ public class NewMain {
         hab.setCuenta(cuenta);
         hab.setFrecuencia("Diario");
         hab.setNombre("ejercitarme");
-        hab.setRealizado(false);
+//        hab.setRealizado(false);
 
         gestionarHabitosDAO.eliminarHabito(51L);
 //        System.out.println(gestionarHabitosDAO.obtenerHabitos(cuenta).getFirst().getId());

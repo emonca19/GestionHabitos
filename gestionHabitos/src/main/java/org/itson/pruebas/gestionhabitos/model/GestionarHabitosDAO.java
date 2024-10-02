@@ -2,7 +2,6 @@ package org.itson.pruebas.gestionhabitos.model;
 
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -19,6 +18,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 
     private final IConexion conexion;
     static final Logger logger = Logger.getLogger(GestionarHabitosDAO.class.getName());
+    EntityManager entityManager = null;
 
     // Constructor
     public GestionarHabitosDAO(IConexion conexion) {
@@ -34,7 +34,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      */
     @Override
     public Habito crearHabito(Habito nuevoHabito) throws ModelException {
-        EntityManager entityManager = null;
         EntityTransaction transaction = null;
 
         try {
@@ -68,7 +67,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      */
     @Override
     public Habito actualizarHabito(Habito habito) throws ModelException {
-        EntityManager entityManager = null;
         EntityTransaction transaction = null;
 
         try {
@@ -113,7 +111,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      */
     @Override
     public boolean eliminarHabito(Long id) throws ModelException {
-        EntityManager entityManager = null;
         EntityTransaction transaction = null;
 
         try {
@@ -153,8 +150,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      */
     @Override
     public List<Habito> obtenerHabitos(Cuenta cuenta) throws ModelException {
-        EntityManager entityManager = null;
-
         try {
             entityManager = this.conexion.crearConexion();
             TypedQuery<Habito> query = entityManager.createQuery(
@@ -167,7 +162,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             }
             return habitos;
 
-        } catch (Exception e) {
+        } catch (ModelException e) {
             throw new ModelException("Error al obtener la lista de hábitos", e);
         } finally {
             if (entityManager != null) {
@@ -185,7 +180,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      */
     @Override
     public Cuenta crearCuenta(Cuenta cuenta) throws ModelException {
-        EntityManager entityManager = null;
         try {
 
             entityManager = this.conexion.crearConexion();
@@ -220,10 +214,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      */
     @Override
     public Cuenta consultarCuenta(String usuario, String contraseña) throws ModelException {
-        EntityManager entityManager = null;
-
         try {
-            logger.log(Level.INFO, "Consultando la cuenta para el usuario: {0}", usuario);
             entityManager = this.conexion.crearConexion();
 
             TypedQuery<Cuenta> query = entityManager.createQuery(
@@ -235,16 +226,13 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             List<Cuenta> cuentas = query.getResultList();
 
             if (!cuentas.isEmpty()) {
-
                 return cuentas.get(0);
             } else {
-                throw new ModelException("No se encontró una cuenta");
-
+                throw new ModelException("La cuenta no existe.");
             }
 
         } catch (ModelException e) {
-
-            throw new ModelException("Error al consultar la cuenta", e);
+            throw new ModelException("Error al consultar la cuenta: " + e.getMessage(), e);
         } finally {
             if (entityManager != null) {
                 entityManager.close();
@@ -257,14 +245,11 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Registro de historial de hábitos que coincide con la fecha y el
-     * ID de hábito.
-     * @throws ModelException Si ocurre un error al buscar o si no se encuentra
-     * el registro
+     * @return Registro de historial de hábitos que coincide con la fecha y el ID de hábito.
+     * @throws ModelException Si ocurre un error al buscar o si no se encuentra el registro
      */
     @Override
     public HistorialHabitos buscarPorFechaYIdHabito(Date dia, int idHabito) throws ModelException {
-        EntityManager entityManager = null;
         EntityTransaction transaction = null;
         HistorialHabitos resultado = null;
 
@@ -311,7 +296,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      */
     @Override
     public HistorialHabitos actualizarHistorial(HistorialHabitos historial) throws ModelException {
-        EntityManager entityManager = null;
         EntityTransaction transaction = null;
         HistorialHabitos historialExistente = null;
 
@@ -331,7 +315,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                 transaction.rollback();
                 throw new ModelException("Registro de historial de hábitos no encontrado con el ID proporcionado");
             }
-        } catch (Exception e) {
+        } catch (ModelException e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
                 throw new ModelException("Transacción revertida debido a un error al actualizar", e);
@@ -354,7 +338,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      * @throws ModelException Si ocurre un error al crear el historial.
      */
     public HistorialHabitos crearHistorial(HistorialHabitos historial) throws ModelException {
-        EntityManager entityManager = null;
         EntityTransaction transaction = null;
 
         try {
@@ -379,4 +362,20 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
         }
     }
 
+    @Override
+    public boolean cuentaExiste(String usuario) throws ModelException {
+        try {
+            entityManager = this.conexion.crearConexion();
+            TypedQuery<Cuenta> query = entityManager.createQuery(
+                    "SELECT c FROM Cuenta c WHERE c.usuario = :usuario", Cuenta.class
+            );
+            query.setParameter("usuario", usuario);
+
+            List<Cuenta> cuentas = query.getResultList();
+
+            return !cuentas.isEmpty();
+        } catch (Exception e) {
+            throw new ModelException("Error al consultar si la cuenta existe: " + e.getMessage(), e);
+        }
+    }
 }

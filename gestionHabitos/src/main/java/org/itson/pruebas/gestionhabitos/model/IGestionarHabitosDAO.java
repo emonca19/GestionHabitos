@@ -73,8 +73,7 @@ public interface IGestionarHabitosDAO {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Lista de registros de historial de hábitos que coinciden con la
-     * fecha y el ID de hábito.
+     * @return Lista de registros de historial de hábitos que coinciden con la fecha y el ID de hábito.
      * @throws ModelException Si ocurre un error al buscar
      */
     public HistorialHabitos buscarPorFechaYIdHabito(Date dia, int idHabito) throws ModelException;
@@ -88,4 +87,5 @@ public interface IGestionarHabitosDAO {
      */
     public HistorialHabitos actualizarHistorial(HistorialHabitos historial) throws ModelException;
 
+    public boolean cuentaExiste(String usuario) throws ModelException;
 }

@@ -3,7 +3,10 @@ package org.itson.pruebas.gestionhabitos.view;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
+import org.itson.pruebas.gestionhabitos.controller.ControllerException;
 import org.itson.pruebas.gestionhabitos.controller.CuentaDTO;
+import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
+import org.itson.pruebas.gestionhabitos.controller.Sesion;
 
 /**
  *
@@ -28,16 +31,34 @@ public class InicioSesion extends javax.swing.JPanel {
     }
 
     public CuentaDTO consultarCuenta() {
-//        try {
-//            return new GestionarHabitosNegocio().consultarCuenta(txtUsuario.getText(), txtContraseña.getText());
-//        } catch (ControllerException ex) {
-//            Logger.getLogger(InicioSesion.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+        try {
+            return new GestionarHabitosNegocio().consultarCuenta(txtUsuario.getText(), String.copyValueOf(txtContrasena.getPassword()));
+        } catch (ControllerException ex) {
+            frame.mostrarAviso("El usuario no existe.", "Error de consulta");
+        }
         return null;
     }
 
     public void limpiar() {
         txtUsuario.setText("");
+        txtContrasena.setText("");
+    }
+
+    public boolean validar() {
+        String usuario = txtUsuario.getText();
+        String contrasena = txtContrasena.getText();
+
+        if (usuario.trim().isEmpty()) {
+            frame.mostrarAviso("El campo de usuario está vacío.", "Error de validación");
+            return false;
+        }
+
+        if (contrasena.trim().isEmpty()) {
+            frame.mostrarAviso("El campo de contraseña está vacío.", "Error de validación");
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -100,11 +121,23 @@ public class InicioSesion extends javax.swing.JPanel {
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
-        frame.mostrarInicio();
+        if (!validar()) {
+            return;
+        }
+
+        CuentaDTO cuenta = consultarCuenta();
+
+        if (cuenta != null) {
+            Sesion.setNombre(cuenta.getNombre());
+            Sesion.setUsuario(cuenta.getUsuario());
+
+            frame.mostrarInicio();
+        }
+
+        limpiar();
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
-    
-    private void setFonts(){
+    private void setFonts() {
         try {
             Font nunitoB = frame.cargarFuente("/fonts/Nunito/static/Nunito-SemiBold.ttf", 18F);
             txtUsuario.setFont(nunitoB);

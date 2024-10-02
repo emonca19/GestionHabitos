@@ -7,8 +7,6 @@ package org.itson.pruebas.gestionhabitos.controller;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.itson.pruebas.gestionhabitos.model.Conexion;
 import org.itson.pruebas.gestionhabitos.model.Cuenta;
@@ -131,8 +129,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @param usuario Usuario a consultar
      * @param contraseña Verificar que concuerda con la contraseña
      * @return Cuenta consultada
-     * @throws ControllerException si no se puede consultar la cuenta
-     * correctamente
+     * @throws ControllerException si no se puede consultar la cuenta correctamente
      */
     @Override
     public CuentaDTO consultarCuenta(String usuario, String contraseña) throws ControllerException {
@@ -220,8 +217,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * Convierte un DTO HistorialHabitosDTO en una entidad HistorialHabitos.
      *
      * @param historialDTO el DTO HistorialHabitosDTO a convertir
-     * @return la entidad HistorialHabitos que representa el historial de
-     * hábitos
+     * @return la entidad HistorialHabitos que representa el historial de hábitos
      */
     private HistorialHabitos historialDTOConvertirAEntidad(HistorialHabitosDTO historialDTO) {
         HistorialHabitos historial = new HistorialHabitos();
@@ -233,8 +229,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     }
 
     /**
-     * Metodo que devuelve los habitos que concuerden con el usuario y dia de la
-     * semana
+     * Metodo que devuelve los habitos que concuerden con el usuario y dia de la semana
      *
      * @param cuenta Cuenta a buscar los habitos
      * @param diaSemana Dia de la semana que concuerde con los habitos
@@ -273,8 +268,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Lista de registros de historial de hábitos que coinciden con la
-     * fecha y el ID de hábito.
+     * @return Lista de registros de historial de hábitos que coinciden con la fecha y el ID de hábito.
      * @throws ControllerException Si ocurre un error al buscar
      */
     @Override
@@ -301,6 +295,27 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         } catch (ModelException ex) {
             throw new ControllerException(ex);
         }
+    }
+    
+    /**
+     * Consulta la existencia de una cuenta
+     *
+     * @param usuario Usuario a consultar
+     * @return Cuenta consultada
+     * @throws ControllerException si no se puede consultar la cuenta correctamente
+     */
+    @Override
+    public boolean cuentaExiste(String usuario) throws ControllerException {
+        try {
+            return habitoDAO.cuentaExiste(usuario);
+        } catch (ModelException ex) {
+            throw new ControllerException(ex);
+        }
+    }
+
+    @Override
+    public HistorialHabitosDTO crearHistorial(HistorialHabitosDTO historial) throws ControllerException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
 }
