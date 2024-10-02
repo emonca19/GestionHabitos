@@ -4,6 +4,7 @@
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>org.itson.pruebas.gestionhabitos.model.Cuenta</class>
     <class>org.itson.pruebas.gestionhabitos.model.Habito</class>
+    <class>org.itson.pruebas.gestionhabitos.model.historialHabitos</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/gestionhabitos?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

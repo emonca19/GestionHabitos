@@ -5,12 +5,16 @@
 package org.itson.pruebas.gestionhabitos.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.itson.pruebas.gestionhabitos.model.Conexion;
 import org.itson.pruebas.gestionhabitos.model.Cuenta;
 import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
 import org.itson.pruebas.gestionhabitos.model.Habito;
+import org.itson.pruebas.gestionhabitos.model.HistorialHabitos;
 import org.itson.pruebas.gestionhabitos.model.IConexion;
 import org.itson.pruebas.gestionhabitos.model.ModelException;
 
@@ -71,15 +75,15 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     /**
      * Obtiene la lista de hábitos asociados a una cuenta específica.
      *
-     * @param cuenta el DTO de la cuenta cuyos hábitos se desean obtener
+     * @param cuentaDTO el DTO de la cuenta cuyos hábitos se desean obtener
      * @return la lista de hábitos convertidos a DTO
      * @throws ControllerException si ocurre un error al obtener los hábitos
      */
     @Override
-    public List<HabitoDTO> obtenerHabitos(CuentaDTO cuenta) throws ControllerException {
+    public List<HabitoDTO> obtenerHabitos(CuentaDTO cuentaDTO) throws ControllerException {
         List<Habito> habitos = null;
         try {
-            habitos = habitoDAO.obtenerHabitos(cuentaDTOAEntidad(cuenta));
+            habitos = habitoDAO.obtenerHabitos(cuentaDTOAEntidad(cuentaDTO));
         } catch (ModelException ex) {
             throw new ControllerException(ex);
         }
@@ -123,10 +127,12 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
 
     /**
      * Consulta la existencia de una cuenta
+     *
      * @param usuario Usuario a consultar
      * @param contraseña Verificar que concuerda con la contraseña
      * @return Cuenta consultada
-     * @throws ControllerException si no se puede consultar la cuenta correctamente
+     * @throws ControllerException si no se puede consultar la cuenta
+     * correctamente
      */
     @Override
     public CuentaDTO consultarCuenta(String usuario, String contraseña) throws ControllerException {
@@ -147,11 +153,10 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         return new HabitoDTO(
                 habito.getId(),
                 habito.getFrecuencia(),
-                habito.isRealizado(),
-                habito.getFechaRealizacion(),
                 habito.getFechaCreacion(),
                 habito.getDiasSemana(),
                 habito.getNombre(),
+                habito.getDiasSemanaRealizado(),
                 habito.getCuenta() // Asumiendo que 'cuenta' no es null
         );
     }
@@ -166,11 +171,10 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         Habito habito = new Habito();
         habito.setId(habitoDTO.getId());
         habito.setFrecuencia(habitoDTO.getFrecuencia());
-        habito.setRealizado(habitoDTO.isRealizado());
-        habito.setFechaRealizacion(habitoDTO.getFechaRealizacion());
-        habito.setNombre(habitoDTO.getNombre());
-        // Suponiendo que el objeto Cuenta es necesario, se debe establecer aquí, si es parte del DTO
-        // habito.setCuenta(obtenerCuentaPorUsuario(habitoDTO.getUsuario())); // Implementar esta lógica según sea necesario
+        habito.setFechaCreacion(habitoDTO.getFechaCreacion());
+        habito.setDiasSemanaRealizado(habitoDTO.getDiasSemanaRealizado());
+        habito.setDiasSemana(habitoDTO.getDiasSemana());
+        habito.setCuenta(habitoDTO.getCuentaId());
         return habito;
     }
 
@@ -188,6 +192,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
 
     /**
      * Convierte una entidad de cuenta a una cuentaDTO
+     *
      * @param cuenta Cuenta a convertir a DTO
      * @return CuenataDTO convertida
      */
@@ -197,7 +202,40 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     }
 
     /**
-     * Metodo que devuelve los habitos que concuerden con el usuario y dia de la semana
+     * Convierte una entidad HistorialHabitos en un DTO HistorialHabitosDTO.
+     *
+     * @param historial el objeto HistorialHabitos a convertir
+     * @return el DTO HistorialHabitosDTO que representa el historial de hábitos
+     */
+    private HistorialHabitosDTO historialConvertirADTO(HistorialHabitos historial) {
+        return new HistorialHabitosDTO(
+                historial.getId(),
+                historial.getDia(),
+                historial.isCompletado(),
+                historial.getHabito() // Asumiendo que 'idHabito' no es null
+        );
+    }
+
+    /**
+     * Convierte un DTO HistorialHabitosDTO en una entidad HistorialHabitos.
+     *
+     * @param historialDTO el DTO HistorialHabitosDTO a convertir
+     * @return la entidad HistorialHabitos que representa el historial de
+     * hábitos
+     */
+    private HistorialHabitos historialDTOConvertirAEntidad(HistorialHabitosDTO historialDTO) {
+        HistorialHabitos historial = new HistorialHabitos();
+        historial.setId(historialDTO.getId());
+        historial.setDia(historialDTO.getDia());
+        historial.setCompletado(historialDTO.isCompletado());
+        historial.setHabito(historialDTO.getHabito()); // Asumiendo que el idHabito es un entero
+        return historial;
+    }
+
+    /**
+     * Metodo que devuelve los habitos que concuerden con el usuario y dia de la
+     * semana
+     *
      * @param cuenta Cuenta a buscar los habitos
      * @param diaSemana Dia de la semana que concuerde con los habitos
      * @return Lista de habitosDTO que concuerden con las especificaciones
@@ -228,6 +266,41 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
 
         }
         return habitosPorDia;
+    }
+
+    /**
+     * Buscar historial de hábitos por fecha y ID de hábito.
+     *
+     * @param dia La fecha a buscar.
+     * @param idHabito El identificador del hábito.
+     * @return Lista de registros de historial de hábitos que coinciden con la
+     * fecha y el ID de hábito.
+     * @throws ControllerException Si ocurre un error al buscar
+     */
+    @Override
+    public HistorialHabitosDTO buscarPorFechaYIdHabito(Date dia, int idHabito) throws ControllerException {
+        try {
+            return historialConvertirADTO(habitoDAO.buscarPorFechaYIdHabito(dia, idHabito));
+        } catch (ModelException ex) {
+            throw new ControllerException(ex);
+        }
+    }
+
+    /**
+     * Actualizar un registro de historial de hábitos utilizando la entidad.
+     *
+     * @param historial Habito a actualizar.
+     * @return El registro actualizado de historial de hábitos.
+     * @throws ControllerException Si ocurre un error al actualizar.
+     */
+    @Override
+    public HistorialHabitosDTO actualizarHistorial(HistorialHabitosDTO historial) throws ControllerException {
+        try {
+            HistorialHabitosDTO habito = historialConvertirADTO(habitoDAO.actualizarHistorial(historialDTOConvertirAEntidad(historial)));
+            return habito;
+        } catch (ModelException ex) {
+            throw new ControllerException(ex);
+        }
     }
 
 }

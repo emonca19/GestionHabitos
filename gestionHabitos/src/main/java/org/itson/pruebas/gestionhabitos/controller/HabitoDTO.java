@@ -20,23 +20,22 @@ public class HabitoDTO implements Serializable {
     // Frecuencia con la que se debe realizar el hábito
     private String frecuencia;
 
-    // Indica si el hábito ha sido realizado
-    private boolean realizado;
-
-    // Fecha en la que se realizó el hábito
-    private Date fechaRealizacion;
-
     // Fecha en la que se creó el hábito
     private Date fechaCreacion;
 
     // Días de la semana en los que se puede realizar el hábito, representados como un valor Long
     private Long diasSemana;
+    
+    //Dias de la semana que se ha realizado el habito
+    private Long diasSemanaRealizado;
 
     // Nombre del hábito
     private String nombre;
 
     // Identificador de la cuenta asociada al hábito
     private Cuenta cuentaId;
+    
+    private boolean realizado;
 
     /**
      * Constructor vacío
@@ -49,25 +48,42 @@ public class HabitoDTO implements Serializable {
      *
      * @param id el identificador único del hábito.
      * @param frecuencia la frecuencia con la que se debe realizar el hábito.
-     * @param realizado indica si el hábito ha sido realizado o no.
-     * @param fechaRealizacion la fecha en que se realizó el hábito.
      * @param fechaCreacion la fecha en que se creó el hábito.
      * @param diasSemana un valor Long que representa los días de la semana en
      * los que se puede realizar el hábito, almacenado como un patrón de bits.
      * @param nombre el nombre del hábito.
+     * @param diasSemanaRealizado Dias de la semana que se ha realizado el habito
      * @param cuentaId el identificador de la cuenta asociada al hábito.
      */
-    public HabitoDTO(Long id, String frecuencia, boolean realizado, Date fechaRealizacion, Date fechaCreacion, Long diasSemana, String nombre, Cuenta cuentaId) {
+    public HabitoDTO(Long id, String frecuencia, Date fechaCreacion, Long diasSemana, String nombre, Long diasSemanaRealizado, Cuenta cuentaId) {
         this.id = id;
         this.frecuencia = frecuencia;
-        this.realizado = realizado;
-        this.fechaRealizacion = fechaRealizacion;
         this.fechaCreacion = fechaCreacion;
         this.diasSemana = diasSemana;
         this.nombre = nombre;
+        this.diasSemanaRealizado=diasSemanaRealizado;
         this.cuentaId = cuentaId;
     }
 
+    
+    
+    /**
+     * Obtener dias de la semana en losq ue se ha realizado el habito
+     * @return dias de la semana en las que se ha realizado el habito
+     */
+    public Long getDiasSemanaRealizado() {
+        return diasSemanaRealizado;
+    }
+
+    /**
+     * Establecer los dias de la semana que se ha realizado el habito
+     * @param diasSemanaRealizado 
+     */
+    public void setDiasSemanaRealizado(Long diasSemanaRealizado) {
+        this.diasSemanaRealizado = diasSemanaRealizado;
+    }
+
+    
     /**
      * Obtiene el identificador del hábito.
      *
@@ -102,42 +118,6 @@ public class HabitoDTO implements Serializable {
      */
     public void setFrecuencia(String frecuencia) {
         this.frecuencia = frecuencia;
-    }
-
-    /**
-     * Indica si el hábito ha sido realizado.
-     *
-     * @return true si el hábito ha sido realizado, false en caso contrario.
-     */
-    public boolean isRealizado() {
-        return realizado;
-    }
-
-    /**
-     * Establece el estado del hábito como realizado o no.
-     *
-     * @param realizado el nuevo estado del hábito.
-     */
-    public void setRealizado(boolean realizado) {
-        this.realizado = realizado;
-    }
-
-    /**
-     * Obtiene la fecha de realización del hábito.
-     *
-     * @return la fecha en la que se realizó el hábito.
-     */
-    public Date getFechaRealizacion() {
-        return fechaRealizacion;
-    }
-
-    /**
-     * Establece la fecha de realización del hábito.
-     *
-     * @param fechaRealizacion la fecha en la que se realizó el hábito.
-     */
-    public void setFechaRealizacion(Date fechaRealizacion) {
-        this.fechaRealizacion = fechaRealizacion;
     }
 
     /**

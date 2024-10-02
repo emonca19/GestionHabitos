@@ -34,22 +34,25 @@ public class Habito implements Serializable {
     @Column(nullable = false, length = 50)
     private String frecuencia;
 
-    @Column(nullable = false)
-    private boolean realizado;
+//    @Column(nullable = false)
+//    private boolean realizado;
 
     // Fecha de la actividad (no nulo)
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private Date fechaRealizacion;
+    private Date fechaCreacion;
 
     //Fecha de creación de hábito
-    @Column(nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date fechaCreacion;
+//    @Column(nullable = false)
+//    @Temporal(TemporalType.DATE)
+//    private Date fechaCreacion;
 
     // Dias de la semana en bits
     @Column(nullable = false)
     private Long diasSemana;
+    
+    @Column(nullable = false)
+    private Long diasSemanaRealizado;
 
     //Nombre del habito
     @Column(nullable = false, length = 100)
@@ -61,41 +64,43 @@ public class Habito implements Serializable {
     private Cuenta cuenta;
 
     /**
+     * Obtiene los dias de la semana que ya se realizado en habito
+     * @return 
+     */
+    public Long getDiasSemanaRealizado() {
+        return diasSemanaRealizado;
+    }
+
+    /**
+     * Establece los dias de la semana que ya se ha realizado el habito
+     * @param diasSemanaRealizado 
+     */
+    public void setDiasSemanaRealizado(Long diasSemanaRealizado) {
+        this.diasSemanaRealizado = diasSemanaRealizado;
+    }
+
+    
+    
+    /**
      * Obtiene la fecha de realización del hábito.
      *
      * @return fechaRealizacion la fecha en la que se realizó el hábito.
-     */
-    public Date getFechaRealizacion() {
-        return fechaRealizacion;
-    }
-
-    /**
-     * Establece la fecha de realización del hábito.
-     *
-     * @param fechaRealizacion la fecha a establecer para la realización del
-     * hábito.
-     */
-    public void setFechaRealizacion(Date fechaRealizacion) {
-        this.fechaRealizacion = fechaRealizacion;
-    }
-
-    /**
-     * Obtiene la fecha de creación del hábito.
-     *
-     * @return fechaCreacion la fecha en la que se creó el hábito.
      */
     public Date getFechaCreacion() {
         return fechaCreacion;
     }
 
     /**
-     * Establece la fecha de creación del hábito.
+     * Establece la fecha de realización del hábito.
      *
-     * @param fechaCreacion la fecha a establecer para la creación del hábito.
+     * @param fechaCreacion la fecha a establecer para la realización del
+     * hábito.
      */
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
+
+    
 
     /**
      * Obtiene los días de la semana en los que se puede realizar el hábito.
@@ -118,25 +123,7 @@ public class Habito implements Serializable {
         this.diasSemana = diasSemana;
     }
 
-    /**
-     * Obtiene el estado de la actividad, indicando si se ha realizado o no.
-     *
-     * @return true si la actividad se ha realizado, false en caso contrario
-     */
-    public boolean isRealizado() {
-        return realizado;
-    }
-
-    /**
-     * Establece el estado de la actividad, indicando si se ha realizado o no.
-     *
-     * @param realizado el nuevo estado de la actividad; true si se ha
-     * realizado, false si no
-     */
-    public void setRealizado(boolean realizado) {
-        this.realizado = realizado;
-    }
-
+    
     /**
      * Obtiene el identificador de la actividad.
      *

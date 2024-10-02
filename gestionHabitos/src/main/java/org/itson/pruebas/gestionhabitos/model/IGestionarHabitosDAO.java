@@ -4,6 +4,7 @@
  */
 package org.itson.pruebas.gestionhabitos.model;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,16 +13,79 @@ import java.util.List;
  */
 public interface IGestionarHabitosDAO {
 
-    public Habito crearHabito(Habito habito) throws ModelException;
+    /**
+     * Crea un habito
+     *
+     * @param nuevoHabito Habito a crear
+     * @return Habito creado
+     * @throws ModelException Si no se puede crear el habito
+     */
+    public Habito crearHabito(Habito nuevoHabito) throws ModelException;
 
+    /**
+     * Actualizar un habito
+     *
+     * @param habito Habito a actualizar
+     * @return Habito actualizado
+     * @throws ModelException Si no se puede actualizar
+     */
     public Habito actualizarHabito(Habito habito) throws ModelException;
 
+    /**
+     * Habito a eliminar
+     *
+     * @param id id del habito a eliminar
+     * @return true si se elimino false en caso contrario
+     * @throws ModelException
+     */
     public boolean eliminarHabito(Long id) throws ModelException;
 
+    /**
+     * Obtener los habitos de una cuenta
+     *
+     * @param cuenta Cuenta a aobtener los habitos
+     * @return Lista de habitos de la cuenta
+     * @throws ModelException Si hubo un error al obtener los habitos
+     */
     public List<Habito> obtenerHabitos(Cuenta cuenta) throws ModelException;
 
+    /**
+     * Crea una cuenta
+     *
+     * @param cuenta Cuenta a crear
+     * @return Cuenta creada
+     * @throws ModelException Si no se puede crear la cuenta
+     */
     public Cuenta crearCuenta(Cuenta cuenta) throws ModelException;
 
+    /**
+     * Consulta la existencia de una cuenta
+     *
+     * @param usuario Usuario a encontrar
+     * @param contraseña Contraseña que coincida con la cuenta
+     * @return Cuenta consultada
+     * @throws ModelException Si no se puede consultar la cuenta
+     */
     public Cuenta consultarCuenta(String usuario, String contraseña) throws ModelException;
+
+    /**
+     * Buscar historial de hábitos por fecha y ID de hábito.
+     *
+     * @param dia La fecha a buscar.
+     * @param idHabito El identificador del hábito.
+     * @return Lista de registros de historial de hábitos que coinciden con la
+     * fecha y el ID de hábito.
+     * @throws ModelException Si ocurre un error al buscar
+     */
+    public HistorialHabitos buscarPorFechaYIdHabito(Date dia, int idHabito) throws ModelException;
+
+    /**
+     * Actualizar un registro de historial de hábitos utilizando la entidad.
+     *
+     * @param historial Habito a actualizar.
+     * @return El registro actualizado de historial de hábitos.
+     * @throws ModelException Si ocurre un error al actualizar.
+     */
+    public HistorialHabitos actualizarHistorial(HistorialHabitos historial) throws ModelException;
 
 }
