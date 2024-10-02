@@ -156,7 +156,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
                 habito.getFechaCreacion(),
                 habito.getDiasSemana(),
                 habito.getNombre(),
-                habito.getCuenta()
+                entidadACuentaDTO(habito.getCuenta())
         );
     }
 
@@ -172,7 +172,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         habito.setFrecuencia(habitoDTO.getFrecuencia());
         habito.setFechaCreacion(habitoDTO.getFechaCreacion());
         habito.setDiasSemana(habitoDTO.getDiasSemana());
-        habito.setCuenta(habitoDTO.getCuentaId());
+        habito.setCuenta(cuentaDTOAEntidad(habitoDTO.getCuentaId()));
         return habito;
     }
 
@@ -355,33 +355,42 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     /**
      * Método que toma un array de fechas que representa los días de una semana
      * (del lunes al domingo) y devuelve un nuevo array con los días de la
-     * siguiente semana.
+     * semana anterior o posterior.
      *
      * @param semanaActual Un array de `Date` que contiene exactamente 7
      * elementos, representando una semana completa desde el lunes hasta el
      * domingo.
-     * @return Un array de `Date` que contiene los días de la siguiente semana,
-     * comenzando desde el lunes y terminando el domingo.
-     * @throws ControllerException Si el array `semanaActual` es nulo o no
-     * contiene exactamente 7 elementos.
+     * @param direccion Un `String` que indica la dirección a calcular:
+     * `"anterior"` o `"posterior"`.
+     * @return Un array de `Date` que contiene los días de la semana anterior o
+     * posterior, comenzando desde el lunes y terminando el domingo.
+     * @throws IllegalArgumentException Si el array `semanaActual` es nulo, no
+     * contiene exactamente 7 elementos, o si el valor de `direccion` no es
+     * `"anterior"` o `"posterior"`.
      */
-    public Date[] obtenerSiguienteSemana(Date[] semanaActual) throws ControllerException{
-        if (semanaActual == null || semanaActual.length != 7) {
-            throw new ControllerException("El array debe contener exactamente 7 días.");
-        }
-
-        Date[] siguienteSemana = new Date[7];
-        Calendar calendar = Calendar.getInstance();
-
-        calendar.setTime(semanaActual[6]);
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-
-        for (int i = 0; i < 7; i++) {
-            siguienteSemana[i] = calendar.getTime();
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
-        }
-
-        return siguienteSemana;
+    @Override
+    public Date[] obtenerSemana(Date[] semanaActual, String direccion) throws ControllerException{
+    if (semanaActual == null || semanaActual.length != 7) {
+        throw new ControllerException("El array debe contener exactamente 7 días.");
     }
+
+    if (!"anterior".equalsIgnoreCase(direccion) && !"posterior".equalsIgnoreCase(direccion)) {
+        throw new ControllerException("La dirección debe ser 'anterior' o 'posterior'.");
+    }
+
+    Date[] nuevaSemana = new Date[7];
+    Calendar calendar = Calendar.getInstance();
+    
+    calendar.setTime(semanaActual[0]);
+
+    int diasAjuste = "anterior".equalsIgnoreCase(direccion) ? -7 : 7;
+    calendar.add(Calendar.DAY_OF_MONTH, diasAjuste);
+    for (int i = 0; i < 7; i++) {
+        nuevaSemana[i] = calendar.getTime();
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+    }
+
+    return nuevaSemana;
+}
 
 }

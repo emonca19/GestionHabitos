@@ -6,7 +6,6 @@ package org.itson.pruebas.gestionhabitos.controller;
 
 import java.io.Serializable;
 import java.util.Date;
-import org.itson.pruebas.gestionhabitos.model.Cuenta;
 
 /**
  * Clase DTO que representa un hábito. Se utiliza para transferir datos sobre un
@@ -31,7 +30,7 @@ public class HabitoDTO implements Serializable {
     private String nombre;
 
     // Identificador de la cuenta asociada al hábito
-    private Cuenta cuentaId;
+    private CuentaDTO cuentaId;
     
 
     /**
@@ -51,7 +50,7 @@ public class HabitoDTO implements Serializable {
      * @param nombre el nombre del hábito.
      * @param cuentaId el identificador de la cuenta asociada al hábito.
      */
-    public HabitoDTO(Long id, String frecuencia, Date fechaCreacion, Long diasSemana, String nombre, Cuenta cuentaId) {
+    public HabitoDTO(Long id, String frecuencia, Date fechaCreacion, Long diasSemana, String nombre, CuentaDTO cuentaId) {
         this.id = id;
         this.frecuencia = frecuencia;
         this.fechaCreacion = fechaCreacion;
@@ -158,7 +157,7 @@ public class HabitoDTO implements Serializable {
      *
      * @return el identificador de la cuenta asociada.
      */
-    public Cuenta getCuentaId() {
+    public CuentaDTO getCuentaId() {
         return cuentaId;
     }
 
@@ -167,7 +166,7 @@ public class HabitoDTO implements Serializable {
      *
      * @param cuentaId el identificador de la cuenta asociada.
      */
-    public void setCuentaId(Cuenta cuentaId) {
+    public void setCuentaId(CuentaDTO cuentaId) {
         this.cuentaId = cuentaId;
     }
 

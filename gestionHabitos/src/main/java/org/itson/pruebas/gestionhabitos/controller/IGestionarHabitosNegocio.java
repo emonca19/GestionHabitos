@@ -117,16 +117,20 @@ public interface IGestionarHabitosNegocio {
     /**
      * Método que toma un array de fechas que representa los días de una semana
      * (del lunes al domingo) y devuelve un nuevo array con los días de la
-     * siguiente semana.
+     * semana anterior o posterior.
      *
      * @param semanaActual Un array de `Date` que contiene exactamente 7
      * elementos, representando una semana completa desde el lunes hasta el
      * domingo.
-     * @return Un array de `Date` que contiene los días de la siguiente semana,
-     * comenzando desde el lunes y terminando el domingo.
-     * @throws ControllerException Si el array `semanaActual` es nulo o no
-     * contiene exactamente 7 elementos.
+     * @param direccion Un `String` que indica la dirección a calcular:
+     * `"anterior"` o `"posterior"`.
+     * @return Un array de `Date` que contiene los días de la semana anterior o
+     * posterior, comenzando desde el lunes y terminando el domingo.
+     * @throws org.itson.pruebas.gestionhabitos.controller.ControllerException
+     * @throws IllegalArgumentException Si el array `semanaActual` es nulo, no
+     * contiene exactamente 7 elementos, o si el valor de `direccion` no es
+     * `"anterior"` o `"posterior"`.
      */
-    public Date[] obtenerSiguienteSemana(Date[] semanaActual) throws ControllerException;
+    public Date[] obtenerSemana(Date[] semanaActual, String direccion) throws ControllerException;
 
 }
