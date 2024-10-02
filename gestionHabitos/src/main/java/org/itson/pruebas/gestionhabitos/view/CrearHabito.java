@@ -124,7 +124,6 @@ public class CrearHabito extends javax.swing.JPanel {
         txtHabito.setBorder(null);
         add(txtHabito, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 57, 310, 25));
 
-        cbxLunes.setText("L");
         cbxLunes.setToolTipText("");
         cbxLunes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbxLunes.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -135,7 +134,6 @@ public class CrearHabito extends javax.swing.JPanel {
         });
         add(cbxLunes, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 100, -1, 30));
 
-        cbxMartes.setText("M");
         cbxMartes.setToolTipText("");
         cbxMartes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbxMartes.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -146,7 +144,6 @@ public class CrearHabito extends javax.swing.JPanel {
         });
         add(cbxMartes, new org.netbeans.lib.awtextra.AbsoluteConstraints(158, 100, -1, 30));
 
-        cbxMiercoles.setText("M");
         cbxMiercoles.setToolTipText("");
         cbxMiercoles.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbxMiercoles.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -157,7 +154,6 @@ public class CrearHabito extends javax.swing.JPanel {
         });
         add(cbxMiercoles, new org.netbeans.lib.awtextra.AbsoluteConstraints(191, 100, -1, 30));
 
-        cbxJueves.setText("J");
         cbxJueves.setToolTipText("");
         cbxJueves.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbxJueves.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -168,7 +164,6 @@ public class CrearHabito extends javax.swing.JPanel {
         });
         add(cbxJueves, new org.netbeans.lib.awtextra.AbsoluteConstraints(224, 100, -1, 30));
 
-        cbxViernes.setText("V");
         cbxViernes.setToolTipText("");
         cbxViernes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbxViernes.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -179,7 +174,6 @@ public class CrearHabito extends javax.swing.JPanel {
         });
         add(cbxViernes, new org.netbeans.lib.awtextra.AbsoluteConstraints(257, 100, -1, 30));
 
-        cbxSabado.setText("S");
         cbxSabado.setToolTipText("");
         cbxSabado.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbxSabado.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -190,7 +184,6 @@ public class CrearHabito extends javax.swing.JPanel {
         });
         add(cbxSabado, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 100, -1, 30));
 
-        cbxDomingo.setText("D");
         cbxDomingo.setToolTipText("");
         cbxDomingo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         cbxDomingo.setMargin(new java.awt.Insets(0, 0, 0, 0));

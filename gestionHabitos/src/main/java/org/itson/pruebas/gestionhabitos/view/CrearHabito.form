@@ -43,7 +43,6 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbxLunes">
       <Properties>
-        <Property name="text" type="java.lang.String" value="L"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Hand Cursor"/>
@@ -63,7 +62,6 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbxMartes">
       <Properties>
-        <Property name="text" type="java.lang.String" value="M"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Hand Cursor"/>
@@ -83,7 +81,6 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbxMiercoles">
       <Properties>
-        <Property name="text" type="java.lang.String" value="M"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Hand Cursor"/>
@@ -103,7 +100,6 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbxJueves">
       <Properties>
-        <Property name="text" type="java.lang.String" value="J"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Hand Cursor"/>
@@ -123,7 +119,6 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbxViernes">
       <Properties>
-        <Property name="text" type="java.lang.String" value="V"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Hand Cursor"/>
@@ -143,7 +138,6 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbxSabado">
       <Properties>
-        <Property name="text" type="java.lang.String" value="S"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Hand Cursor"/>
@@ -163,7 +157,6 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="cbxDomingo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="D"/>
         <Property name="toolTipText" type="java.lang.String" value=""/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
           <Color id="Hand Cursor"/>
