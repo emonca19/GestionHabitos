@@ -1,15 +1,24 @@
 package org.itson.pruebas.gestionhabitos.view;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -21,6 +30,8 @@ import javax.swing.JPanel;
 public class Inicio extends javax.swing.JPanel {
 
     private final FrameContenedor frame;
+    private JPanel pnlHabitosPendientes;
+    private JPanel pnlHabitosRealizados;
 
     /**
      * Creates new form Inicio
@@ -55,8 +66,8 @@ public class Inicio extends javax.swing.JPanel {
         btnDia6 = new javax.swing.JButton();
         btnDia7 = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
-        pnlHabitosPendientes = new javax.swing.JPanel();
-        pnlHabitosPendientes1 = new javax.swing.JPanel();
+        pnlContenedorHabitosPendientes = new javax.swing.JPanel();
+        pnlContenedorHabitosRealizados = new javax.swing.JPanel();
         lblHabitosPendientes = new javax.swing.JLabel();
         lblHabitosRealizados = new javax.swing.JLabel();
         lblFecha = new javax.swing.JLabel();
@@ -203,11 +214,11 @@ public class Inicio extends javax.swing.JPanel {
         });
         add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 579, 50, 50));
 
-        pnlHabitosPendientes.setOpaque(false);
-        add(pnlHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 238, 700, 165));
+        pnlContenedorHabitosPendientes.setOpaque(false);
+        add(pnlContenedorHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 238, 700, 165));
 
-        pnlHabitosPendientes1.setOpaque(false);
-        add(pnlHabitosPendientes1, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 465, 700, 165));
+        pnlContenedorHabitosRealizados.setOpaque(false);
+        add(pnlContenedorHabitosRealizados, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 465, 700, 165));
 
         lblHabitosPendientes.setForeground(new java.awt.Color(0, 0, 0));
         lblHabitosPendientes.setText("HÁBITOS PENDIENTES");
@@ -324,37 +335,130 @@ public class Inicio extends javax.swing.JPanel {
 
     private void mostrarHabitos() {
         listarHabitosPendientes();
+        listarHabitosRealizados();
     }
 
     private void listarHabitosPendientes() {
-        pnlHabitosPendientes.setLayout(new BoxLayout(pnlHabitosPendientes, BoxLayout.Y_AXIS));
+        pnlHabitosPendientes = new JPanel();
+        pnlHabitosPendientes.setPreferredSize(new Dimension(700, 165));
+        pnlHabitosPendientes.setMaximumSize(new Dimension(700, 165));
+        pnlHabitosPendientes.setLayout(new BoxLayout(pnlHabitosPendientes, BoxLayout.Y_AXIS));  // Establecer el BoxLayout correctamente
+        pnlHabitosPendientes.setName("pnlHabitosPendientes");
+        pnlHabitosPendientes.setOpaque(false);
 
-        // Primer JPanel
-        JPanel jPanel = new JPanel();
-        jPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        jPanel.setPreferredSize(new Dimension(0, 30)); // Altura fija de 30, ancho ajustable
-        jPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Establece la altura máxima
-        JLabel lblImage1 = new JLabel(new ImageIcon(getClass().getResource("/img/checkVacio.png")));
-        jPanel.add(lblImage1);
-        jPanel.add(new JLabel("bañarme"));
+        JScrollPane scpHabitosPendientes = new JScrollPane(pnlHabitosPendientes);
+        scpHabitosPendientes.setOpaque(false);
+        scpHabitosPendientes.getViewport().setOpaque(false);
+        scpHabitosPendientes.setBorder(null);
+        scpHabitosPendientes.getVerticalScrollBar().setUnitIncrement(16);
+        scpHabitosPendientes.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scpHabitosPendientes.setPreferredSize(new Dimension(700, 165)); // Establece un tamaño predeterminado
+        scpHabitosPendientes.setMaximumSize(new Dimension(700, 165)); // Establece un tamaño máximo
+        scpHabitosPendientes.getViewport().setPreferredSize(new Dimension(700, 165)); // Establece un tamaño predeterminado para el viewport
+        scpHabitosPendientes.getViewport().setMaximumSize(new Dimension(700, 165)); // Establece un tamaño mínimo para el viewport
+        scpHabitosPendientes.getViewport().setSize(700, 165);
+        scpHabitosPendientes.setOpaque(false);
 
-        // Segundo JPanel
-        JPanel jPanel2 = new JPanel();
-        jPanel2.setLayout(new FlowLayout(FlowLayout.LEFT));
-        jPanel2.setPreferredSize(new Dimension(0, 30)); // Altura fija de 30, ancho ajustable
-        jPanel2.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Establece la altura máxima
-        JLabel lblImage2 = new JLabel(new ImageIcon(getClass().getResource("/img/checkVacio.png")));
-        jPanel2.add(lblImage2);
-        jPanel2.add(new JLabel("ducharme"));
+        addHabit("Leer", false);
+        addHabit("Meditar", false);
 
-        // Añadir paneles al contenedor principal
-        pnlHabitosPendientes.add(jPanel);
-        pnlHabitosPendientes.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre paneles
-        pnlHabitosPendientes.add(jPanel2);
+        pnlContenedorHabitosPendientes.add(pnlHabitosPendientes);
+
+//        // Añadir paneles al contenedor principal
+//        pnlContenedorHabitosPendientes.add(jPanel);
+//        pnlContenedorHabitosPendientes.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre paneles
+//        pnlContenedorHabitosPendientes.add(jPanel2);
     }
 
     private void listarHabitosRealizados() {
+        pnlHabitosRealizados = new JPanel();
+        pnlHabitosRealizados.setPreferredSize(new Dimension(700, 165));
+        pnlHabitosRealizados.setMaximumSize(new Dimension(700, 165));
+        pnlHabitosRealizados.setLayout(new BoxLayout(pnlHabitosRealizados, BoxLayout.Y_AXIS));  // Establecer el BoxLayout correctamente
+        pnlHabitosRealizados.setName("pnlHabitosRealizados");
+        pnlHabitosRealizados.setOpaque(false);
 
+        JScrollPane scpHabitosRealizados = new JScrollPane(pnlHabitosRealizados);
+        scpHabitosRealizados.setOpaque(false);
+        scpHabitosRealizados.getViewport().setOpaque(false);
+        scpHabitosRealizados.setBorder(null);
+        scpHabitosRealizados.getVerticalScrollBar().setUnitIncrement(16);
+        scpHabitosRealizados.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scpHabitosRealizados.setPreferredSize(new Dimension(700, 165)); // Establece un tamaño predeterminado
+        scpHabitosRealizados.setMaximumSize(new Dimension(700, 165)); // Establece un tamaño máximo
+        scpHabitosRealizados.getViewport().setPreferredSize(new Dimension(700, 165)); // Establece un tamaño predeterminado para el viewport
+        scpHabitosRealizados.getViewport().setMaximumSize(new Dimension(700, 165)); // Establece un tamaño mínimo para el viewport
+        scpHabitosRealizados.getViewport().setSize(700, 165);
+        scpHabitosRealizados.setOpaque(false);
+
+        addHabit("Ejercicio", true);
+        addHabit("Dormir", true);
+        addHabit("Gym", true);
+
+        pnlContenedorHabitosRealizados.add(scpHabitosRealizados);
+    }
+
+    private void addHabit(String habitName, Boolean isCompleted) {
+        HabitPanel habit = new HabitPanel(habitName, isCompleted);
+
+        // Añadir el evento de clic para mover entre listas
+        habit.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Determinar si está en la lista de pendientes o realizados
+                if (isCompleted == false) {
+                    pnlHabitosPendientes.remove(habit);  // Eliminar de pendientes
+                    pnlHabitosRealizados.add(habit);     // Mover a realizados
+                } else {
+                    pnlHabitosRealizados.remove(habit);  // Eliminar de realizados
+                    pnlHabitosPendientes.add(habit);     // Mover a pendientes
+                }
+
+                // Refrescar las listas
+                pnlHabitosPendientes.revalidate();
+                pnlHabitosPendientes.repaint();
+                pnlHabitosRealizados.revalidate();
+                pnlHabitosRealizados.repaint();
+            }
+        });
+
+        if (isCompleted == false) {
+            pnlHabitosPendientes.add(habit);
+            pnlHabitosPendientes.revalidate();
+            pnlHabitosPendientes.repaint();
+
+        } else {
+            pnlHabitosRealizados.add(habit);
+            pnlHabitosRealizados.revalidate();
+            pnlHabitosRealizados.repaint();
+
+        }
+        // Añadir el panel del hábito a la lista correspondiente
+    }
+
+// Panel personalizado para cada hábito
+    private class HabitPanel extends JPanel {
+
+        public HabitPanel(String habitName, Boolean isCompleted) {
+            setLayout(new FlowLayout(FlowLayout.LEFT));
+            setPreferredSize(new Dimension(0, 30));  // Altura fija de 30, ancho ajustable
+            setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));  // Establece la altura máxima
+
+            JLabel nameLabel = new JLabel(habitName);
+            nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
+
+            JLabel imagePanel;
+            // Imagen opcional (ejemplo con un cuadrado de color)
+            if (isCompleted == false) {
+                imagePanel = new JLabel(new ImageIcon(getClass().getResource("/img/checkVacio.png")));
+            } else {
+                imagePanel = new JLabel(new ImageIcon(getClass().getResource("/img/checkColoreado.png")));
+            }
+            setCursor(new Cursor(java.awt.Cursor.HAND_CURSOR));
+            setOpaque(false);
+            add(imagePanel);
+            add(nameLabel);
+        }
     }
 
     private void setFonts() {
@@ -378,6 +482,17 @@ public class Inicio extends javax.swing.JPanel {
         }
     }
 
+    // Borde y tamaño
+//            setBorder(BorderFactory.createLineBorder(Color.BLACK));
+//            setMaximumSize(new Dimension(300, 60));
+    // Primer JPanel
+//            JPanel jPanel = new JPanel();
+//            jPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+//            jPanel.setPreferredSize(new Dimension(0, 30)); // Altura fija de 30, ancho ajustable
+//            jPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Establece la altura máxima
+//            JLabel lblImage1 = new JLabel(new ImageIcon(getClass().getResource("/img/checkVacio.png")));
+//            jPanel.add(lblImage1);
+//            jPanel.add(new JLabel("bañarme"));
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
@@ -400,7 +515,7 @@ public class Inicio extends javax.swing.JPanel {
     private javax.swing.JLabel lblHabitosRealizados;
     private javax.swing.JLabel lblMes;
     private javax.swing.JLabel lblNombreUsuario;
-    private javax.swing.JPanel pnlHabitosPendientes;
-    private javax.swing.JPanel pnlHabitosPendientes1;
+    private javax.swing.JPanel pnlContenedorHabitosPendientes;
+    private javax.swing.JPanel pnlContenedorHabitosRealizados;
     // End of variables declaration//GEN-END:variables
 }

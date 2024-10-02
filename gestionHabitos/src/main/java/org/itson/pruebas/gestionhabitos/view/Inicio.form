@@ -294,7 +294,7 @@
         </Constraint>
       </Constraints>
     </Component>
-    <Container class="javax.swing.JPanel" name="pnlHabitosPendientes">
+    <Container class="javax.swing.JPanel" name="pnlContenedorHabitosPendientes">
       <Properties>
         <Property name="opaque" type="boolean" value="false"/>
       </Properties>
@@ -306,7 +306,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
     </Container>
-    <Container class="javax.swing.JPanel" name="pnlHabitosPendientes1">
+    <Container class="javax.swing.JPanel" name="pnlContenedorHabitosRealizados">
       <Properties>
         <Property name="opaque" type="boolean" value="false"/>
       </Properties>
