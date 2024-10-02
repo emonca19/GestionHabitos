@@ -99,8 +99,7 @@ public class Cuenta implements Serializable {
     }
 
     /**
-     * Verifica si dos objetos Cuenta son iguales. Dos cuentas se consideran
-     * iguales si tienen el mismo nombre de usuario.
+     * Verifica si dos objetos Cuenta son iguales. Dos cuentas se consideran iguales si tienen el mismo nombre de usuario.
      *
      * @param object el objeto a comparar
      * @return true si los objetos son iguales, false en caso contrario

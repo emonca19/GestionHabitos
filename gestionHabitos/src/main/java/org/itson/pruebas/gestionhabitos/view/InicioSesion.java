@@ -3,7 +3,9 @@ package org.itson.pruebas.gestionhabitos.view;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.itson.pruebas.gestionhabitos.controller.ControllerException;
+import org.itson.pruebas.gestionhabitos.controller.CuentaDTO;
 import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
+import org.itson.pruebas.gestionhabitos.controller.Sesion;
 
 /**
  *
@@ -26,13 +28,13 @@ public class InicioSesion extends javax.swing.JPanel {
         initComponents();
     }
 
-    public boolean consultarCuenta() {
+    public CuentaDTO consultarCuenta() {
         try {
             return new GestionarHabitosNegocio().consultarCuenta(txtUsuario.getText(), txtContraseña.getText());
         } catch (ControllerException ex) {
             Logger.getLogger(InicioSesion.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        return null;
     }
 
     public void limpiar() {
@@ -168,7 +170,9 @@ public class InicioSesion extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarMouseClicked
-        if (consultarCuenta()) {
+        CuentaDTO cuenta = consultarCuenta();
+        if (consultarCuenta() != null) {
+            Sesion.iniciarSesion(cuenta.getUsuario(), cuenta.getNombre());
             frameContenedor.mostrarInicio();
         }
         limpiar();

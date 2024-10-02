@@ -143,6 +143,11 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         return cuenta;
     }
 
+    public CuentaDTO entidadACuentaDTO(Cuenta cuenta) {
+        CuentaDTO cuentaDTO = new CuentaDTO(cuenta.getNombre(), cuenta.getUsuario(), cuenta.getContrasena());
+        return cuentaDTO;
+    }
+
     @Override
     public void crearCuenta(CuentaDTO cuentaDTO) {
         try {
@@ -153,11 +158,21 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     }
 
     @Override
-    public boolean consultarCuenta(String usuario, String contraseña) throws ControllerException {
+    public CuentaDTO consultarCuenta(String usuario, String contraseña) throws ControllerException {
         try {
-            return habitoDAO.consultarCuenta(usuario, contraseña);
+            return entidadACuentaDTO(habitoDAO.consultarCuenta(usuario, contraseña));
         } catch (ModelException ex) {
             Logger.getLogger(GestionarHabitosNegocio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    @Override
+    public boolean iniciarSesion(String usuario, String contraseña) throws ControllerException {
+        if (consultarCuenta(usuario, contraseña) != null) {
+            Sesion.setNombre(contraseña);
+            Sesion.setUsuario(usuario);
+            return true;
         }
         return false;
     }

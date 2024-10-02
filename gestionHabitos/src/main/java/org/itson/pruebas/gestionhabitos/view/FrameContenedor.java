@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.itson.pruebas.gestionhabitos.controller.CuentaDTO;
 
 /**
  *
@@ -147,9 +148,25 @@ public class FrameContenedor extends javax.swing.JFrame {
     }
 
     public void mostrarInicio() {
-        limpiarFrame();
+        limpiarFrame();  // Limpiar el panel actual
+
+        // Cambiar la imagen de fondo a fondoTituloSmall.png
+        layeredPane.remove(fondoLabel);  // Eliminar la imagen de fondo anterior, si existe
+
+        // Crear nuevo JLabel con la nueva imagen de fondo
+        fondoLabel = new JLabel(new ImageIcon(getClass().getResource("/img/fondoTituloSmall.png")));
+        fondoLabel.setBounds(0, 0, getWidth(), getHeight());  // Asegúrate de que cubra todo el frame
+
+        // Añadir el nuevo fondoLabel al layeredPane en la capa más baja (0)
+        layeredPane.add(fondoLabel, Integer.valueOf(0));
+
+        // Forzar la actualización de la ventana
+        layeredPane.revalidate();
+        layeredPane.repaint();
+
+        // Crear y mostrar el panel Inicio
         Inicio inicio = new Inicio(this);
-        ponerEnFrame(inicio);
+        ponerEnFrame(inicio);  // Añadir el nuevo panel a la ventana
     }
 
     public void mostrarRegistrarUsuario() {

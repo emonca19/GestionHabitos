@@ -22,5 +22,7 @@ public interface IGestionarHabitosNegocio {
 
     public void crearCuenta(CuentaDTO cuentaDTO) throws ControllerException;
 
-    public boolean consultarCuenta(String usuario, String contraseña) throws ControllerException;
+    public CuentaDTO consultarCuenta(String usuario, String contraseña) throws ControllerException;
+
+    public boolean iniciarSesion(String usuario, String contraseña) throws ControllerException;
 }
