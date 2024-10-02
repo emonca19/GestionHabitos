@@ -83,6 +83,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <exec.mainClass>com.mycompany.gestionhabitos.GestionHabitos</exec.mainClass>
+        <exec.mainClass>org.itson.pruebas.gestionhabitos.main.Main</exec.mainClass>
     </properties>
 </project>
