@@ -2,7 +2,6 @@ package org.itson.pruebas.gestionhabitos.model;
 
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
@@ -17,8 +16,7 @@ import javax.persistence.TypedQuery;
 public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 
     private final IConexion conexion;
-    static final Logger logger = Logger.getLogger(GestionarHabitosDAO.class.getName());
-    EntityManager entityManager = null;
+    EntityManager entityManager;
 
     // Constructor
     public GestionarHabitosDAO(IConexion conexion) {
@@ -79,7 +77,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                 habitoExistente.setId(habito.getId());
                 habitoExistente.setFrecuencia(habito.getFrecuencia());
                 habitoExistente.setFechaCreacion(habito.getFechaCreacion());
-                habitoExistente.setDiasSemanaRealizado(habito.getDiasSemanaRealizado());
                 habitoExistente.setDiasSemana(habito.getDiasSemana());
                 habitoExistente.setCuenta(habito.getCuenta());
                 transaction.commit();
@@ -248,8 +245,8 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      * @return Registro de historial de hábitos que coincide con la fecha y el ID de hábito.
      * @throws ModelException Si ocurre un error al buscar o si no se encuentra el registro
      */
-    @Override
-    public HistorialHabitos buscarPorFechaYIdHabito(Date dia, int idHabito) throws ModelException {
+    public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException {
+        EntityManager entityManager = null;
         EntityTransaction transaction = null;
         HistorialHabitos resultado = null;
 
@@ -337,6 +334,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      * @return El objeto HistorialHabitos creado.
      * @throws ModelException Si ocurre un error al crear el historial.
      */
+    @Override
     public HistorialHabitos crearHistorial(HistorialHabitos historial) throws ModelException {
         EntityTransaction transaction = null;
 
@@ -362,6 +360,12 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
         }
     }
 
+    /**
+     * Devuelve si un usuario ya existe
+     * @param usuario Cadena del nombre del usuario para verificar su existencia
+     * @return True si existe, false en caso contrario
+     * @throws ModelException Si ocurre un error al consultar la cuenta
+     */
     @Override
     public boolean cuentaExiste(String usuario) throws ModelException {
         try {

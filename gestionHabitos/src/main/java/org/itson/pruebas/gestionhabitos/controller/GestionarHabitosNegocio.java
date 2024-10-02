@@ -14,6 +14,7 @@ import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
 import org.itson.pruebas.gestionhabitos.model.Habito;
 import org.itson.pruebas.gestionhabitos.model.HistorialHabitos;
 import org.itson.pruebas.gestionhabitos.model.IConexion;
+import org.itson.pruebas.gestionhabitos.model.IGestionarHabitosDAO;
 import org.itson.pruebas.gestionhabitos.model.ModelException;
 
 /**
@@ -21,7 +22,7 @@ import org.itson.pruebas.gestionhabitos.model.ModelException;
  */
 public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
 
-    private final GestionarHabitosDAO habitoDAO;
+    private final IGestionarHabitosDAO habitoDAO;
 
     /**
      * Constructor de la clase.
@@ -129,7 +130,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @param usuario Usuario a consultar
      * @param contraseña Verificar que concuerda con la contraseña
      * @return Cuenta consultada
-     * @throws ControllerException si no se puede consultar la cuenta correctamente
+     * @throws ControllerException si no se puede consultar la cuenta
+     * correctamente
      */
     @Override
     public CuentaDTO consultarCuenta(String usuario, String contraseña) throws ControllerException {
@@ -153,8 +155,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
                 habito.getFechaCreacion(),
                 habito.getDiasSemana(),
                 habito.getNombre(),
-                habito.getDiasSemanaRealizado(),
-                habito.getCuenta() // Asumiendo que 'cuenta' no es null
+                habito.getCuenta()
         );
     }
 
@@ -169,7 +170,6 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         habito.setId(habitoDTO.getId());
         habito.setFrecuencia(habitoDTO.getFrecuencia());
         habito.setFechaCreacion(habitoDTO.getFechaCreacion());
-        habito.setDiasSemanaRealizado(habitoDTO.getDiasSemanaRealizado());
         habito.setDiasSemana(habitoDTO.getDiasSemana());
         habito.setCuenta(habitoDTO.getCuentaId());
         return habito;
@@ -217,7 +217,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * Convierte un DTO HistorialHabitosDTO en una entidad HistorialHabitos.
      *
      * @param historialDTO el DTO HistorialHabitosDTO a convertir
-     * @return la entidad HistorialHabitos que representa el historial de hábitos
+     * @return la entidad HistorialHabitos que representa el historial de
+     * hábitos
      */
     private HistorialHabitos historialDTOConvertirAEntidad(HistorialHabitosDTO historialDTO) {
         HistorialHabitos historial = new HistorialHabitos();
@@ -229,7 +230,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     }
 
     /**
-     * Metodo que devuelve los habitos que concuerden con el usuario y dia de la semana
+     * Metodo que devuelve los habitos que concuerden con el usuario y dia de la
+     * semana
      *
      * @param cuenta Cuenta a buscar los habitos
      * @param diaSemana Dia de la semana que concuerde con los habitos
@@ -268,11 +270,12 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Lista de registros de historial de hábitos que coinciden con la fecha y el ID de hábito.
+     * @return Lista de registros de historial de hábitos que coinciden con la
+     * fecha y el ID de hábito.
      * @throws ControllerException Si ocurre un error al buscar
      */
     @Override
-    public HistorialHabitosDTO buscarPorFechaYIdHabito(Date dia, int idHabito) throws ControllerException {
+    public HistorialHabitosDTO buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ControllerException {
         try {
             return historialConvertirADTO(habitoDAO.buscarPorFechaYIdHabito(dia, idHabito));
         } catch (ModelException ex) {
@@ -296,13 +299,14 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
             throw new ControllerException(ex);
         }
     }
-    
+
     /**
      * Consulta la existencia de una cuenta
      *
      * @param usuario Usuario a consultar
      * @return Cuenta consultada
-     * @throws ControllerException si no se puede consultar la cuenta correctamente
+     * @throws ControllerException si no se puede consultar la cuenta
+     * correctamente
      */
     @Override
     public boolean cuentaExiste(String usuario) throws ControllerException {
@@ -315,7 +319,12 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
 
     @Override
     public HistorialHabitosDTO crearHistorial(HistorialHabitosDTO historial) throws ControllerException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            HistorialHabitosDTO habito = historialConvertirADTO(habitoDAO.crearHistorial(historialDTOConvertirAEntidad(historial)));
+            return habito;
+        } catch (ModelException ex) {
+            throw new ControllerException(ex);
+        }
     }
 
 }

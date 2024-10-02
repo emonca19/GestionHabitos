@@ -62,7 +62,8 @@ public interface IGestionarHabitosNegocio {
      * @param usuario Usuario a consultar
      * @param contraseña Verificar que concuerda con la contraseña
      * @return Cuenta consultada
-     * @throws ControllerException si no se puede consultar la cuenta correctamente
+     * @throws ControllerException si no se puede consultar la cuenta
+     * correctamente
      */
     public CuentaDTO consultarCuenta(String usuario, String contraseña) throws ControllerException;
 
@@ -71,10 +72,11 @@ public interface IGestionarHabitosNegocio {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Lista de registros de historial de hábitos que coinciden con la fecha y el ID de hábito.
+     * @return Lista de registros de historial de hábitos que coinciden con la
+     * fecha y el ID de hábito.
      * @throws ControllerException Si ocurre un error al buscar
      */
-    public HistorialHabitosDTO buscarPorFechaYIdHabito(Date dia, int idHabito) throws ControllerException;
+    public HistorialHabitosDTO buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ControllerException;
 
     /**
      * Actualizar un registro de historial de hábitos utilizando la entidad.
@@ -94,6 +96,14 @@ public interface IGestionarHabitosNegocio {
      */
     public HistorialHabitosDTO crearHistorial(HistorialHabitosDTO historial) throws ControllerException;
 
+    /**
+     * Consulta la existencia de una cuenta
+     *
+     * @param usuario Usuario a consultar
+     * @return Cuenta consultada
+     * @throws ControllerException si no se puede consultar la cuenta
+     * correctamente
+     */
     public boolean cuentaExiste(String usuario) throws ControllerException;
 
 }

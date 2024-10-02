@@ -76,7 +76,7 @@ public interface IGestionarHabitosDAO {
      * @return Lista de registros de historial de hábitos que coinciden con la fecha y el ID de hábito.
      * @throws ModelException Si ocurre un error al buscar
      */
-    public HistorialHabitos buscarPorFechaYIdHabito(Date dia, int idHabito) throws ModelException;
+    public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException;
 
     /**
      * Actualizar un registro de historial de hábitos utilizando la entidad.
@@ -87,5 +87,21 @@ public interface IGestionarHabitosDAO {
      */
     public HistorialHabitos actualizarHistorial(HistorialHabitos historial) throws ModelException;
 
+    /**
+     * Crear un nuevo historial de hábitos.
+     *
+     * @param historial El objeto HistorialHabitos a crear.
+     * @return El objeto HistorialHabitos creado.
+     * @throws ModelException Si ocurre un error al crear el historial.
+     */
+    public HistorialHabitos crearHistorial(HistorialHabitos historial) throws ModelException;
+    
+    /**
+     * Devuelve si un usuario ya existe
+     * @param usuario Cadena del nombre del usuario para verificar su existencia
+     * @return True si existe, false en caso contrario
+     * @throws ModelException Si ocurre un error al consultar la cuenta
+     */
     public boolean cuentaExiste(String usuario) throws ModelException;
+
 }

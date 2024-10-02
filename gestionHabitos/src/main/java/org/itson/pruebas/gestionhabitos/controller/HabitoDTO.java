@@ -26,8 +26,6 @@ public class HabitoDTO implements Serializable {
     // Días de la semana en los que se puede realizar el hábito, representados como un valor Long
     private Long diasSemana;
     
-    //Dias de la semana que se ha realizado el habito
-    private Long diasSemanaRealizado;
 
     // Nombre del hábito
     private String nombre;
@@ -35,7 +33,6 @@ public class HabitoDTO implements Serializable {
     // Identificador de la cuenta asociada al hábito
     private Cuenta cuentaId;
     
-    private boolean realizado;
 
     /**
      * Constructor vacío
@@ -52,35 +49,15 @@ public class HabitoDTO implements Serializable {
      * @param diasSemana un valor Long que representa los días de la semana en
      * los que se puede realizar el hábito, almacenado como un patrón de bits.
      * @param nombre el nombre del hábito.
-     * @param diasSemanaRealizado Dias de la semana que se ha realizado el habito
      * @param cuentaId el identificador de la cuenta asociada al hábito.
      */
-    public HabitoDTO(Long id, String frecuencia, Date fechaCreacion, Long diasSemana, String nombre, Long diasSemanaRealizado, Cuenta cuentaId) {
+    public HabitoDTO(Long id, String frecuencia, Date fechaCreacion, Long diasSemana, String nombre, Cuenta cuentaId) {
         this.id = id;
         this.frecuencia = frecuencia;
         this.fechaCreacion = fechaCreacion;
         this.diasSemana = diasSemana;
         this.nombre = nombre;
-        this.diasSemanaRealizado=diasSemanaRealizado;
         this.cuentaId = cuentaId;
-    }
-
-    
-    
-    /**
-     * Obtener dias de la semana en losq ue se ha realizado el habito
-     * @return dias de la semana en las que se ha realizado el habito
-     */
-    public Long getDiasSemanaRealizado() {
-        return diasSemanaRealizado;
-    }
-
-    /**
-     * Establecer los dias de la semana que se ha realizado el habito
-     * @param diasSemanaRealizado 
-     */
-    public void setDiasSemanaRealizado(Long diasSemanaRealizado) {
-        this.diasSemanaRealizado = diasSemanaRealizado;
     }
 
     

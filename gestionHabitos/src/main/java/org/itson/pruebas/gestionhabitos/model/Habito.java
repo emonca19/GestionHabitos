@@ -36,23 +36,14 @@ public class Habito implements Serializable {
 
 //    @Column(nullable = false)
 //    private boolean realizado;
-
     // Fecha de la actividad (no nulo)
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
     private Date fechaCreacion;
 
-    //Fecha de creación de hábito
-//    @Column(nullable = false)
-//    @Temporal(TemporalType.DATE)
-//    private Date fechaCreacion;
-
     // Dias de la semana en bits
     @Column(nullable = false)
     private Long diasSemana;
-    
-    @Column(nullable = false)
-    private Long diasSemanaRealizado;
 
     //Nombre del habito
     @Column(nullable = false, length = 100)
@@ -63,24 +54,17 @@ public class Habito implements Serializable {
     @JoinColumn(name = "usuario", referencedColumnName = "usuario", nullable = false)
     private Cuenta cuenta;
 
-    /**
-     * Obtiene los dias de la semana que ya se realizado en habito
-     * @return 
-     */
-    public Long getDiasSemanaRealizado() {
-        return diasSemanaRealizado;
+    public Habito() {
     }
 
-    /**
-     * Establece los dias de la semana que ya se ha realizado el habito
-     * @param diasSemanaRealizado 
-     */
-    public void setDiasSemanaRealizado(Long diasSemanaRealizado) {
-        this.diasSemanaRealizado = diasSemanaRealizado;
+    public Habito(String frecuencia, Date fechaCreacion, Long diasSemana, String nombre, Cuenta cuenta) {
+        this.frecuencia = frecuencia;
+        this.fechaCreacion = fechaCreacion;
+        this.diasSemana = diasSemana;
+        this.nombre = nombre;
+        this.cuenta = cuenta;
     }
 
-    
-    
     /**
      * Obtiene la fecha de realización del hábito.
      *
@@ -99,8 +83,6 @@ public class Habito implements Serializable {
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
     }
-
-    
 
     /**
      * Obtiene los días de la semana en los que se puede realizar el hábito.
@@ -123,7 +105,6 @@ public class Habito implements Serializable {
         this.diasSemana = diasSemana;
     }
 
-    
     /**
      * Obtiene el identificador de la actividad.
      *
