@@ -1,11 +1,9 @@
 package org.itson.pruebas.gestionhabitos.view;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.itson.pruebas.gestionhabitos.controller.ControllerException;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.IOException;
 import org.itson.pruebas.gestionhabitos.controller.CuentaDTO;
-import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
-import org.itson.pruebas.gestionhabitos.controller.Sesion;
 
 /**
  *
@@ -16,16 +14,17 @@ import org.itson.pruebas.gestionhabitos.controller.Sesion;
  */
 public class InicioSesion extends javax.swing.JPanel {
 
-    private final FrameContenedor frameContenedor;
+    private final FrameContenedor frame;
 
     /**
      * Creates new form InicioSesion
      *
-     * @param frameContenedor
+     * @param frame
      */
-    public InicioSesion(FrameContenedor frameContenedor) {
-        this.frameContenedor = frameContenedor;
+    public InicioSesion(FrameContenedor frame) {
+        this.frame = frame;
         initComponents();
+        setFonts();
     }
 
     public CuentaDTO consultarCuenta() {
@@ -39,7 +38,6 @@ public class InicioSesion extends javax.swing.JPanel {
 
     public void limpiar() {
         txtUsuario.setText("");
-        txtContraseña.setText("");
     }
 
     /**
@@ -49,154 +47,78 @@ public class InicioSesion extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelBlanco = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        tituloSesion = new javax.swing.JLabel();
-        btnRegistrar = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        txtContraseña = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
+        btnIniciarSesion = new javax.swing.JButton();
+        btnRegistrarse = new javax.swing.JButton();
         txtUsuario = new javax.swing.JTextField();
-        btnIngresar = new javax.swing.JButton();
+        txtContrasena = new javax.swing.JPasswordField();
+        fondo = new javax.swing.JLabel();
 
         setMaximumSize(new java.awt.Dimension(750, 750));
         setMinimumSize(new java.awt.Dimension(750, 750));
+        setPreferredSize(new java.awt.Dimension(750, 750));
         setRequestFocusEnabled(false);
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        panelBlanco.setBackground(new java.awt.Color(255, 255, 255, 190));
-        panelBlanco.setVerifyInputWhenFocusTarget(false);
-
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(69, 38, 38));
-        jLabel5.setText("¿No tienes una cuenta?");
-
-        tituloSesion.setBackground(new java.awt.Color(69, 38, 38));
-        tituloSesion.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        tituloSesion.setForeground(new java.awt.Color(69, 38, 38));
-        tituloSesion.setText("Iniciar Sesión");
-
-        btnRegistrar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnRegistrar.setForeground(new java.awt.Color(69, 38, 38));
-        btnRegistrar.setText("Registrate");
-        btnRegistrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnRegistrarMouseClicked(evt);
+        btnIniciarSesion.setBorderPainted(false);
+        btnIniciarSesion.setContentAreaFilled(false);
+        btnIniciarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIniciarSesionActionPerformed(evt);
             }
         });
+        add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(265, 535, 220, 50));
 
-        jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
+        btnRegistrarse.setBorderPainted(false);
+        btnRegistrarse.setContentAreaFilled(false);
+        btnRegistrarse.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarseActionPerformed(evt);
             }
         });
+        add(btnRegistrarse, new org.netbeans.lib.awtextra.AbsoluteConstraints(233, 605, 283, 25));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(69, 38, 38));
-        jLabel4.setText("Contraseña");
+        txtUsuario.setBackground(new java.awt.Color(245, 245, 245));
+        txtUsuario.setForeground(new java.awt.Color(0, 0, 0));
+        txtUsuario.setBorder(null);
+        add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(102, 349, 540, 25));
 
-        txtContraseña.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        txtContrasena.setBackground(new java.awt.Color(245, 245, 245));
+        txtContrasena.setForeground(new java.awt.Color(0, 0, 0));
+        txtContrasena.setBorder(null);
+        add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(102, 443, 540, 25));
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(69, 38, 38));
-        jLabel3.setText("Usuario");
-
-        txtUsuario.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        btnIngresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/botonIniciarSesion.png"))); // NOI18N
-        btnIngresar.setBorder(null);
-        btnIngresar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnIngresar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnIngresarMouseClicked(evt);
-            }
-        });
-
-        javax.swing.GroupLayout panelBlancoLayout = new javax.swing.GroupLayout(panelBlanco);
-        panelBlanco.setLayout(panelBlancoLayout);
-        panelBlancoLayout.setHorizontalGroup(
-            panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelBlancoLayout.createSequentialGroup()
-                .addGap(150, 150, 150)
-                .addComponent(tituloSesion))
-            .addGroup(panelBlancoLayout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(jLabel3))
-            .addGroup(panelBlancoLayout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(panelBlancoLayout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(jLabel4))
-            .addGroup(panelBlancoLayout.createSequentialGroup()
-                .addGap(47, 47, 47)
-                .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(panelBlancoLayout.createSequentialGroup()
-                .addGap(130, 130, 130)
-                .addComponent(btnIngresar))
-            .addGroup(panelBlancoLayout.createSequentialGroup()
-                .addGap(90, 90, 90)
-                .addComponent(jLabel5)
-                .addGap(8, 8, 8)
-                .addComponent(btnRegistrar))
-        );
-        panelBlancoLayout.setVerticalGroup(
-            panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelBlancoLayout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(tituloSesion)
-                .addGap(20, 20, 20)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnIngresar)
-                .addGap(4, 4, 4)
-                .addGroup(panelBlancoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5)
-                    .addComponent(btnRegistrar)))
-        );
-
-        add(panelBlanco, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 420, 350));
+        fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/inicioSesion.png"))); // NOI18N
+        add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         getAccessibleContext().setAccessibleName("");
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnIngresarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIngresarMouseClicked
-        CuentaDTO cuenta = consultarCuenta();
-        if (consultarCuenta() != null) {
-            Sesion.iniciarSesion(cuenta.getUsuario(), cuenta.getNombre());
-            frameContenedor.mostrarInicio();
+    private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
+        frame.mostrarRegistrarUsuario();
+    }//GEN-LAST:event_btnRegistrarseActionPerformed
+
+    private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
+        frame.mostrarInicio();
+    }//GEN-LAST:event_btnIniciarSesionActionPerformed
+
+    
+    private void setFonts(){
+        try {
+            Font nunitoB = frame.cargarFuente("/fonts/Nunito/static/Nunito-SemiBold.ttf", 18F);
+            txtUsuario.setFont(nunitoB);
+            txtContrasena.setFont(nunitoB);
+        } catch (FontFormatException | IOException ex) {
+            frame.mostrarAviso(ex.getMessage(), "Aviso");
         }
-        limpiar();
-    }//GEN-LAST:event_btnIngresarMouseClicked
-
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel7MouseClicked
-
-    private void btnRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarMouseClicked
-        frameContenedor.mostrarRegistrarUsuario();
-    }//GEN-LAST:event_btnRegistrarMouseClicked
-
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnIngresar;
-    private javax.swing.JLabel btnRegistrar;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel panelBlanco;
-    private javax.swing.JLabel tituloSesion;
-    private javax.swing.JTextField txtContraseña;
+    private javax.swing.JButton btnIniciarSesion;
+    private javax.swing.JButton btnRegistrarse;
+    private javax.swing.JLabel fondo;
+    private javax.swing.JPasswordField txtContrasena;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }
