@@ -129,7 +129,7 @@ public class InicioSesion extends javax.swing.JPanel {
 
         if (cuenta != null) {
             Sesion.iniciarSesion(cuenta);
-            System.out.println("Si se guarda la cuenta en la sesion: " + Sesion.getCuenta().getNombre());
+            frame.mostrarInformacion("Se inició sesión correctamente.", "Éxito");
             frame.mostrarInicio();
         }
 

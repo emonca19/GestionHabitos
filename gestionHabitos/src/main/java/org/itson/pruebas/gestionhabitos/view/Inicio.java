@@ -215,13 +215,13 @@ public class Inicio extends javax.swing.JPanel {
                 btnAgregarActionPerformed(evt);
             }
         });
-        add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(664, 350, -1, 60));
+        add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 570, -1, 60));
 
         pnlContenedorHabitosPendientes.setOpaque(false);
         add(pnlContenedorHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 238, 700, 165));
 
         pnlContenedorHabitosRealizados.setOpaque(false);
-        add(pnlContenedorHabitosRealizados, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 465, 700, 165));
+        add(pnlContenedorHabitosRealizados, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 465, 700, 160));
 
         lblHabitosPendientes.setText("HÁBITOS PENDIENTES");
         add(lblHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 198, -1, -1));
