@@ -8,8 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Clase DTO que representa un hábito. Se utiliza para transferir datos sobre un
- * hábito entre capas de la aplicación.
+ * Clase DTO que representa un hábito. Se utiliza para transferir datos sobre un hábito entre capas de la aplicación.
  */
 public class HabitoDTO implements Serializable {
 
@@ -24,19 +23,25 @@ public class HabitoDTO implements Serializable {
 
     // Días de la semana en los que se puede realizar el hábito, representados como un valor Long
     private Long diasSemana;
-    
 
     // Nombre del hábito
     private String nombre;
 
     // Identificador de la cuenta asociada al hábito
     private CuentaDTO cuentaId;
-    
 
     /**
      * Constructor vacío
      */
     public HabitoDTO() {
+    }
+
+    public HabitoDTO(String frecuencia, Date fechaCreacion, Long diasSemana, String nombre, CuentaDTO cuentaId) {
+        this.frecuencia = frecuencia;
+        this.fechaCreacion = fechaCreacion;
+        this.diasSemana = diasSemana;
+        this.nombre = nombre;
+        this.cuentaId = cuentaId;
     }
 
     /**
@@ -45,8 +50,7 @@ public class HabitoDTO implements Serializable {
      * @param id el identificador único del hábito.
      * @param frecuencia la frecuencia con la que se debe realizar el hábito.
      * @param fechaCreacion la fecha en que se creó el hábito.
-     * @param diasSemana un valor Long que representa los días de la semana en
-     * los que se puede realizar el hábito, almacenado como un patrón de bits.
+     * @param diasSemana un valor Long que representa los días de la semana en los que se puede realizar el hábito, almacenado como un patrón de bits.
      * @param nombre el nombre del hábito.
      * @param cuentaId el identificador de la cuenta asociada al hábito.
      */
@@ -59,7 +63,6 @@ public class HabitoDTO implements Serializable {
         this.cuentaId = cuentaId;
     }
 
-    
     /**
      * Obtiene el identificador del hábito.
      *
@@ -117,8 +120,7 @@ public class HabitoDTO implements Serializable {
     /**
      * Obtiene los días de la semana en los que se puede realizar el hábito.
      *
-     * @return un valor Long que representa los días de la semana en los que se
-     * puede realizar el hábito.
+     * @return un valor Long que representa los días de la semana en los que se puede realizar el hábito.
      */
     public Long getDiasSemana() {
         return diasSemana;
@@ -127,8 +129,7 @@ public class HabitoDTO implements Serializable {
     /**
      * Establece los días de la semana en los que se puede realizar el hábito.
      *
-     * @param diasSemana el valor Long que representa los días de la semana en
-     * los que se puede realizar el hábito.
+     * @param diasSemana el valor Long que representa los días de la semana en los que se puede realizar el hábito.
      */
     public void setDiasSemana(Long diasSemana) {
         this.diasSemana = diasSemana;

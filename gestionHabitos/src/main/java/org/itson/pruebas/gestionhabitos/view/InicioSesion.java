@@ -128,9 +128,8 @@ public class InicioSesion extends javax.swing.JPanel {
         CuentaDTO cuenta = consultarCuenta();
 
         if (cuenta != null) {
-            Sesion.setNombre(cuenta.getNombre());
-            Sesion.setUsuario(cuenta.getUsuario());
-
+            Sesion.iniciarSesion(cuenta);
+            System.out.println("Si se guarda la cuenta en la sesion: " + Sesion.getCuenta().getNombre());
             frame.mostrarInicio();
         }
 

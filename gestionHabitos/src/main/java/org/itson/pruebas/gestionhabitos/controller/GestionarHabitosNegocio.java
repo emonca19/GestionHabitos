@@ -131,8 +131,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @param usuario Usuario a consultar
      * @param contraseña Verificar que concuerda con la contraseña
      * @return Cuenta consultada
-     * @throws ControllerException si no se puede consultar la cuenta
-     * correctamente
+     * @throws ControllerException si no se puede consultar la cuenta correctamente
      */
     @Override
     public CuentaDTO consultarCuenta(String usuario, String contraseña) throws ControllerException {
@@ -169,9 +168,10 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     private Habito HabitoDTOConvertirAEntidad(HabitoDTO habitoDTO) {
         Habito habito = new Habito();
         habito.setId(habitoDTO.getId());
-        habito.setFrecuencia(habitoDTO.getFrecuencia());
-        habito.setFechaCreacion(habitoDTO.getFechaCreacion());
         habito.setDiasSemana(habitoDTO.getDiasSemana());
+        habito.setFechaCreacion(habitoDTO.getFechaCreacion());
+        habito.setFrecuencia(habitoDTO.getFrecuencia());
+        habito.setNombre(habitoDTO.getNombre());
         habito.setCuenta(cuentaDTOAEntidad(habitoDTO.getCuentaId()));
         return habito;
     }
@@ -218,8 +218,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * Convierte un DTO HistorialHabitosDTO en una entidad HistorialHabitos.
      *
      * @param historialDTO el DTO HistorialHabitosDTO a convertir
-     * @return la entidad HistorialHabitos que representa el historial de
-     * hábitos
+     * @return la entidad HistorialHabitos que representa el historial de hábitos
      */
     private HistorialHabitos historialDTOConvertirAEntidad(HistorialHabitosDTO historialDTO) {
         HistorialHabitos historial = new HistorialHabitos();
@@ -231,8 +230,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     }
 
     /**
-     * Metodo que devuelve los habitos que concuerden con el usuario y dia de la
-     * semana
+     * Metodo que devuelve los habitos que concuerden con el usuario y dia de la semana
      *
      * @param cuenta Cuenta a buscar los habitos
      * @param diaSemana Dia de la semana que concuerde con los habitos
@@ -271,8 +269,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Lista de registros de historial de hábitos que coinciden con la
-     * fecha y el ID de hábito.
+     * @return Lista de registros de historial de hábitos que coinciden con la fecha y el ID de hábito.
      * @throws ControllerException Si ocurre un error al buscar
      */
     @Override
@@ -306,8 +303,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      *
      * @param usuario Usuario a consultar
      * @return Cuenta consultada
-     * @throws ControllerException si no se puede consultar la cuenta
-     * correctamente
+     * @throws ControllerException si no se puede consultar la cuenta correctamente
      */
     @Override
     public boolean cuentaExiste(String usuario) throws ControllerException {
@@ -353,44 +349,36 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     }
 
     /**
-     * Método que toma un array de fechas que representa los días de una semana
-     * (del lunes al domingo) y devuelve un nuevo array con los días de la
-     * semana anterior o posterior.
+     * Método que toma un array de fechas que representa los días de una semana (del lunes al domingo) y devuelve un nuevo array con los días de la semana anterior o posterior.
      *
-     * @param semanaActual Un array de `Date` que contiene exactamente 7
-     * elementos, representando una semana completa desde el lunes hasta el
-     * domingo.
-     * @param direccion Un `String` que indica la dirección a calcular:
-     * `"anterior"` o `"posterior"`.
-     * @return Un array de `Date` que contiene los días de la semana anterior o
-     * posterior, comenzando desde el lunes y terminando el domingo.
-     * @throws IllegalArgumentException Si el array `semanaActual` es nulo, no
-     * contiene exactamente 7 elementos, o si el valor de `direccion` no es
-     * `"anterior"` o `"posterior"`.
+     * @param semanaActual Un array de `Date` que contiene exactamente 7 elementos, representando una semana completa desde el lunes hasta el domingo.
+     * @param direccion Un `String` que indica la dirección a calcular: `"anterior"` o `"posterior"`.
+     * @return Un array de `Date` que contiene los días de la semana anterior o posterior, comenzando desde el lunes y terminando el domingo.
+     * @throws IllegalArgumentException Si el array `semanaActual` es nulo, no contiene exactamente 7 elementos, o si el valor de `direccion` no es `"anterior"` o `"posterior"`.
      */
     @Override
-    public Date[] obtenerSemana(Date[] semanaActual, String direccion) throws ControllerException{
-    if (semanaActual == null || semanaActual.length != 7) {
-        throw new ControllerException("El array debe contener exactamente 7 días.");
+    public Date[] obtenerSemana(Date[] semanaActual, String direccion) throws ControllerException {
+        if (semanaActual == null || semanaActual.length != 7) {
+            throw new ControllerException("El array debe contener exactamente 7 días.");
+        }
+
+        if (!"anterior".equalsIgnoreCase(direccion) && !"posterior".equalsIgnoreCase(direccion)) {
+            throw new ControllerException("La dirección debe ser 'anterior' o 'posterior'.");
+        }
+
+        Date[] nuevaSemana = new Date[7];
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(semanaActual[0]);
+
+        int diasAjuste = "anterior".equalsIgnoreCase(direccion) ? -7 : 7;
+        calendar.add(Calendar.DAY_OF_MONTH, diasAjuste);
+        for (int i = 0; i < 7; i++) {
+            nuevaSemana[i] = calendar.getTime();
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        return nuevaSemana;
     }
-
-    if (!"anterior".equalsIgnoreCase(direccion) && !"posterior".equalsIgnoreCase(direccion)) {
-        throw new ControllerException("La dirección debe ser 'anterior' o 'posterior'.");
-    }
-
-    Date[] nuevaSemana = new Date[7];
-    Calendar calendar = Calendar.getInstance();
-    
-    calendar.setTime(semanaActual[0]);
-
-    int diasAjuste = "anterior".equalsIgnoreCase(direccion) ? -7 : 7;
-    calendar.add(Calendar.DAY_OF_MONTH, diasAjuste);
-    for (int i = 0; i < 7; i++) {
-        nuevaSemana[i] = calendar.getTime();
-        calendar.add(Calendar.DAY_OF_MONTH, 1);
-    }
-
-    return nuevaSemana;
-}
 
 }

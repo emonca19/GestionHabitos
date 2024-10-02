@@ -6,35 +6,20 @@ package org.itson.pruebas.gestionhabitos.controller;
  */
 public class Sesion {
 
-    private static String usuario;
-    private static String nombre;
+    private static CuentaDTO cuenta;
 
-    Sesion() {
+    private Sesion() {
     }
 
-    public static void iniciarSesion(String usuario, String nombre) {
-        Sesion.usuario = usuario;
-        Sesion.nombre = nombre;
+    public static void iniciarSesion(CuentaDTO cuenta) {
+        Sesion.cuenta = cuenta;
     }
 
-    public static String getUsuario() {
-        return usuario;
-    }
-
-    public static String getNombre() {
-        return nombre;
-    }
-
-    public static void setUsuario(String usuarioNuevo) {
-        usuario = usuarioNuevo;
-    }
-
-    public static void setNombre(String nombreNuevo) {
-        nombre = nombreNuevo;
+    public static CuentaDTO getCuenta() {
+        return cuenta;
     }
 
     public static void cerrarSesion() {
-        usuario = null;
-        nombre = null;
+        cuenta = null;
     }
 }

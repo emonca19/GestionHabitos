@@ -7,6 +7,10 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 /**
  * Clase que gestiona habitos y cuentas
@@ -209,18 +213,31 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      * @return Cuenta consultada
      * @throws ModelException Si no se puede consultar la cuenta
      */
+    /**
+     * Consulta la existencia de una cuenta utilizando Criteria API
+     *
+     * @param usuario Usuario a encontrar
+     * @param contraseña Contraseña que coincida con la cuenta
+     * @return Cuenta consultada
+     * @throws ModelException Si no se puede consultar la cuenta
+     */
     @Override
     public Cuenta consultarCuenta(String usuario, String contraseña) throws ModelException {
+
         try {
             entityManager = this.conexion.crearConexion();
 
-            TypedQuery<Cuenta> query = entityManager.createQuery(
-                    "SELECT c FROM Cuenta c WHERE c.usuario = :usuario AND c.contrasena = :contrasena", Cuenta.class
-            );
-            query.setParameter("usuario", usuario);
-            query.setParameter("contrasena", contraseña);
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Cuenta> criteriaQuery = cb.createQuery(Cuenta.class);
 
-            List<Cuenta> cuentas = query.getResultList();
+            Root<Cuenta> cuentaRoot = criteriaQuery.from(Cuenta.class);
+
+            Predicate usuarioPredicate = cb.equal(cuentaRoot.get("usuario"), usuario);
+            Predicate contrasenaPredicate = cb.equal(cuentaRoot.get("contrasena"), contraseña);
+
+            criteriaQuery.select(cuentaRoot).where(cb.and(usuarioPredicate, contrasenaPredicate));
+
+            List<Cuenta> cuentas = entityManager.createQuery(criteriaQuery).getResultList();
 
             if (!cuentas.isEmpty()) {
                 return cuentas.get(0);
@@ -228,7 +245,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                 throw new ModelException("La cuenta no existe.");
             }
 
-        } catch (ModelException e) {
+        } catch (Exception e) {
             throw new ModelException("Error al consultar la cuenta: " + e.getMessage(), e);
         } finally {
             if (entityManager != null) {
@@ -362,6 +379,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 
     /**
      * Devuelve si un usuario ya existe
+     *
      * @param usuario Cadena del nombre del usuario para verificar su existencia
      * @return True si existe, false en caso contrario
      * @throws ModelException Si ocurre un error al consultar la cuenta
