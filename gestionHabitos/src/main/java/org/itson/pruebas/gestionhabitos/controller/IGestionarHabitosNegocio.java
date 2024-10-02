@@ -105,5 +105,28 @@ public interface IGestionarHabitosNegocio {
      * correctamente
      */
     public boolean cuentaExiste(String usuario) throws ControllerException;
+    
+    
+    /**
+     * Metodo para obtener la semana de un determinado dia
+     * @param fecha Fecha a obtener la semana
+     * @return Aregglo de los dias de la semana del dia 
+     */
+    public Date[] obtenerSemana(Date fecha);
+    
+    /**
+     * Método que toma un array de fechas que representa los días de una semana
+     * (del lunes al domingo) y devuelve un nuevo array con los días de la
+     * siguiente semana.
+     *
+     * @param semanaActual Un array de `Date` que contiene exactamente 7
+     * elementos, representando una semana completa desde el lunes hasta el
+     * domingo.
+     * @return Un array de `Date` que contiene los días de la siguiente semana,
+     * comenzando desde el lunes y terminando el domingo.
+     * @throws ControllerException Si el array `semanaActual` es nulo o no
+     * contiene exactamente 7 elementos.
+     */
+    public Date[] obtenerSiguienteSemana(Date[] semanaActual) throws ControllerException;
 
 }

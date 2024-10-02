@@ -320,9 +320,6 @@
     </Container>
     <Component class="javax.swing.JLabel" name="lblHabitosPendientes">
       <Properties>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="0" red="0" type="rgb"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="H&#xc1;BITOS PENDIENTES"/>
       </Properties>
       <Constraints>
@@ -333,9 +330,6 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblHabitosRealizados">
       <Properties>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="0" red="0" type="rgb"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="H&#xc1;BITOS REALIZADOS"/>
       </Properties>
       <Constraints>
@@ -346,9 +340,6 @@
     </Component>
     <Component class="javax.swing.JLabel" name="lblFecha">
       <Properties>
-        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="0" green="0" red="0" type="rgb"/>
-        </Property>
         <Property name="horizontalAlignment" type="int" value="4"/>
         <Property name="text" type="java.lang.String" value="fecha"/>
       </Properties>

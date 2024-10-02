@@ -5,6 +5,7 @@
 package org.itson.pruebas.gestionhabitos.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -325,6 +326,62 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         } catch (ModelException ex) {
             throw new ControllerException(ex);
         }
+    }
+
+    /**
+     * Metodo para obtener la semana de un determinado dia
+     *
+     * @param fecha Fecha a obtener la semana
+     * @return Aregglo de los dias de la semana del dia
+     */
+    @Override
+    public Date[] obtenerSemana(Date fecha) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha);
+
+        while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+        }
+
+        Date[] semana = new Date[7];
+        for (int i = 0; i < 7; i++) {
+            semana[i] = calendar.getTime();
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        return semana;
+    }
+
+    /**
+     * Método que toma un array de fechas que representa los días de una semana
+     * (del lunes al domingo) y devuelve un nuevo array con los días de la
+     * siguiente semana.
+     *
+     * @param semanaActual Un array de `Date` que contiene exactamente 7
+     * elementos, representando una semana completa desde el lunes hasta el
+     * domingo.
+     * @return Un array de `Date` que contiene los días de la siguiente semana,
+     * comenzando desde el lunes y terminando el domingo.
+     * @throws ControllerException Si el array `semanaActual` es nulo o no
+     * contiene exactamente 7 elementos.
+     */
+    public Date[] obtenerSiguienteSemana(Date[] semanaActual) throws ControllerException{
+        if (semanaActual == null || semanaActual.length != 7) {
+            throw new ControllerException("El array debe contener exactamente 7 días.");
+        }
+
+        Date[] siguienteSemana = new Date[7];
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(semanaActual[6]);
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
+
+        for (int i = 0; i < 7; i++) {
+            siguienteSemana[i] = calendar.getTime();
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
+
+        return siguienteSemana;
     }
 
 }
