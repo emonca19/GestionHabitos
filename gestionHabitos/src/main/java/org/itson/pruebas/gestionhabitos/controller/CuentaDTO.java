@@ -92,4 +92,15 @@ public class CuentaDTO {
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
     }
+    
+     /**
+     * Método para validar si todos los campos están completos.
+     * 
+     * @return true si todos los campos son válidos, false en caso contrario.
+     */
+    public boolean sonCamposValidos() {
+        return nombre != null && !nombre.trim().isEmpty() &&
+               usuario != null && !usuario.trim().isEmpty() &&
+               contraseña != null && !contraseña.trim().isEmpty();
+    }
 }

@@ -213,4 +213,16 @@ public class HabitoDTO implements Serializable {
     public void setCuentaId(Cuenta cuentaId) {
         this.cuentaId = cuentaId;
     }
+
+    /**
+     * Método para validar si todos los campos están completos.
+     *
+     * @return true si todos los campos son válidos, false en caso contrario.
+     */
+    public boolean sonCamposValidos() {
+        return frecuencia != null && !frecuencia.trim().isEmpty()
+                && nombre != null && !nombre.trim().isEmpty()
+                && diasSemana != null
+                && cuentaId != null; // Asegúrate de que la cuenta no sea nula.
+    }
 }

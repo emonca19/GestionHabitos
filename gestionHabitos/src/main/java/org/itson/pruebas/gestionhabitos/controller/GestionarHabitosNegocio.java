@@ -4,9 +4,8 @@
  */
 package org.itson.pruebas.gestionhabitos.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.itson.pruebas.gestionhabitos.model.Conexion;
 import org.itson.pruebas.gestionhabitos.model.Cuenta;
@@ -39,10 +38,33 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      */
     @Override
     public void crearHabito(HabitoDTO habitoDTO) throws ControllerException {
-        try {
-            habitoDAO.crearHabito(HabitoDTOConvertirAEntidad(habitoDTO));
-        } catch (ModelException ex) {
-            throw new ControllerException(ex);
+        if (habitoDTO.sonCamposValidos()) {
+            try {
+                habitoDAO.crearHabito(HabitoDTOConvertirAEntidad(habitoDTO));
+            } catch (ModelException ex) {
+                throw new ControllerException(ex);
+            }
+        } else {
+            throw new ControllerException("No se puede crear cuenta porque no cumple con los datos necesarios");
+        }
+    }
+
+    /**
+     * Crea una cuenta
+     *
+     * @param cuentaDTO Cuenta a crear
+     * @throws ControllerException si algo sale mal al crear la cuenta
+     */
+    @Override
+    public void crearCuenta(CuentaDTO cuentaDTO) throws ControllerException {
+        if (cuentaDTO.sonCamposValidos()) {
+            try {
+                habitoDAO.crearCuenta(cuentaDTOAEntidad(cuentaDTO));
+            } catch (ModelException ex) {
+                throw new ControllerException(ex);
+            }
+        } else {
+            throw new ControllerException("No se puede crear cuenta porque no cumple con los datos necesarios");
         }
     }
 
@@ -100,6 +122,22 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     }
 
     /**
+     * Consulta la existencia de una cuenta
+     * @param usuario Usuario a consultar
+     * @param contraseña Verificar que concuerda con la contraseña
+     * @return Cuenta consultada
+     * @throws ControllerException si no se puede consultar la cuenta correctamente
+     */
+    @Override
+    public CuentaDTO consultarCuenta(String usuario, String contraseña) throws ControllerException {
+        try {
+            return entidadACuentaDTO(habitoDAO.consultarCuenta(usuario, contraseña));
+        } catch (ModelException e) {
+            throw new ControllerException(e);
+        }
+    }
+
+    /**
      * Convierte una entidad Habito en un DTO HabitoDTO.
      *
      * @param habito la entidad Habito a convertir
@@ -116,20 +154,6 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
                 habito.getNombre(),
                 habito.getCuenta() // Asumiendo que 'cuenta' no es null
         );
-    }
-
-    /**
-     * Crea una cuenta
-     *
-     * @param cuentaDTO Cuenta a crear
-     */
-    @Override
-    public void crearCuenta(CuentaDTO cuentaDTO) {
-        try {
-            habitoDAO.crearCuenta(cuentaDTOAEntidad(cuentaDTO));
-        } catch (ModelException ex) {
-            Logger.getLogger(GestionarHabitosNegocio.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     /**
@@ -162,10 +186,48 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         return cuenta;
     }
 
+    /**
+     * Convierte una entidad de cuenta a una cuentaDTO
+     * @param cuenta Cuenta a convertir a DTO
+     * @return CuenataDTO convertida
+     */
     public CuentaDTO entidadACuentaDTO(Cuenta cuenta) {
         CuentaDTO cuentaDTO = new CuentaDTO(cuenta.getNombre(), cuenta.getUsuario(), cuenta.getContrasena());
         return cuentaDTO;
     }
 
+    /**
+     * Metodo que devuelve los habitos que concuerden con el usuario y dia de la semana
+     * @param cuenta Cuenta a buscar los habitos
+     * @param diaSemana Dia de la semana que concuerde con los habitos
+     * @return Lista de habitosDTO que concuerden con las especificaciones
+     * @throws ControllerException Si no se encuentra infromacion
+     */
+    public List<HabitoDTO> identificarDias(CuentaDTO cuenta, String diaSemana) throws ControllerException {
+        List<HabitoDTO> habitos = obtenerHabitos(cuenta);
+        List<HabitoDTO> habitosPorDia = new ArrayList<>();
+        for (int i = 0; i < habitos.size(); i++) {
+            String dias = String.valueOf(habitos.get(i).getDiasSemana());
+            if (dias.charAt(0) == 1 && diaSemana.equalsIgnoreCase("lunes")) {
+                habitosPorDia.add(habitos.get(i));
+            } else if (dias.charAt(1) == 1 && diaSemana.equalsIgnoreCase("martes")) {
+                habitosPorDia.add(habitos.get(i));
+            } else if (dias.charAt(2) == 1 && diaSemana.equalsIgnoreCase("miercoles")) {
+                habitosPorDia.add(habitos.get(i));
+            } else if (dias.charAt(3) == 1 && diaSemana.equalsIgnoreCase("jueves")) {
+                habitosPorDia.add(habitos.get(i));
+            } else if (dias.charAt(4) == 1 && diaSemana.equalsIgnoreCase("viernes")) {
+                habitosPorDia.add(habitos.get(i));
+            } else if (dias.charAt(5) == 1 && diaSemana.equalsIgnoreCase("sabado")) {
+                habitosPorDia.add(habitos.get(i));
+            } else if (dias.charAt(6) == 1 && diaSemana.equalsIgnoreCase("domingo")) {
+                habitosPorDia.add(habitos.get(i));
+            } else {
+                throw new ControllerException("No se ha encontrado información");
+            }
+
+        }
+        return habitosPorDia;
+    }
 
 }

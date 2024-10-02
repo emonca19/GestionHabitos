@@ -21,5 +21,7 @@ public interface IGestionarHabitosNegocio {
     public boolean eliminarHabito(Long id) throws ControllerException;
 
     public List<HabitoDTO> obtenerHabitos(CuentaDTO cuenta) throws ControllerException;
+    
+    public CuentaDTO consultarCuenta(String usuario, String contraseña) throws ControllerException;
 
 }

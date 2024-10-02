@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.*;
-import org.mockito.*;
 import java.util.*;
 
 public class GestionarHabitosTest {
