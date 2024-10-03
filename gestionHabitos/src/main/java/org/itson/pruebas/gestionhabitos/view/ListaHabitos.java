@@ -4,9 +4,25 @@
  */
 package org.itson.pruebas.gestionhabitos.view;
 
+import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Frame;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -15,13 +31,21 @@ import java.io.IOException;
 public class ListaHabitos extends javax.swing.JPanel {
 
     private FrameContenedor frame;
+
     /**
      * Creates new form Progreso
+     *
+     * @param frame
      */
     public ListaHabitos(FrameContenedor frame) {
         this.frame = frame;
         initComponents();
-        setFonts();
+        try {
+            listarHabitos();
+            setFonts();
+        } catch (FontFormatException | IOException ex) {
+            frame.mostrarAviso(ex.getMessage(), "Aviso");
+        }
     }
 
     /**
@@ -45,7 +69,8 @@ public class ListaHabitos extends javax.swing.JPanel {
         btnDia7 = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         lblListaHabitos = new javax.swing.JLabel();
-        pnlHabitosPendientes = new javax.swing.JPanel();
+        lblMasInfomacion = new javax.swing.JLabel();
+        pnlContenedorHabitos = new javax.swing.JPanel();
         btnHoy = new javax.swing.JButton();
         btnHabitos = new javax.swing.JButton();
         btnProgreso = new javax.swing.JButton();
@@ -191,8 +216,11 @@ public class ListaHabitos extends javax.swing.JPanel {
         lblListaHabitos.setText("LISTA DE HÁBITOS");
         add(lblListaHabitos, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 198, -1, -1));
 
-        pnlHabitosPendientes.setOpaque(false);
-        add(pnlHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 238, 700, 390));
+        lblMasInfomacion.setText("(selecciona uno para editar o eliminar)");
+        add(lblMasInfomacion, new org.netbeans.lib.awtextra.AbsoluteConstraints(267, 205, -1, -1));
+
+        pnlContenedorHabitos.setOpaque(false);
+        add(pnlContenedorHabitos, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 238, 700, 390));
 
         btnHoy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/hoy.png"))); // NOI18N
         btnHoy.setBorderPainted(false);
@@ -278,7 +306,7 @@ public class ListaHabitos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnHoyActionPerformed
 
     private void btnHabitosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHabitosActionPerformed
-        
+
     }//GEN-LAST:event_btnHabitosActionPerformed
 
     private void btnProgresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProgresoActionPerformed
@@ -289,23 +317,103 @@ public class ListaHabitos extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    private void setFonts() {
-        try {
-            lblNombreUsuario.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Medium.ttf", 20F));
-            lblMes.setFont(frame.cargarFuente("/fonts/Kurale/Kurale-Regular.ttf", 20F));
-            Font semiBoldFont = frame.cargarFuente("/fonts/Nunito/static/Nunito-SemiBold.ttf", 26F);
-            Font nunitoRegular = frame.cargarFuente("/fonts/Nunito/static/Nunito-Regular.ttf", 18F);
-            lblListaHabitos.setFont(semiBoldFont);
-            btnDia1.setFont(nunitoRegular);
-            btnDia2.setFont(nunitoRegular);
-            btnDia3.setFont(nunitoRegular);
-            btnDia4.setFont(nunitoRegular);
-            btnDia5.setFont(nunitoRegular);
-            btnDia6.setFont(nunitoRegular);
-            btnDia7.setFont(nunitoRegular);
-        } catch (FontFormatException | IOException e) {
-            frame.mostrarAviso(e.getMessage(), "Aviso");
+    private void listarHabitos() throws FontFormatException, IOException {
+        JPanel pnlHabitos = new JPanel();
+        pnlHabitos.setLayout(new BoxLayout(pnlHabitos, BoxLayout.Y_AXIS));  // Usar BoxLayout para colocar los hábitos en forma vertical
+        pnlHabitos.setOpaque(false);
+
+        JScrollPane scpHabitos = new JScrollPane(pnlHabitos);
+        scpHabitos.setOpaque(false);
+        scpHabitos.getViewport().setOpaque(false);
+        scpHabitos.setBorder(null);
+        scpHabitos.getVerticalScrollBar().setUnitIncrement(16);
+        scpHabitos.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scpHabitos.setPreferredSize(new Dimension(700, 390));  // Ajusta el tamaño del JScrollPane si es necesario
+
+        // Añadir hábitos
+        addHabit("Leer", pnlHabitos);
+        addHabit("Meditar", pnlHabitos);
+        addHabit("Ejercicio", pnlHabitos);
+        addHabit("Dormir", pnlHabitos);
+        addHabit("Gym", pnlHabitos);
+
+        // Agregar el JScrollPane al contenedor principal
+        pnlContenedorHabitos.add(scpHabitos);
+    }
+
+    private void addHabit(String habitName, JPanel parentPanel) throws FontFormatException, IOException {
+        HabitPanel habit = new HabitPanel(habitName);
+
+        // Añadir el hábito al panel padre
+        parentPanel.add(habit);
+
+        // Refrescar el panel
+        parentPanel.revalidate();
+        parentPanel.repaint();
+    }
+
+// Panel personalizado para cada hábito
+    private class HabitPanel extends JPanel {
+
+        public HabitPanel(String habitName) throws FontFormatException, IOException {
+            setLayout(new FlowLayout(FlowLayout.LEFT));
+            setPreferredSize(new Dimension(0, 30));  // Altura fija de 30, ancho ajustable
+            setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));  // Establece la altura máxima
+
+            // Etiqueta con la viñeta y el nombre del hábito
+            JLabel nameLabel = new JLabel("• " + habitName);  // Añadir la viñeta '•' y un espacio
+            nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            nameLabel.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Regular.ttf", 18F));
+
+            setCursor(new Cursor(java.awt.Cursor.HAND_CURSOR));
+            setOpaque(false);
+
+            // Añadir el espacio entre los HabitPanel
+            setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));  // Espacio de 8px en la parte inferior
+
+            add(nameLabel);
+            addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    mostrarVerHabito(habitName);  // Llamar al método que muestra el panel VerHabito
+                }
+            });
         }
+    }
+
+    private void mostrarVerHabito(String habitName) {
+        // Crear un JDialog para mostrar el JPanel VerHabito
+        JDialog dialog = new JDialog((Frame) SwingUtilities.getWindowAncestor(this), "Detalles del Hábito", true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setSize(new Dimension(391, 288));  // Tamaño del diálogo, puedes ajustarlo según tus necesidades
+
+        dialog.setLayout(new BorderLayout());
+
+        // Añadir el JPanel VerHabito al JDialog
+        VerHabito pnlVerHabito = new VerHabito(frame, dialog);  // Pasar el nombre del hábito, si es necesario
+        dialog.add(pnlVerHabito, BorderLayout.CENTER);
+
+        // Centrar el diálogo en la pantalla
+        dialog.setLocationRelativeTo(null);
+        dialog.setResizable(false);
+        // Mostrar el diálogo de manera modal (bloquea el acceso a otros componentes)
+        dialog.setVisible(true);
+    }
+
+    private void setFonts() throws FontFormatException, IOException {
+        lblNombreUsuario.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Medium.ttf", 20F));
+        lblMes.setFont(frame.cargarFuente("/fonts/Kurale/Kurale-Regular.ttf", 20F));
+        lblMasInfomacion.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Light.ttf", 16F));
+        Font semiBoldFont = frame.cargarFuente("/fonts/Nunito/static/Nunito-SemiBold.ttf", 26F);
+        Font nunitoRegular = frame.cargarFuente("/fonts/Nunito/static/Nunito-Regular.ttf", 18F);
+        lblListaHabitos.setFont(semiBoldFont);
+        btnDia1.setFont(nunitoRegular);
+        btnDia2.setFont(nunitoRegular);
+        btnDia3.setFont(nunitoRegular);
+        btnDia4.setFont(nunitoRegular);
+        btnDia5.setFont(nunitoRegular);
+        btnDia6.setFont(nunitoRegular);
+        btnDia7.setFont(nunitoRegular);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -324,8 +432,9 @@ public class ListaHabitos extends javax.swing.JPanel {
     private javax.swing.JButton btnProgreso;
     private javax.swing.JLabel fondo;
     private javax.swing.JLabel lblListaHabitos;
+    private javax.swing.JLabel lblMasInfomacion;
     private javax.swing.JLabel lblMes;
     private javax.swing.JLabel lblNombreUsuario;
-    private javax.swing.JPanel pnlHabitosPendientes;
+    private javax.swing.JPanel pnlContenedorHabitos;
     // End of variables declaration//GEN-END:variables
 }

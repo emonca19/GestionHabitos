@@ -4,9 +4,14 @@
  */
 package org.itson.pruebas.gestionhabitos.view;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Frame;
 import java.io.IOException;
+import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -14,13 +19,15 @@ import java.io.IOException;
  */
 public class VerHabito extends javax.swing.JPanel {
 
-    private FrameContenedor frame;
+    private final FrameContenedor frame;
+    private final JDialog parentDialog;
 
     /**
      * Creates new form VerHabito
      */
-    public VerHabito(FrameContenedor frame) {
+    public VerHabito(FrameContenedor frame, JDialog parentDialog) {
         this.frame = frame;
+        this.parentDialog = parentDialog;
         initComponents();
         setFonts();
 
@@ -78,18 +85,39 @@ public class VerHabito extends javax.swing.JPanel {
         add(btnEliminar, new org.netbeans.lib.awtextra.AbsoluteConstraints(232, 148, 80, 77));
 
         lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/verHabito.png"))); // NOI18N
-        add(lblFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+        add(lblFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 375, 250));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
+        mostrarEditarHabito("", parentDialog);
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        if (frame.mostrarConfirmacion("¿Seguro que deseas eliminar permanentemente el hábito?", "Eliminar hábito")) {
+            parentDialog.dispose();
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
-      private void setFonts(){
+    private void mostrarEditarHabito(String habitName, JDialog parentDialog) {
+        // Crear un JDialog para mostrar el JPanel VerHabito
+        JDialog dialog = new JDialog(parentDialog, "Editar Hábito", true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setSize(new Dimension(391, 288));  // Tamaño del diálogo, puedes ajustarlo según tus necesidades
+
+        dialog.setLayout(new BorderLayout());
+
+        // Añadir el JPanel VerHabito al JDialog
+        CrearHabito pnlVerHabito = new CrearHabito(frame, dialog);  // Pasar el nombre del hábito, si es necesario
+        dialog.add(pnlVerHabito, BorderLayout.CENTER);
+
+        // Centrar el diálogo en la pantalla
+        dialog.setLocationRelativeTo(null);
+        dialog.setResizable(false);
+        // Mostrar el diálogo de manera modal (bloquea el acceso a otros componentes)
+        dialog.setVisible(true);
+    }
+
+    private void setFonts() {
         try {
             Font nunito = frame.cargarFuente("/fonts/Nunito/static/Nunito-Bold.ttf", 18F);
             lblHabito.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Bold.ttf", 24F));

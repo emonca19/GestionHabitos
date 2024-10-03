@@ -49,7 +49,7 @@ public class Inicio extends javax.swing.JPanel {
     }
 
     public void agregarHabito() {
-        frame.mostrarCrearHabito();
+        
     }
 
     public final void setearDatos() {
@@ -392,11 +392,6 @@ public class Inicio extends javax.swing.JPanel {
         addHabit("Meditar", false);
 
         pnlContenedorHabitosPendientes.add(scpHabitosPendientes);
-
-//        // Añadir paneles al contenedor principal
-//        pnlContenedorHabitosPendientes.add(jPanel);
-//        pnlContenedorHabitosPendientes.add(Box.createRigidArea(new Dimension(0, 5))); // Espacio entre paneles
-//        pnlContenedorHabitosPendientes.add(jPanel2);
     }
 
     private void listarHabitosRealizados() throws FontFormatException, IOException {
@@ -435,14 +430,14 @@ public class Inicio extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                 // Determinar si está en la lista de pendientes o realizados
                 if (!habit.isCompleted()) {
-                    pnlHabitosPendientes.remove(habit);  // Eliminar de pendientes
-                    pnlHabitosRealizados.add(habit);     // Mover a realizados
-                    habit.setCompleted(true);            // Actualizar el estado a "completado"
+                    pnlHabitosPendientes.remove(habit);  
+                    pnlHabitosRealizados.add(habit);     
+                    habit.setCompleted(true);            
 
                 } else {
-                    pnlHabitosRealizados.remove(habit);  // Eliminar de realizados
-                    pnlHabitosPendientes.add(habit);     // Mover a pendientes
-                    habit.setCompleted(false);            // Actualizar el estado a "pendiente"
+                    pnlHabitosRealizados.remove(habit);  
+                    pnlHabitosPendientes.add(habit);     
+                    habit.setCompleted(false);           
                 }
 
                 // Refrescar las listas
@@ -471,7 +466,7 @@ public class Inicio extends javax.swing.JPanel {
     private class HabitPanel extends JPanel {
 
         private Boolean isCompleted;
-        private JLabel imagePanel;
+        private final JLabel imagePanel;
 
         public HabitPanel(String habitName, Boolean isCompleted) throws FontFormatException, IOException {
             this.isCompleted = isCompleted;
@@ -528,17 +523,6 @@ public class Inicio extends javax.swing.JPanel {
 
     }
 
-    // Borde y tamaño
-//            setBorder(BorderFactory.createLineBorder(Color.BLACK));
-//            setMaximumSize(new Dimension(300, 60));
-    // Primer JPanel
-//            JPanel jPanel = new JPanel();
-//            jPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-//            jPanel.setPreferredSize(new Dimension(0, 30)); // Altura fija de 30, ancho ajustable
-//            jPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30)); // Establece la altura máxima
-//            JLabel lblImage1 = new JLabel(new ImageIcon(getClass().getResource("/img/checkVacio.png")));
-//            jPanel.add(lblImage1);
-//            jPanel.add(new JLabel("bañarme"));
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnDerecha;
