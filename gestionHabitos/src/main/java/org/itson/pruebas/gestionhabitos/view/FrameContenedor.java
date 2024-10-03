@@ -83,7 +83,6 @@ public class FrameContenedor extends javax.swing.JFrame {
     public void limpiarFrame() {
         if (panelActual != null) {
             this.remove(panelActual);
-            panelActual = null;
         }
     }
 
@@ -163,7 +162,7 @@ public class FrameContenedor extends javax.swing.JFrame {
         panelActual = progresoMensual;
     }
 
-    public void agregarHabito() {
+    public void agregarHabito(JPanel jpanel) {
 // Crear un JDialog para mostrar el JPanel VerHabito
         JDialog dialog = new JDialog(this, "Agregar Hábito", true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -172,7 +171,7 @@ public class FrameContenedor extends javax.swing.JFrame {
         dialog.setLayout(new BorderLayout());
 
         // Añadir el JPanel VerHabito al JDialog
-        CrearHabito pnlVerHabito = new CrearHabito(this, dialog);  // Pasar el nombre del hábito, si es necesario
+        CrearHabito pnlVerHabito = new CrearHabito(this, dialog, jpanel);  // Pasar el nombre del hábito, si es necesario
         dialog.add(pnlVerHabito, BorderLayout.CENTER);
 
         // Centrar el diálogo en la pantalla
@@ -226,6 +225,20 @@ public class FrameContenedor extends javax.swing.JFrame {
         initComponents();
 
         this.setIconImages(iconImages);
+    }
+
+    public void refrescarPanelActual(){
+        if (panelActual.getClass().getSimpleName().equalsIgnoreCase("Inicio")) {
+            mostrarInicio();
+        }else if (panelActual.getClass().getSimpleName().equalsIgnoreCase("ListaHabitos")) {
+            mostrarListaHabitos();
+        }else{
+            mostrarProgresoSemanal();
+        }
+    }
+    
+    public JPanel getPanelActual() {
+        return panelActual;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

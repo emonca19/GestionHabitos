@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
+import javax.swing.JPanel;
 import org.itson.pruebas.gestionhabitos.controller.ControllerException;
 import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
 import org.itson.pruebas.gestionhabitos.controller.HabitoDTO;
@@ -21,6 +22,7 @@ public class CrearHabito extends javax.swing.JPanel {
 
     private final FrameContenedor frame;
     private final JDialog parentDialog;
+    private final JPanel parentPanel;
     private ImageIcon[] uncheckedIcons;
     private ImageIcon[] checkedIcons;
     private int diasSemana;
@@ -30,9 +32,10 @@ public class CrearHabito extends javax.swing.JPanel {
      *
      * @param frame
      */
-    public CrearHabito(FrameContenedor frame, JDialog parentDialog) {
+    public CrearHabito(FrameContenedor frame, JDialog parentDialog, JPanel parentPanel) {
         this.parentDialog = parentDialog;
         this.frame = frame;
+        this.parentPanel = parentPanel;
         initComponents();
         cargarIconos();
         asignarIconosIniciales();
@@ -82,6 +85,7 @@ public class CrearHabito extends javax.swing.JPanel {
             gestion.crearHabito(new HabitoDTO(frecuencia, fechaCreacion, diasBits, nombre, Sesion.getCuenta()));
             frame.mostrarInformacion("El hábito se ha creado con éxito.", "Éxito");
             parentDialog.dispose();
+            frame.refrescarPanelActual();
         } catch (ControllerException ex) {
             Logger.getLogger(CrearHabito.class.getName()).log(Level.SEVERE, null, ex);
             frame.mostrarInformacion("Ocurrió un error al crear el hábito.", "Error");

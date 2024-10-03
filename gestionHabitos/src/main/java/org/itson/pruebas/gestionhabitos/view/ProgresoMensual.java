@@ -320,7 +320,7 @@ public class ProgresoMensual extends javax.swing.JPanel {
     }//GEN-LAST:event_btnProgresoActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        frame.agregarHabito();
+        frame.agregarHabito(this);
 
     }//GEN-LAST:event_btnAgregarActionPerformed
 

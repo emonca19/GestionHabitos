@@ -238,6 +238,7 @@ public class Inicio extends javax.swing.JPanel {
 
         btnPerfil.setBorderPainted(false);
         btnPerfil.setContentAreaFilled(false);
+        btnPerfil.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPerfilActionPerformed(evt);
@@ -591,7 +592,7 @@ public class Inicio extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDerechaActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        frame.agregarHabito();
+        frame.agregarHabito(this);
 
         try {
             mostrarHabitos(); // Refresca la lista de hábitos

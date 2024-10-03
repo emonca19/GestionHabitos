@@ -8,10 +8,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.Frame;
 import java.io.IOException;
 import javax.swing.JDialog;
-import javax.swing.SwingUtilities;
+import javax.swing.JPanel;
 
 /**
  *
@@ -107,7 +106,7 @@ public class VerHabito extends javax.swing.JPanel {
         dialog.setLayout(new BorderLayout());
 
         // Añadir el JPanel VerHabito al JDialog
-        CrearHabito pnlVerHabito = new CrearHabito(frame, dialog);  // Pasar el nombre del hábito, si es necesario
+        CrearHabito pnlVerHabito = new CrearHabito(frame, dialog, new JPanel());  // Pasar el nombre del hábito, si es necesario
         dialog.add(pnlVerHabito, BorderLayout.CENTER);
 
         // Centrar el diálogo en la pantalla

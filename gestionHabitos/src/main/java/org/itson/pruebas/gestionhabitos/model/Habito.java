@@ -28,7 +28,7 @@ public class Habito implements Serializable {
 
     // Identificador único de la actividad
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 

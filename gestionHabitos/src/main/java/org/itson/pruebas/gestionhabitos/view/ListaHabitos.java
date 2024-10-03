@@ -14,6 +14,7 @@ import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JDialog;
@@ -23,6 +24,10 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import org.itson.pruebas.gestionhabitos.controller.ControllerException;
+import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
+import org.itson.pruebas.gestionhabitos.controller.HabitoDTO;
+import org.itson.pruebas.gestionhabitos.controller.Sesion;
 
 /**
  *
@@ -41,11 +46,14 @@ public class ListaHabitos extends javax.swing.JPanel {
         this.frame = frame;
         initComponents();
         try {
-            listarHabitos();
             setFonts();
+            listarHabitos();
         } catch (FontFormatException | IOException ex) {
             frame.mostrarAviso(ex.getMessage(), "Aviso");
+
         }
+        lblNombreUsuario.setText(Sesion.getCuenta().getNombre());
+
     }
 
     /**
@@ -60,6 +68,7 @@ public class ListaHabitos extends javax.swing.JPanel {
         lblMes = new javax.swing.JLabel();
         btnIzquierda = new javax.swing.JButton();
         btnDerecha = new javax.swing.JButton();
+        btnPerfil = new javax.swing.JButton();
         btnDia1 = new javax.swing.JButton();
         btnDia2 = new javax.swing.JButton();
         btnDia3 = new javax.swing.JButton();
@@ -109,6 +118,16 @@ public class ListaHabitos extends javax.swing.JPanel {
             }
         });
         add(btnDerecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(713, 105, 16, 27));
+
+        btnPerfil.setBorderPainted(false);
+        btnPerfil.setContentAreaFilled(false);
+        btnPerfil.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPerfilActionPerformed(evt);
+            }
+        });
+        add(btnPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(696, 9, 46, 46));
 
         btnDia1.setForeground(new java.awt.Color(245, 245, 245));
         btnDia1.setText("<html>D<br>N</html>");
@@ -314,8 +333,12 @@ public class ListaHabitos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnProgresoActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        frame.agregarHabito();
+        frame.agregarHabito(this);
     }//GEN-LAST:event_btnAgregarActionPerformed
+
+    private void btnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerfilActionPerformed
+        frame.mostrarOpcionesPerfil();
+    }//GEN-LAST:event_btnPerfilActionPerformed
 
     private void listarHabitos() throws FontFormatException, IOException {
         JPanel pnlHabitos = new JPanel();
@@ -330,12 +353,17 @@ public class ListaHabitos extends javax.swing.JPanel {
         scpHabitos.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scpHabitos.setPreferredSize(new Dimension(700, 390));  // Ajusta el tamaño del JScrollPane si es necesario
 
-        // Añadir hábitos
-        addHabit("Leer", pnlHabitos);
-        addHabit("Meditar", pnlHabitos);
-        addHabit("Ejercicio", pnlHabitos);
-        addHabit("Dormir", pnlHabitos);
-        addHabit("Gym", pnlHabitos);
+        GestionarHabitosNegocio gestionarHabitosNegocio = new GestionarHabitosNegocio();
+        List<HabitoDTO> habitosDTO;
+        try {
+            habitosDTO = gestionarHabitosNegocio.obtenerHabitos(Sesion.getCuenta());
+        } catch (ControllerException e) {
+            return;
+        }
+        
+        for (HabitoDTO habitoDTO : habitosDTO) {
+            addHabit(habitoDTO.getNombre(), pnlHabitos);
+        }
 
         // Agregar el JScrollPane al contenedor principal
         pnlContenedorHabitos.add(scpHabitos);
@@ -429,6 +457,7 @@ public class ListaHabitos extends javax.swing.JPanel {
     private javax.swing.JButton btnHabitos;
     private javax.swing.JButton btnHoy;
     private javax.swing.JButton btnIzquierda;
+    private javax.swing.JButton btnPerfil;
     private javax.swing.JButton btnProgreso;
     private javax.swing.JLabel fondo;
     private javax.swing.JLabel lblListaHabitos;
