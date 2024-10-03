@@ -37,6 +37,8 @@ public class CrearHabito extends javax.swing.JPanel {
     }
 
     public boolean validar() {
+        diasSemana = 0;
+
         JCheckBox[] dias = {cbxLunes, cbxMartes, cbxMiercoles, cbxJueves, cbxViernes, cbxSabado, cbxDomingo};
 
         for (JCheckBox dia : dias) {
