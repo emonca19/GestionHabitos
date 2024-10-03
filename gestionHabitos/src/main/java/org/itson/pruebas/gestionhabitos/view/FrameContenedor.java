@@ -5,13 +5,17 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Image;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -38,6 +42,7 @@ public class FrameContenedor extends javax.swing.JFrame {
         }
 
         initComponents();
+        setIcons();
     }
 
     /**
@@ -209,6 +214,18 @@ public class FrameContenedor extends javax.swing.JFrame {
 
         dialog.setResizable(false);
         dialog.setVisible(true);
+    }
+
+    private void setIcons() {
+        List<Image> iconImages = new ArrayList<>();
+
+        iconImages.add(new ImageIcon(FrameContenedor.class.getResource("/icons/icon16.png")).getImage());
+        iconImages.add(new ImageIcon(FrameContenedor.class.getResource("/icons/icon32.png")).getImage());
+        iconImages.add(new ImageIcon(FrameContenedor.class.getResource("/icons/icon64.png")).getImage());
+        iconImages.add(new ImageIcon(FrameContenedor.class.getResource("/icons/icon128.png")).getImage());
+        initComponents();
+
+        this.setIconImages(iconImages);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

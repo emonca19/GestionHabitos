@@ -47,6 +47,7 @@ public class OpcionesUsuario extends javax.swing.JPanel {
         btnCerrarSesion.setText("Cerrar Sesión");
         btnCerrarSesion.setBorderPainted(false);
         btnCerrarSesion.setContentAreaFilled(false);
+        btnCerrarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCerrarSesionActionPerformed(evt);
