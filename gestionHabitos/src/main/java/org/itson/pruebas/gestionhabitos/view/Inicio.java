@@ -86,6 +86,13 @@ public class Inicio extends javax.swing.JPanel {
         btnHabitos = new javax.swing.JButton();
         btnProgreso = new javax.swing.JButton();
         lblNombreUsuario = new javax.swing.JLabel();
+        lblLunes = new javax.swing.JLabel();
+        lblMartes = new javax.swing.JLabel();
+        lblMiercoles = new javax.swing.JLabel();
+        lblJueves = new javax.swing.JLabel();
+        lblViernes = new javax.swing.JLabel();
+        lblSabado = new javax.swing.JLabel();
+        lblDomingo = new javax.swing.JLabel();
         fondo = new javax.swing.JLabel();
 
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -123,7 +130,6 @@ public class Inicio extends javax.swing.JPanel {
         add(btnDerecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(713, 105, 16, 27));
 
         btnDia1.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia1.setText("<html>D<br>N</html>");
         btnDia1.setBorderPainted(false);
         btnDia1.setContentAreaFilled(false);
         btnDia1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -133,10 +139,9 @@ public class Inicio extends javax.swing.JPanel {
                 btnDia1ActionPerformed(evt);
             }
         });
-        add(btnDia1, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 106, 60, 60));
+        add(btnDia1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, 60, 60));
 
         btnDia2.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia2.setText("<html>D<br>N</html>");
         btnDia2.setBorderPainted(false);
         btnDia2.setContentAreaFilled(false);
         btnDia2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -149,7 +154,6 @@ public class Inicio extends javax.swing.JPanel {
         add(btnDia2, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 106, 60, 60));
 
         btnDia3.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia3.setText("<html>D<br>N</html>");
         btnDia3.setBorderPainted(false);
         btnDia3.setContentAreaFilled(false);
         btnDia3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -162,7 +166,6 @@ public class Inicio extends javax.swing.JPanel {
         add(btnDia3, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 106, 60, 60));
 
         btnDia4.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia4.setText("<html>D<br>N</html>");
         btnDia4.setBorderPainted(false);
         btnDia4.setContentAreaFilled(false);
         btnDia4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -175,7 +178,6 @@ public class Inicio extends javax.swing.JPanel {
         add(btnDia4, new org.netbeans.lib.awtextra.AbsoluteConstraints(345, 106, 60, 60));
 
         btnDia5.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia5.setText("<html>D<br>N</html>");
         btnDia5.setBorderPainted(false);
         btnDia5.setContentAreaFilled(false);
         btnDia5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -188,7 +190,6 @@ public class Inicio extends javax.swing.JPanel {
         add(btnDia5, new org.netbeans.lib.awtextra.AbsoluteConstraints(435, 106, 60, 60));
 
         btnDia6.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia6.setText("<html>D<br>N</html>");
         btnDia6.setBorderPainted(false);
         btnDia6.setContentAreaFilled(false);
         btnDia6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -201,7 +202,6 @@ public class Inicio extends javax.swing.JPanel {
         add(btnDia6, new org.netbeans.lib.awtextra.AbsoluteConstraints(525, 106, 60, 60));
 
         btnDia7.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia7.setText("<html>D<br>N</html>");
         btnDia7.setBorderPainted(false);
         btnDia7.setContentAreaFilled(false);
         btnDia7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -280,6 +280,34 @@ public class Inicio extends javax.swing.JPanel {
         lblNombreUsuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblNombreUsuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         add(lblNombreUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(387, 18, 300, 27));
+
+        lblLunes.setForeground(new java.awt.Color(255, 255, 255));
+        lblLunes.setText("L");
+        add(lblLunes, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 10, 20));
+
+        lblMartes.setForeground(new java.awt.Color(255, 255, 255));
+        lblMartes.setText("L");
+        add(lblMartes, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, 10, 20));
+
+        lblMiercoles.setForeground(new java.awt.Color(255, 255, 255));
+        lblMiercoles.setText("L");
+        add(lblMiercoles, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 110, 10, 20));
+
+        lblJueves.setForeground(new java.awt.Color(255, 255, 255));
+        lblJueves.setText("L");
+        add(lblJueves, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 110, 10, 20));
+
+        lblViernes.setForeground(new java.awt.Color(255, 255, 255));
+        lblViernes.setText("L");
+        add(lblViernes, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 110, 10, 20));
+
+        lblSabado.setForeground(new java.awt.Color(255, 255, 255));
+        lblSabado.setText("L");
+        add(lblSabado, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 110, 10, 20));
+
+        lblDomingo.setForeground(new java.awt.Color(255, 255, 255));
+        lblDomingo.setText("L");
+        add(lblDomingo, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 110, 10, 20));
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo.png"))); // NOI18N
         add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
@@ -527,11 +555,18 @@ public class Inicio extends javax.swing.JPanel {
     private javax.swing.JButton btnProgreso;
     private javax.swing.JLabel fondo;
     private javax.swing.JLabel lblDivision;
+    private javax.swing.JLabel lblDomingo;
     private javax.swing.JLabel lblFecha;
     private javax.swing.JLabel lblHabitosPendientes;
     private javax.swing.JLabel lblHabitosRealizados;
+    private javax.swing.JLabel lblJueves;
+    private javax.swing.JLabel lblLunes;
+    private javax.swing.JLabel lblMartes;
     private javax.swing.JLabel lblMes;
+    private javax.swing.JLabel lblMiercoles;
     private javax.swing.JLabel lblNombreUsuario;
+    private javax.swing.JLabel lblSabado;
+    private javax.swing.JLabel lblViernes;
     private javax.swing.JPanel pnlContenedorHabitosPendientes;
     private javax.swing.JPanel pnlContenedorHabitosRealizados;
     // End of variables declaration//GEN-END:variables

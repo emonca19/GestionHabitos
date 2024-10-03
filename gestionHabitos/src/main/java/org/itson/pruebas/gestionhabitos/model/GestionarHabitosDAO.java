@@ -19,14 +19,22 @@ import javax.persistence.criteria.Root;
  */
 public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 
-    private final IConexion conexion;
     EntityManager entityManager;
 
     // Constructor
     public GestionarHabitosDAO(IConexion conexion) {
-        this.conexion = conexion;
+        this.entityManager = conexion.crearConexion();
     }
 
+     /**
+     * Cierra el `EntityManager` cuando el DAO ya no se necesite.
+     */
+    public void cerrar() {
+        if (entityManager != null && entityManager.isOpen()) {
+            entityManager.close();
+        }
+    }
+    
     /**
      * Crea un habito
      *
@@ -39,7 +47,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
         EntityTransaction transaction = null;
 
         try {
-            entityManager = this.conexion.crearConexion();
             transaction = entityManager.getTransaction();
             transaction.begin();
 
@@ -72,7 +79,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
         EntityTransaction transaction = null;
 
         try {
-            entityManager = this.conexion.crearConexion();
             transaction = entityManager.getTransaction();
             transaction.begin();
 
@@ -115,7 +121,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
         EntityTransaction transaction = null;
 
         try {
-            entityManager = this.conexion.crearConexion();
             transaction = entityManager.getTransaction();
             transaction.begin();
 
@@ -135,10 +140,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                 throw new ModelException("Transaccion revertida debido a un error al eliminar el habito", e);
             }
             throw new ModelException("Error al eliminar habito con id: " + id, e);
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
         }
     }
 
@@ -152,7 +153,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     @Override
     public List<Habito> obtenerHabitos(Cuenta cuenta) throws ModelException {
         try {
-            entityManager = this.conexion.crearConexion();
             TypedQuery<Habito> query = entityManager.createQuery(
                     "SELECT h FROM Habito h WHERE h.cuenta.usuario = :usuario", Habito.class
             );
@@ -165,10 +165,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 
         } catch (ModelException e) {
             throw new ModelException("Error al obtener la lista de hábitos", e);
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
         }
     }
 
@@ -182,8 +178,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     @Override
     public Cuenta crearCuenta(Cuenta cuenta) throws ModelException {
         try {
-
-            entityManager = this.conexion.crearConexion();
             entityManager.getTransaction().begin();
 
             entityManager.persist(cuenta);
@@ -198,10 +192,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             }
 
             throw new ModelException("Error al crear la cuenta", ex);
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
+
         }
     }
 
@@ -225,7 +216,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     public Cuenta consultarCuenta(String usuario, String contraseña) throws ModelException {
 
         try {
-            entityManager = this.conexion.crearConexion();
 
             CriteriaBuilder cb = entityManager.getCriteriaBuilder();
             CriteriaQuery<Cuenta> criteriaQuery = cb.createQuery(Cuenta.class);
@@ -247,10 +237,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 
         } catch (Exception e) {
             throw new ModelException("Error al consultar la cuenta: " + e.getMessage(), e);
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
         }
     }
 
@@ -259,16 +245,18 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Registro de historial de hábitos que coincide con la fecha y el ID de hábito.
-     * @throws ModelException Si ocurre un error al buscar o si no se encuentra el registro
+     * @return Registro de historial de hábitos que coincide con la fecha y el
+     * ID de hábito.
+     * @throws ModelException Si ocurre un error al buscar o si no se encuentra
+     * el registro
      */
+    @Override
     public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException {
         EntityManager entityManager = null;
         EntityTransaction transaction = null;
         HistorialHabitos resultado = null;
 
         try {
-            entityManager = this.conexion.crearConexion();
             transaction = entityManager.getTransaction();
             transaction.begin();
 
@@ -292,10 +280,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                 throw new ModelException("Transacción revertida debido a un error al buscar", e);
             }
             throw new ModelException("Error al buscar historial de hábitos", e);
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
         }
 
         return resultado; // Retorna el resultado
@@ -314,7 +298,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
         HistorialHabitos historialExistente = null;
 
         try {
-            entityManager = this.conexion.crearConexion();
             transaction = entityManager.getTransaction();
             transaction.begin();
 
@@ -335,10 +318,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                 throw new ModelException("Transacción revertida debido a un error al actualizar", e);
             }
             throw new ModelException("Error al actualizar historial de hábitos", e);
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
         }
 
         return historialExistente;
@@ -356,7 +335,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
         EntityTransaction transaction = null;
 
         try {
-            entityManager = this.conexion.crearConexion();
             transaction = entityManager.getTransaction();
             transaction.begin();
 
@@ -370,11 +348,8 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                 transaction.rollback();
             }
             throw new ModelException("Error al crear el historial de hábitos", e);
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
         }
+
     }
 
     /**
@@ -387,7 +362,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     @Override
     public boolean cuentaExiste(String usuario) throws ModelException {
         try {
-            entityManager = this.conexion.crearConexion();
             TypedQuery<Cuenta> query = entityManager.createQuery(
                     "SELECT c FROM Cuenta c WHERE c.usuario = :usuario", Cuenta.class
             );
