@@ -221,7 +221,7 @@ public class Inicio extends javax.swing.JPanel {
                 btnAgregarActionPerformed(evt);
             }
         });
-        add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 570, 60, 60));
+        add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 579, 50, 50));
 
         pnlContenedorHabitosPendientes.setOpaque(false);
         add(pnlContenedorHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 233, 700, 170));

@@ -4,9 +4,22 @@
  */
 package org.itson.pruebas.gestionhabitos.view;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 /**
  *
@@ -22,7 +35,12 @@ public class ProgresoMensual extends javax.swing.JPanel {
     public ProgresoMensual(FrameContenedor frame) {
         this.frame = frame;
         initComponents();
-        setFonts();
+        try {
+            listarHabitos();
+            setFonts();
+        } catch (FontFormatException | IOException ex) {
+            frame.mostrarAviso(ex.getMessage(), "Aviso");
+        }
     }
 
     /**
@@ -48,7 +66,7 @@ public class ProgresoMensual extends javax.swing.JPanel {
         lblMensual = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
         lblProgresoHabitos = new javax.swing.JLabel();
-        pnlHabitosPendientes = new javax.swing.JPanel();
+        pnlContenedorHabitos = new javax.swing.JPanel();
         btnHoy = new javax.swing.JButton();
         btnHabitos = new javax.swing.JButton();
         btnProgreso = new javax.swing.JButton();
@@ -207,8 +225,8 @@ public class ProgresoMensual extends javax.swing.JPanel {
         lblProgresoHabitos.setText("PROGESO DE HÁBITOS");
         add(lblProgresoHabitos, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 198, -1, -1));
 
-        pnlHabitosPendientes.setOpaque(false);
-        add(pnlHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 238, 700, 390));
+        pnlContenedorHabitos.setOpaque(false);
+        add(pnlContenedorHabitos, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 238, 700, 390));
 
         btnHoy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/hoy.png"))); // NOI18N
         btnHoy.setBorderPainted(false);
@@ -310,23 +328,105 @@ public class ProgresoMensual extends javax.swing.JPanel {
         frame.mostrarProgresoSemanal();
     }//GEN-LAST:event_btnMensualActionPerformed
 
-    private void setFonts() {
-        try {
-            lblNombreUsuario.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Medium.ttf", 20F));
-            lblMes.setFont(frame.cargarFuente("/fonts/Kurale/Kurale-Regular.ttf", 20F));
-            Font semiBoldFont = frame.cargarFuente("/fonts/Nunito/static/Nunito-SemiBold.ttf", 26F);
-            Font nunitoRegular = frame.cargarFuente("/fonts/Nunito/static/Nunito-Regular.ttf", 18F);
-            lblProgresoHabitos.setFont(semiBoldFont);
-            btnDia1.setFont(nunitoRegular);
-            btnDia2.setFont(nunitoRegular);
-            btnDia3.setFont(nunitoRegular);
-            btnDia4.setFont(nunitoRegular);
-            btnDia5.setFont(nunitoRegular);
-            btnDia6.setFont(nunitoRegular);
-            btnDia7.setFont(nunitoRegular);
-        } catch (FontFormatException | IOException e) {
-            frame.mostrarAviso(e.getMessage(), "Aviso");
+    private void listarHabitos() throws FontFormatException, IOException {
+        JPanel pnlHabitos = new JPanel();
+        pnlHabitos.setLayout(new BoxLayout(pnlHabitos, BoxLayout.Y_AXIS));  // Usar BoxLayout para colocar los hábitos en forma vertical
+        pnlHabitos.setOpaque(false);
+
+        JScrollPane scpHabitos = new JScrollPane(pnlHabitos);
+        scpHabitos.setOpaque(false);
+        scpHabitos.getViewport().setOpaque(false);
+        scpHabitos.setBorder(null);
+        scpHabitos.getVerticalScrollBar().setUnitIncrement(16);
+        scpHabitos.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scpHabitos.setPreferredSize(new Dimension(700, 390));  // Ajusta el tamaño del JScrollPane si es necesario
+        // Agregar el JScrollPane al contenedor principal
+
+        // Añadir hábitos
+        addHabit("Leer", pnlHabitos);
+        addHabit("Meditar", pnlHabitos);
+        addHabit("Ejercicio", pnlHabitos);
+        addHabit("Dormir", pnlHabitos);
+        addHabit("Gym", pnlHabitos);
+        pnlContenedorHabitos.add(scpHabitos);
+    }
+
+    private void addHabit(String habitName, JPanel parentPanel) throws FontFormatException, IOException {
+        HabitPanel habit = new HabitPanel(habitName);
+
+        parentPanel.add(habit);
+
+        // Refrescar el panel
+        parentPanel.revalidate();
+        parentPanel.repaint();
+    }
+
+// Panel personalizado para cada hábito
+    private class HabitPanel extends JPanel {
+
+        public HabitPanel(String habitName) throws FontFormatException, IOException {
+            setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            setPreferredSize(new Dimension(0, 60));  // Altura ajustada
+            setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));  // Establece la altura máxima
+
+            // Etiqueta con el nombre del hábito
+            JLabel nameLabel = new JLabel(habitName);
+            nameLabel.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Regular.ttf", 18F));
+            setOpaque(false);
+
+            // Configurar constraints para nameLabel
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.gridwidth = 2;  // Ocupa dos columnas
+            gbc.anchor = GridBagConstraints.WEST;
+            gbc.insets = new Insets(10, 0, 0, 0);  // Espacio inferior
+            add(nameLabel, gbc);
+
+            // Etiqueta para los días cumplidos
+            JLabel diasLabel = new JLabel("12/28");
+            diasLabel.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-SemiBold.ttf", 18F));
+
+            // Configurar constraints para diasLabel
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.gridwidth = 1;  // Solo una columna
+            gbc.anchor = GridBagConstraints.WEST;
+            gbc.insets = new Insets(0, 0, 0, 0);  // Espacio inferior
+            add(diasLabel, gbc);
+
+            // Barra de progreso
+            JProgressBar jpb = new JProgressBar(0, 28);  // Rango de la barra
+            jpb.setValue(12);  // Valor actual (puedes cambiarlo dinámicamente)
+            jpb.setPreferredSize(new Dimension(100, 10));
+            jpb.setMinimumSize(new Dimension(100, 10));
+            jpb.setForeground(new Color(118, 152, 82));
+            jpb.setBackground(new Color(245, 245, 245));
+
+            // Configurar constraints para jpb
+            gbc.gridx = 1;
+            gbc.gridy = 1;
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.weightx = 1.0;  // Permite que la barra de progreso se expanda
+            gbc.insets = new Insets(0, 10, 0, 0);  // Espacio inferior
+
+            add(jpb, gbc);
         }
+    }
+
+    private void setFonts() throws FontFormatException, IOException {
+        lblNombreUsuario.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Medium.ttf", 20F));
+        lblMes.setFont(frame.cargarFuente("/fonts/Kurale/Kurale-Regular.ttf", 20F));
+        Font semiBoldFont = frame.cargarFuente("/fonts/Nunito/static/Nunito-SemiBold.ttf", 26F);
+        Font nunitoRegular = frame.cargarFuente("/fonts/Nunito/static/Nunito-Regular.ttf", 18F);
+        lblProgresoHabitos.setFont(semiBoldFont);
+        btnDia1.setFont(nunitoRegular);
+        btnDia2.setFont(nunitoRegular);
+        btnDia3.setFont(nunitoRegular);
+        btnDia4.setFont(nunitoRegular);
+        btnDia5.setFont(nunitoRegular);
+        btnDia6.setFont(nunitoRegular);
+        btnDia7.setFont(nunitoRegular);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -349,6 +449,6 @@ public class ProgresoMensual extends javax.swing.JPanel {
     private javax.swing.JLabel lblMes;
     private javax.swing.JLabel lblNombreUsuario;
     private javax.swing.JLabel lblProgresoHabitos;
-    private javax.swing.JPanel pnlHabitosPendientes;
+    private javax.swing.JPanel pnlContenedorHabitos;
     // End of variables declaration//GEN-END:variables
 }

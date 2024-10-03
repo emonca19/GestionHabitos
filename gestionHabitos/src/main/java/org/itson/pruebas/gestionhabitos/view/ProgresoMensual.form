@@ -330,7 +330,7 @@
         </Constraint>
       </Constraints>
     </Component>
-    <Container class="javax.swing.JPanel" name="pnlHabitosPendientes">
+    <Container class="javax.swing.JPanel" name="pnlContenedorHabitos">
       <Properties>
         <Property name="opaque" type="boolean" value="false"/>
       </Properties>
