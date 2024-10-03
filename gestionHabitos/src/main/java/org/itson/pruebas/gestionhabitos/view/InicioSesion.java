@@ -27,6 +27,7 @@ public class InicioSesion extends javax.swing.JPanel {
     public InicioSesion(FrameContenedor frame) {
         this.frame = frame;
         initComponents();
+        generarConexion();
         setFonts();
     }
 
@@ -133,6 +134,10 @@ public class InicioSesion extends javax.swing.JPanel {
         limpiar();
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
+    private void generarConexion(){
+        
+    }
+    
     private void setFonts() {
         try {
             Font nunitoB = frame.cargarFuente("/fonts/Nunito/static/Nunito-SemiBold.ttf", 18F);

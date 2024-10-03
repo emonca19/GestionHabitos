@@ -1,5 +1,6 @@
 package org.itson.pruebas.gestionhabitos.main;
 
+import org.itson.pruebas.gestionhabitos.controller.InitialConfig;
 import org.itson.pruebas.gestionhabitos.view.FrameContenedor;
 
 /**
@@ -12,5 +13,6 @@ public class Main {
         FrameContenedor frameContenedor = new FrameContenedor();
         frameContenedor.mostrarInicioSesion();
         frameContenedor.setVisible(true);
+        InitialConfig.iniciarConexion();
     }
 }
