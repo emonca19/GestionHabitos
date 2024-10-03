@@ -1,6 +1,5 @@
 package org.itson.pruebas.gestionhabitos.view;
 
-import com.toedter.calendar.JDateChooser;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -20,7 +19,6 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -44,6 +42,7 @@ public class Inicio extends javax.swing.JPanel {
     private JPanel pnlHabitosRealizados;
     private IGestionarHabitosNegocio gestionar;
     private LocalDate fechaActual;
+    private Date[] lista;
 
     /**
      * Creates new form Inicio
@@ -52,6 +51,7 @@ public class Inicio extends javax.swing.JPanel {
      */
     public Inicio(FrameContenedor frame) {
         initComponents();
+        lista = new Date[7];
         gestionar = new GestionarHabitosNegocio();
         fechaActual = LocalDate.now();
         cargarDias(Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant()));
@@ -116,7 +116,6 @@ public class Inicio extends javax.swing.JPanel {
         lblDomingo1 = new javax.swing.JLabel();
         fondo = new javax.swing.JLabel();
         btnDia8 = new javax.swing.JButton();
-        txtFecha = new javax.swing.JTextField();
 
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMaximumSize(new java.awt.Dimension(750, 750));
@@ -270,7 +269,7 @@ public class Inicio extends javax.swing.JPanel {
 
         lblFecha.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lblFecha.setText("fecha");
-        add(lblFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 193, 250, 25));
+        add(lblFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 193, 410, 25));
 
         lblDivision.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/division.png"))); // NOI18N
         add(lblDivision, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 415, -1, -1));
@@ -392,14 +391,6 @@ public class Inicio extends javax.swing.JPanel {
         btnDia8.setMargin(new java.awt.Insets(0, 0, 0, 0));
         add(btnDia8, new org.netbeans.lib.awtextra.AbsoluteConstraints(525, 106, 60, 60));
 
-        txtFecha.setText("jTextField1");
-        txtFecha.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                txtFechaMouseClicked(evt);
-            }
-        });
-        add(txtFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 70, -1, -1));
-
         getAccessibleContext().setAccessibleName("");
     }// </editor-fold>//GEN-END:initComponents
 
@@ -417,108 +408,185 @@ public class Inicio extends javax.swing.JPanel {
 
     private void btnDia1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia1ActionPerformed
         // TODO add your handling code here:
+
+        fechaActual = lista[0].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String nombreDia = fechaActual.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es"));
+        String mes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        lblFecha.setText(nombreDia + " " + fechaActual.getDayOfMonth() + " de " + mes + " de " + fechaActual.getYear());
     }//GEN-LAST:event_btnDia1ActionPerformed
 
     private void btnDia2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia2ActionPerformed
         // TODO add your handling code here:
+         fechaActual = lista[1].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String nombreDia = fechaActual.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es"));
+        String mes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        lblFecha.setText(nombreDia + " " + fechaActual.getDayOfMonth() + " de " + mes + " de " + fechaActual.getYear());
     }//GEN-LAST:event_btnDia2ActionPerformed
 
     private void btnDia3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia3ActionPerformed
         // TODO add your handling code here:
+         fechaActual = lista[2].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String nombreDia = fechaActual.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es"));
+        String mes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        lblFecha.setText(nombreDia + " " + fechaActual.getDayOfMonth() + " de " + mes + " de " + fechaActual.getYear());
     }//GEN-LAST:event_btnDia3ActionPerformed
 
     private void btnDia4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia4ActionPerformed
         // TODO add your handling code here:
+         fechaActual = lista[3].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String nombreDia = fechaActual.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es"));
+        String mes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        lblFecha.setText(nombreDia + " " + fechaActual.getDayOfMonth() + " de " + mes + " de " + fechaActual.getYear());
     }//GEN-LAST:event_btnDia4ActionPerformed
 
     private void btnDia5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia5ActionPerformed
         // TODO add your handling code here:
+         fechaActual = lista[4].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String nombreDia = fechaActual.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es"));
+        String mes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        lblFecha.setText(nombreDia + " " + fechaActual.getDayOfMonth() + " de " + mes + " de " + fechaActual.getYear());
     }//GEN-LAST:event_btnDia5ActionPerformed
 
     private void btnDia6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia6ActionPerformed
         // TODO add your handling code here:
+         fechaActual = lista[5].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String nombreDia = fechaActual.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es"));
+        String mes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        lblFecha.setText(nombreDia + " " + fechaActual.getDayOfMonth() + " de " + mes + " de " + fechaActual.getYear());
     }//GEN-LAST:event_btnDia6ActionPerformed
 
     private void btnDia7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia7ActionPerformed
         // TODO add your handling code here:
+         fechaActual = lista[6].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String nombreDia = fechaActual.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es"));
+        String mes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        lblFecha.setText(nombreDia + " " + fechaActual.getDayOfMonth() + " de " + mes + " de " + fechaActual.getYear());
     }//GEN-LAST:event_btnDia7ActionPerformed
 
     private void btnIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzquierdaActionPerformed
-        try {
-            Date[] lista = new Date[7];
-            Date fecha = Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            lista = gestionar.obtenerSemana(gestionar.obtenerSemana(fecha), "anterior");
+       try {
+    Date fecha = Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    lista = gestionar.obtenerSemana(gestionar.obtenerSemana(fecha), "anterior");
 
-            // Formatear los días y establecer el texto en las etiquetas
-            lblLunes1.setText(String.format("%02d", lista[0].getDate()));
-            lblMartes1.setText(String.format("%02d", lista[1].getDate()));
-            lblMiercoles1.setText(String.format("%02d", lista[2].getDate()));
-            lblJueves1.setText(String.format("%02d", lista[3].getDate()));
-            lblViernes1.setText(String.format("%02d", lista[4].getDate()));
-            lblSabado1.setText(String.format("%02d", lista[5].getDate()));
-            lblDomingo1.setText(String.format("%02d", lista[6].getDate()));
+    // Formatear los días y establecer el texto en las etiquetas
+    lblLunes1.setText(String.format("%02d", lista[0].getDate()));
+    lblMartes1.setText(String.format("%02d", lista[1].getDate()));
+    lblMiercoles1.setText(String.format("%02d", lista[2].getDate()));
+    lblJueves1.setText(String.format("%02d", lista[3].getDate()));
+    lblViernes1.setText(String.format("%02d", lista[4].getDate()));
+    lblSabado1.setText(String.format("%02d", lista[5].getDate()));
+    lblDomingo1.setText(String.format("%02d", lista[6].getDate()));
 
-            // Obtener los meses de los días primero y último de la semana
-            LocalDate primerDia = lista[0].toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate();
-            LocalDate ultimoDia = lista[6].toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate();
+    // Obtener LocalDate para el primer y último día de la semana
+    LocalDate primerDia = lista[0].toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate();
+    LocalDate ultimoDia = lista[6].toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate();
 
-            String mesInicio = primerDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
-            String mesFin = ultimoDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+    // Obtener los meses y años correspondientes
+    String mesInicio = primerDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+    String mesFin = ultimoDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+    
+    int anioInicio = primerDia.getYear();
+    int anioFin = ultimoDia.getYear();
 
-            // Verificar si el mes es el mismo o diferente y actualizar lblMes
-            if (mesInicio.equals(mesFin)) {
-                lblMes.setText(mesInicio);
-            } else {
-                lblMes.setText(mesInicio + " - " + mesFin);
-            }
-
-            fechaActual = primerDia;
-        } catch (ControllerException ex) {
-            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+    // Determinar la salida de la etiqueta lblMes
+    if (!mesInicio.equals(mesFin)) {
+        // Si los meses son diferentes
+        if (anioInicio == anioFin) {
+            // Si los años son iguales, formatear como "mes1 - mes2 año"
+            lblMes.setText(mesInicio + " - " + mesFin + " " + anioInicio);
+        } else {
+            // Si los años son diferentes, formatear como "mes1 año1 - mes2 año2"
+            lblMes.setText(mesInicio + " " + anioInicio + " - " + mesFin + " " + anioFin);
         }
+    } else {
+        // Si los meses son iguales
+        lblMes.setText(mesInicio + " " + anioInicio);
+    }
+
+    fechaActual = primerDia;
+} catch (ControllerException ex) {
+    Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+}
+
 
 
     }//GEN-LAST:event_btnIzquierdaActionPerformed
 
     private void btnDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDerechaActionPerformed
         // TODO add your handling code here:
-        try {
-            Date[] lista = new Date[7];
-            Date fecha = Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            lista = gestionar.obtenerSemana(gestionar.obtenerSemana(fecha), "posterior");
+       try {
+    Date fecha = Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    lista = gestionar.obtenerSemana(gestionar.obtenerSemana(fecha), "posterior");
 
-            lblLunes1.setText(String.format("%02d", lista[0].getDate()));
-            lblMartes1.setText(String.format("%02d", lista[1].getDate()));
-            lblMiercoles1.setText(String.format("%02d", lista[2].getDate()));
-            lblJueves1.setText(String.format("%02d", lista[3].getDate()));
-            lblViernes1.setText(String.format("%02d", lista[4].getDate()));
-            lblSabado1.setText(String.format("%02d", lista[5].getDate()));
-            lblDomingo1.setText(String.format("%02d", lista[6].getDate()));
+    // Formatear los días y establecer el texto en las etiquetas
+    lblLunes1.setText(String.format("%02d", lista[0].getDate()));
+    lblMartes1.setText(String.format("%02d", lista[1].getDate()));
+    lblMiercoles1.setText(String.format("%02d", lista[2].getDate()));
+    lblJueves1.setText(String.format("%02d", lista[3].getDate()));
+    lblViernes1.setText(String.format("%02d", lista[4].getDate()));
+    lblSabado1.setText(String.format("%02d", lista[5].getDate()));
+    lblDomingo1.setText(String.format("%02d", lista[6].getDate()));
 
-            LocalDate primerDia = lista[0].toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate();
-            LocalDate ultimoDia = lista[6].toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate();
+    // Obtener LocalDate para el primer y último día de la semana
+    LocalDate primerDia = lista[0].toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate();
+    LocalDate ultimoDia = lista[6].toInstant()
+            .atZone(ZoneId.systemDefault())
+            .toLocalDate();
 
-            String mesInicio = primerDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
-            String mesFin = ultimoDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+    // Obtener los meses y años correspondientes
+    String mesInicio = primerDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+    String mesFin = ultimoDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+    
+    int anioInicio = primerDia.getYear();
+    int anioFin = ultimoDia.getYear();
 
-            if (mesInicio.equals(mesFin)) {
-                lblMes.setText(mesInicio);
-            } else {
-                lblMes.setText(mesInicio + " - " + mesFin);
-            }
-
-            fechaActual = primerDia;
-        } catch (ControllerException ex) {
-            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+    // Determinar la salida de la etiqueta lblMes
+    if (!mesInicio.equals(mesFin)) {
+        // Si los meses son diferentes
+        if (anioInicio == anioFin) {
+            // Si los años son iguales, formatear como "mes1 - mes2 año"
+            lblMes.setText(mesInicio + " - " + mesFin + " " + anioInicio);
+        } else {
+            // Si los años son diferentes, formatear como "mes1 año1 - mes2 año2"
+            lblMes.setText(mesInicio + " " + anioInicio + " - " + mesFin + " " + anioFin);
         }
+    } else {
+        // Si los meses son iguales
+        lblMes.setText(mesInicio + " " + anioInicio);
+    }
+
+    fechaActual = primerDia;
+} catch (ControllerException ex) {
+    Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+}
+
 
     }//GEN-LAST:event_btnDerechaActionPerformed
 
@@ -529,24 +597,6 @@ public class Inicio extends javax.swing.JPanel {
     private void btnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerfilActionPerformed
         frame.mostrarOpcionesPerfil();
     }//GEN-LAST:event_btnPerfilActionPerformed
-
-    private void txtFechaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtFechaMouseClicked
-        // TODO add your handling code here:
-        JDateChooser dateChooser = new JDateChooser();
-                int option = JOptionPane.showConfirmDialog(null, dateChooser, "Seleccionar Fecha", JOptionPane.OK_CANCEL_OPTION);
-
-                // Si el usuario hace clic en OK
-                if (option == JOptionPane.OK_OPTION) {
-                    // Obtener la fecha seleccionada
-                    java.util.Date selectedDate = dateChooser.getDate();
-                    if (selectedDate != null) {
-                        // Formatear la fecha y mostrarla en el JTextField
-                        txtFecha.setText(selectedDate.toString());
-                    } else {
-                        JOptionPane.showMessageDialog(null, "No se seleccionó ninguna fecha.");
-                    }
-                }
-    }//GEN-LAST:event_txtFechaMouseClicked
 
     private void mostrarHabitos() throws FontFormatException, IOException {
         listarHabitosPendientes();
@@ -706,7 +756,6 @@ public class Inicio extends javax.swing.JPanel {
 
     private void cargarDias(Date hoy) {
 
-        Date[] lista = new Date[7];
         lista = gestionar.obtenerSemana(hoy);
 
         LocalDate primerDia = lista[0].toInstant()
@@ -719,12 +768,20 @@ public class Inicio extends javax.swing.JPanel {
         String mesInicio = primerDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
         String mesFin = ultimoDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
 
-        // Verificar si el mes es el mismo o diferente y actualizar lblMes
-        if (mesInicio.equals(mesFin)) {
-            lblMes.setText(mesInicio);
+        int anioInicio = primerDia.getYear();
+        int anioFin = ultimoDia.getYear();
+
+        if (!mesInicio.equals(mesFin)) {
+            if (anioInicio == anioFin) {
+                lblMes.setText(mesInicio + " - " + mesFin + " " + anioInicio);
+            } else {
+                lblMes.setText(mesInicio + " - " + mesFin + " " + anioFin);
+            }
         } else {
-            lblMes.setText(mesInicio + " - " + mesFin);
+            lblMes.setText(mesInicio + " " + anioInicio);
         }
+
+        fechaActual = primerDia;
 
         lblLunes1.setText(String.format("%02d", lista[0].getDate()));
         lblMartes1.setText(String.format("%02d", lista[1].getDate()));
@@ -780,6 +837,5 @@ public class Inicio extends javax.swing.JPanel {
     private javax.swing.JLabel lblViernes1;
     private javax.swing.JPanel pnlContenedorHabitosPendientes;
     private javax.swing.JPanel pnlContenedorHabitosRealizados;
-    private javax.swing.JTextField txtFecha;
     // End of variables declaration//GEN-END:variables
 }
