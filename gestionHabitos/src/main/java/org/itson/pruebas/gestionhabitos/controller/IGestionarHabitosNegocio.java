@@ -79,32 +79,16 @@ public interface IGestionarHabitosNegocio {
      */
     public HistorialHabitosDTO buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ControllerException;
 
-    /**
-     * Actualizar un registro de historial de hábitos utilizando la entidad.
-     *
-     * @param historial Habito a actualizar.
-     * @return El registro actualizado de historial de hábitos.
-     * @throws ControllerException Si ocurre un error al actualizar.
-     */
-    public HistorialHabitosDTO actualizarHistorial(HistorialHabitosDTO historial) throws ControllerException;
-
-    /**
-     * Crear un nuevo historial de hábitos.
-     *
-     * @param historial El objeto HistorialHabitos a crear.
-     * @return El objeto HistorialHabitos creado.
-     * @throws ControllerException Si ocurre un error al crear el historial.
-     */
-    public HistorialHabitosDTO crearHistorial(HistorialHabitosDTO historial) throws ControllerException;
-
-    /**
-     * Consulta la existencia de una cuenta
-     *
-     * @param usuario Usuario a consultar
-     * @return Cuenta consultada
-     * @throws ControllerException si no se puede consultar la cuenta
-     * correctamente
-     */
+    public HistorialHabitosDTO guardarHistorial(HistorialHabitosDTO historial) throws ControllerException;
+    
+        /**
+         * Consulta la existencia de una cuenta
+         *
+         * @param usuario Usuario a consultar
+         * @return Cuenta consultada
+         * @throws ControllerException si no se puede consultar la cuenta
+         * correctamente
+         */
     public boolean cuentaExiste(String usuario) throws ControllerException;
 
     /**

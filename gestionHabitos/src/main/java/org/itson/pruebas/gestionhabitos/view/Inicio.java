@@ -116,7 +116,6 @@ public class Inicio extends javax.swing.JPanel {
         lblDomingo = new javax.swing.JLabel();
         lblDomingo1 = new javax.swing.JLabel();
         fondo = new javax.swing.JLabel();
-        btnDia8 = new javax.swing.JButton();
 
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMaximumSize(new java.awt.Dimension(750, 750));
@@ -386,13 +385,6 @@ public class Inicio extends javax.swing.JPanel {
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo.png"))); // NOI18N
         add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
-        btnDia8.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia8.setBorderPainted(false);
-        btnDia8.setContentAreaFilled(false);
-        btnDia8.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnDia8.setMargin(new java.awt.Insets(0, 0, 0, 0));
-        add(btnDia8, new org.netbeans.lib.awtextra.AbsoluteConstraints(525, 106, 60, 60));
-
         getAccessibleContext().setAccessibleName("");
     }// </editor-fold>//GEN-END:initComponents
 
@@ -661,7 +653,7 @@ public class Inicio extends javax.swing.JPanel {
                 }
             }
         } catch (ControllerException ex) {
-//            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+            return;
         }
 
         // Actualizar la interfaz
@@ -680,7 +672,7 @@ public class Inicio extends javax.swing.JPanel {
             );
 
             // Registrar el historial
-            new GestionarHabitosNegocio().crearHistorial(historial);
+            new GestionarHabitosNegocio().guardarHistorial(historial);
 
         } catch (ControllerException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
@@ -873,7 +865,6 @@ public class Inicio extends javax.swing.JPanel {
     private javax.swing.JButton btnDia5;
     private javax.swing.JButton btnDia6;
     private javax.swing.JButton btnDia7;
-    private javax.swing.JButton btnDia8;
     private javax.swing.JButton btnHabitos;
     private javax.swing.JButton btnHoy;
     private javax.swing.JButton btnIzquierda;

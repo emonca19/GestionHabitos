@@ -239,8 +239,10 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Registro de historial de hábitos que coincide con la fecha y el ID de hábito.
-     * @throws ModelException Si ocurre un error al buscar o si no se encuentra el registro
+     * @return Registro de historial de hábitos que coincide con la fecha y el
+     * ID de hábito.
+     * @throws ModelException Si ocurre un error al buscar o si no se encuentra
+     * el registro
      */
     @Override
     public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException {
@@ -278,14 +280,15 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     }
 
     /**
-     * Actualizar un registro de historial de hábitos utilizando la entidad.
+     * Crear o actualizar un historial de hábitos. Si el historial ya existe, se
+     * actualiza; si no, se crea.
      *
-     * @param historial Habito a actualizar.
-     * @return El registro actualizado de historial de hábitos.
-     * @throws ModelException Si ocurre un error al actualizar.
+     * @param historial El objeto HistorialHabitos a persistir.
+     * @return El objeto HistorialHabitos persistido (creado o actualizado).
+     * @throws ModelException Si ocurre un error durante la operación.
      */
     @Override
-    public HistorialHabitos actualizarHistorial(HistorialHabitos historial) throws ModelException {
+    public HistorialHabitos guardarHistorial(HistorialHabitos historial) throws ModelException {
         EntityTransaction transaction = null;
         HistorialHabitos historialExistente = null;
 
@@ -293,55 +296,31 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             transaction = entityManager.getTransaction();
             transaction.begin();
 
-            historialExistente = entityManager.find(HistorialHabitos.class, historial.getId());
+            // Solo buscar si el historial tiene un ID (no es nuevo)
+            if (historial.getId() != null) {
+                historialExistente = entityManager.find(HistorialHabitos.class, historial.getId());
+            }
+
             if (historialExistente != null) {
+                // Actualizar el historial existente
                 historialExistente.setDia(historial.getDia());
                 historialExistente.setCompletado(historial.isCompletado());
                 historialExistente.setHabito(historial.getHabito());
-
-                transaction.commit();
             } else {
-                transaction.rollback();
-                throw new ModelException("Registro de historial de hábitos no encontrado con el ID proporcionado");
+                // Crear un nuevo historial
+                entityManager.persist(historial);
+                historialExistente = historial;
             }
-        } catch (ModelException e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-                throw new ModelException("Transacción revertida debido a un error al actualizar", e);
-            }
-            throw new ModelException("Error al actualizar historial de hábitos", e);
-        }
-
-        return historialExistente;
-    }
-
-    /**
-     * Crear un nuevo historial de hábitos.
-     *
-     * @param historial El objeto HistorialHabitos a crear.
-     * @return El objeto HistorialHabitos creado.
-     * @throws ModelException Si ocurre un error al crear el historial.
-     */
-    @Override
-    public HistorialHabitos crearHistorial(HistorialHabitos historial) throws ModelException {
-        EntityTransaction transaction = null;
-
-        try {
-            transaction = entityManager.getTransaction();
-            transaction.begin();
-
-            entityManager.persist(historial);
 
             transaction.commit();
-            return historial;
-
         } catch (Exception e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            throw new ModelException("Error al crear el historial de hábitos", e);
+            throw new ModelException("Error al guardar el historial de hábitos", e);
         }
 
+        return historialExistente;
     }
 
     /**

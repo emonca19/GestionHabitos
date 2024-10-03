@@ -339,9 +339,9 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @throws ControllerException Si ocurre un error al actualizar.
      */
     @Override
-    public HistorialHabitosDTO actualizarHistorial(HistorialHabitosDTO historial) throws ControllerException {
+    public HistorialHabitosDTO guardarHistorial(HistorialHabitosDTO historial) throws ControllerException {
         try {
-            HistorialHabitosDTO habito = historialConvertirADTO(habitoDAO.actualizarHistorial(historialDTOConvertirAEntidad(historial)));
+            HistorialHabitosDTO habito = historialConvertirADTO(habitoDAO.guardarHistorial(historialDTOConvertirAEntidad(historial)));
             return habito;
         } catch (ModelException ex) {
             throw new ControllerException(ex);
@@ -359,16 +359,6 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     public boolean cuentaExiste(String usuario) throws ControllerException {
         try {
             return habitoDAO.cuentaExiste(usuario);
-        } catch (ModelException ex) {
-            throw new ControllerException(ex);
-        }
-    }
-    
-    @Override
-    public HistorialHabitosDTO crearHistorial(HistorialHabitosDTO historial) throws ControllerException {
-        try {
-            HistorialHabitosDTO habito = historialConvertirADTO(habitoDAO.crearHistorial(historialDTOConvertirAEntidad(historial)));
-            return habito;
         } catch (ModelException ex) {
             throw new ControllerException(ex);
         }

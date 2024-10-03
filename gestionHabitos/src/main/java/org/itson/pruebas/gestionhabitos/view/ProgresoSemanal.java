@@ -14,6 +14,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -21,6 +24,8 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
+import org.itson.pruebas.gestionhabitos.controller.IGestionarHabitosNegocio;
 
 /**
  *
@@ -29,6 +34,9 @@ import javax.swing.ScrollPaneConstants;
 public class ProgresoSemanal extends javax.swing.JPanel {
 
     private FrameContenedor frame;
+    private IGestionarHabitosNegocio gestionar;
+    private LocalDate fechaActual;
+    private Date[] lista;
 
     /**
      * Creates new form ListaHabitos
@@ -36,6 +44,9 @@ public class ProgresoSemanal extends javax.swing.JPanel {
     public ProgresoSemanal(FrameContenedor frame) {
         this.frame = frame;
         initComponents();
+        lista = new Date[7];
+        gestionar = new GestionarHabitosNegocio();
+        fechaActual = LocalDate.now();
         try {
             listarHabitos();
             setFonts();
@@ -427,6 +438,11 @@ public class ProgresoSemanal extends javax.swing.JPanel {
         btnDia5.setFont(nunitoRegular);
         btnDia6.setFont(nunitoRegular);
         btnDia7.setFont(nunitoRegular);
+    }
+
+    public void consultarHabitos() {
+        Date fecha = Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        lista = gestionar.obtenerSemana(fecha);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

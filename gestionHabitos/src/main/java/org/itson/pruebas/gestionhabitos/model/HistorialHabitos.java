@@ -41,7 +41,7 @@ public class HistorialHabitos implements Serializable {
     private boolean completado;
 
     // Relación con la entidad Habito
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne(cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "id_habito", nullable = false)
     private Habito habito;
 

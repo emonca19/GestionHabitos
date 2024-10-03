@@ -5,7 +5,6 @@
 package org.itson.pruebas.gestionhabitos.controller;
 
 import java.util.Date;
-import org.itson.pruebas.gestionhabitos.model.Habito;
 
 /**
  * Clase DTO que representa un registro de historial de hábitos. Se utiliza para transferir datos sobre un historial de hábitos entre capas de la aplicación.

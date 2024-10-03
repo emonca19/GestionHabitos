@@ -79,23 +79,7 @@ public interface IGestionarHabitosDAO {
      */
     public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException;
 
-    /**
-     * Actualizar un registro de historial de hábitos utilizando la entidad.
-     *
-     * @param historial Habito a actualizar.
-     * @return El registro actualizado de historial de hábitos.
-     * @throws ModelException Si ocurre un error al actualizar.
-     */
-    public HistorialHabitos actualizarHistorial(HistorialHabitos historial) throws ModelException;
-
-    /**
-     * Crear un nuevo historial de hábitos.
-     *
-     * @param historial El objeto HistorialHabitos a crear.
-     * @return El objeto HistorialHabitos creado.
-     * @throws ModelException Si ocurre un error al crear el historial.
-     */
-    public HistorialHabitos crearHistorial(HistorialHabitos historial) throws ModelException;
+    public HistorialHabitos guardarHistorial(HistorialHabitos historial) throws ModelException;
 
     /**
      * Devuelve si un usuario ya existe

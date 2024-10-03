@@ -72,7 +72,14 @@ public class CrearHabito extends javax.swing.JPanel {
         Date fechaCreacion = new Date();
         GestionarHabitosNegocio gestion = new GestionarHabitosNegocio();
 
-        String diasBits = GestionarHabitosNegocio.convertirABits(cbxLunes.isSelected(), cbxMartes.isSelected(), cbxMiercoles.isSelected(), cbxJueves.isSelected(), cbxViernes.isSelected(), cbxSabado.isSelected(), cbxDomingo.isSelected());
+        String diasBits = GestionarHabitosNegocio.convertirABits(
+                cbxLunes.isSelected(), 
+                cbxMartes.isSelected(), 
+                cbxMiercoles.isSelected(),
+                cbxJueves.isSelected(), 
+                cbxViernes.isSelected(), 
+                cbxSabado.isSelected(), 
+                cbxDomingo.isSelected());
 
         frecuencia = switch (diasSemana) {
             case 7 ->

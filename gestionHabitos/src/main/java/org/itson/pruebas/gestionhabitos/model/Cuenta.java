@@ -21,7 +21,7 @@ public class Cuenta implements Serializable {
 
     // Identificador único del usuario
     @Id
-    @Column(name = "usuario", nullable = false, unique = true, length = 50)
+    @Column(name = "usuario", nullable = false, length = 50)
     private String usuario;
 
 // Contraseña de la cuenta (no nulo)
