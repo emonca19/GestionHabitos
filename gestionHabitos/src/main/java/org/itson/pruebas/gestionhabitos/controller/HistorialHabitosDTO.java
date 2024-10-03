@@ -13,7 +13,7 @@ import org.itson.pruebas.gestionhabitos.model.Habito;
 public class HistorialHabitosDTO {
 
     // Identificador único del registro de historial
-    private int id;
+    private Long id;
 
     // Fecha en la que se realizó el hábito
     private Date dia;
@@ -22,7 +22,7 @@ public class HistorialHabitosDTO {
     private boolean completado;
 
     // Identificador del hábito asociado
-    private Habito habito;
+    private HabitoDTO habito;
 
     /**
      * Constructor vacío
@@ -30,7 +30,7 @@ public class HistorialHabitosDTO {
     public HistorialHabitosDTO() {
     }
 
-    public HistorialHabitosDTO(Date dia, boolean completado, Habito habito) {
+    public HistorialHabitosDTO(Date dia, boolean completado, HabitoDTO habito) {
         this.dia = dia;
         this.completado = completado;
         this.habito = habito;
@@ -44,7 +44,7 @@ public class HistorialHabitosDTO {
      * @param completado Indica si el hábito ha sido completado.
      * @param habito El identificador del hábito asociado.
      */
-    public HistorialHabitosDTO(int id, Date dia, boolean completado, Habito habito) {
+    public HistorialHabitosDTO(Long id, Date dia, boolean completado, HabitoDTO habito) {
         this.id = id;
         this.dia = dia;
         this.completado = completado;
@@ -56,7 +56,7 @@ public class HistorialHabitosDTO {
      *
      * @return El identificador del registro.
      */
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -65,7 +65,7 @@ public class HistorialHabitosDTO {
      *
      * @param id El identificador del registro a establecer.
      */
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -110,7 +110,7 @@ public class HistorialHabitosDTO {
      *
      * @return El identificador del hábito.
      */
-    public Habito getHabito() {
+    public HabitoDTO getHabito() {
         return habito;
     }
 
@@ -119,7 +119,7 @@ public class HistorialHabitosDTO {
      *
      * @param habito El identificador del hábito a establecer.
      */
-    public void setHabito(Habito habito) {
+    public void setHabito(HabitoDTO habito) {
         this.habito = habito;
     }
 }

@@ -675,7 +675,7 @@ public class Inicio extends javax.swing.JPanel {
             HistorialHabitosDTO historial = new HistorialHabitosDTO(
                     new Date(), // Fecha actual
                     true, // Completado
-                    new GestionarHabitosNegocio().HabitoDTOConvertirAEntidad(habitoDTO)
+                    habitoDTO
             );
 
             // Registrar el historial

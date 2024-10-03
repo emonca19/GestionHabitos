@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
@@ -49,7 +50,7 @@ public class Habito implements Serializable {
     private String nombre;
 
 // Relación con la entidad Cuenta (clave foránea)
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "usuario", referencedColumnName = "usuario", nullable = false)
     private Cuenta cuenta;
 

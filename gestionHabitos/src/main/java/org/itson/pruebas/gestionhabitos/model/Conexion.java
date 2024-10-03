@@ -44,8 +44,8 @@ public class Conexion implements IConexion {
      */
     @Override
     public  void cerrarConexion() {
-        if (emFactory != null && emFactory.isOpen()) {
-            emFactory.close();
-        }
+//        if (emFactory != null && emFactory.isOpen()) {
+//            emFactory.close();
+//        }
     }
 }

@@ -231,7 +231,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
                 historial.getId(),
                 historial.getDia(),
                 historial.isCompletado(),
-                historial.getHabito() // Asumiendo que 'idHabito' no es null
+                HabitoConvertirADTO(historial.getHabito())
         );
     }
 
@@ -247,7 +247,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         historial.setId(historialDTO.getId());
         historial.setDia(historialDTO.getDia());
         historial.setCompletado(historialDTO.isCompletado());
-        historial.setHabito(historialDTO.getHabito()); // Asumiendo que el idHabito es un entero
+        historial.setHabito(HabitoDTOConvertirAEntidad(historialDTO.getHabito())); 
         return historial;
     }
 

@@ -30,14 +30,14 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
         this.entityManager = conexion.crearConexion();
     }
 
-    /**
-     * Cierra el `EntityManager` cuando el DAO ya no se necesite.
-     */
-    public void cerrar() {
-        if (entityManager != null && entityManager.isOpen()) {
-            entityManager.close();
-        }
-    }
+//    /**
+//     * Cierra el `EntityManager` cuando el DAO ya no se necesite.
+//     */
+//    public void cerrar() {
+//        if (entityManager != null && entityManager.isOpen()) {
+//            entityManager.close();
+//        }
+//    }
 
     /**
      * Crea un habito
@@ -64,11 +64,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                 throw new ModelException("Transaccion revertida debido a un error al crear el habito");
             }
             throw new ModelException("Error al crear habito ");
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        } 
     }
 
     /**
@@ -106,11 +102,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                 throw new ModelException("Transaccion revertida debido a un error al actualizar", e);
             }
             throw new ModelException("Error al actualizar habito", e);
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
-        }
+        } 
     }
 
     /**
@@ -427,10 +419,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 
         } catch (Exception e) {
             throw new ModelException("Error al buscar el hábito: " + e.getMessage()); 
-        } finally {
-            if (entityManager != null) {
-                entityManager.close();
-            }
         }
     }
 

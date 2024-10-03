@@ -6,6 +6,7 @@ package org.itson.pruebas.gestionhabitos.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +29,7 @@ public class HistorialHabitos implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Long id;
 
     // Fecha en la que se registró el hábito
     @Column(name = "dia", nullable = false)
@@ -40,8 +41,8 @@ public class HistorialHabitos implements Serializable {
     private boolean completado;
 
     // Relación con la entidad Habito
-    @ManyToOne
-    @JoinColumn(name = "idhabito", nullable = false)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @JoinColumn(name = "id_habito", nullable = false)
     private Habito habito;
 
     /**
@@ -69,7 +70,7 @@ public class HistorialHabitos implements Serializable {
      *
      * @return el identificador único del historial.
      */
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -78,7 +79,7 @@ public class HistorialHabitos implements Serializable {
      *
      * @param id El nuevo identificador para el historial.
      */
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

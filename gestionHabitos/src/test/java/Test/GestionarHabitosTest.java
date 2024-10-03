@@ -43,195 +43,271 @@ public class GestionarHabitosTest {
 
     @AfterEach
     public void tearDown() {
-        // Cierra la conexión y la fábrica de administradores de entidad
-        if (entityManager != null) {
+        if (entityManager.isOpen()) {
             entityManager.close();
-        }
-        if (entityManagerFactory != null) {
-            entityManagerFactory.close();
         }
     }
 
-//    @Test
-//    public void testCrearCuenta() throws ModelException {
-//        Cuenta nuevaCuenta = new Cuenta();
-//        nuevaCuenta.setUsuario("usuarioPrueba");
-//        nuevaCuenta.setContrasena("contrasena");
-//        
-//        nuevaCuenta.setNombre("Brenda");
-//
-//        Cuenta creada = gestionarHabitosDAO.crearCuenta(nuevaCuenta);
-//        assertNotNull(creada);
-//        assertEquals(nuevaCuenta.getUsuario(), creada.getUsuario());
-//    }
-//    
-//    @Test
-//    public void testCrearHabito() throws ModelException {
-//        Cuenta nuevaCuenta = new Cuenta();
-//        nuevaCuenta.setUsuario("usuarioPrueba");
-//        nuevaCuenta.setContrasena("contrasena");
-//        
-//        nuevaCuenta.setNombre("Brenda");
-//        
-//        Habito nuevoHabito = new Habito();
-//        nuevoHabito.setNombre("Hábito de prueba");
-//        nuevoHabito.setFrecuencia("Diaria");
-//        nuevoHabito.setDiasSemana("1001001");
-//        nuevoHabito.setFechaCreacion(new Date());
-//        nuevoHabito.setId(2L);
-//        nuevoHabito.setFrecuencia("diario");
-//        nuevoHabito.setCuenta(nuevaCuenta);
-//
-//        Habito creado = gestionarHabitosDAO.crearHabito(nuevoHabito);
-//        assertNotNull(creado);
-//        assertEquals(nuevoHabito.getNombre(), creado.getNombre());
-//    }
+    @Test
+    public void testCrearCuenta() throws ModelException {
+        Cuenta nuevaCuenta = new Cuenta();
+        nuevaCuenta.setUsuario("usuarioPrueba");
+        nuevaCuenta.setContrasena("contrasena");
+
+        nuevaCuenta.setNombre("Brenda");
+
+        Cuenta creada = gestionarHabitosDAO.crearCuenta(nuevaCuenta);
+        assertNotNull(creada);
+        assertEquals(nuevaCuenta.getUsuario(), creada.getUsuario());
+    }
+
+    @Test
+    public void testCrearHabito() throws ModelException {
+        Cuenta nuevaCuenta = new Cuenta();
+        nuevaCuenta.setUsuario("usuarioPruebagyuftftyfyf");
+        nuevaCuenta.setContrasena("contrasena");
+
+        nuevaCuenta.setNombre("Brenda");
+
+        Habito nuevoHabito = new Habito();
+        nuevoHabito.setNombre("Hábito de prueba");
+        nuevoHabito.setFrecuencia("Diaria");
+        nuevoHabito.setDiasSemana("1001001");
+        nuevoHabito.setFechaCreacion(new Date());
+        nuevoHabito.setId(223336L);
+        nuevoHabito.setFrecuencia("diario");
+        nuevoHabito.setCuenta(nuevaCuenta);
+
+        Habito creado = gestionarHabitosDAO.crearHabito(nuevoHabito);
+        assertNotNull(creado);
+        assertEquals(nuevoHabito.getNombre(), creado.getNombre());
+    }
+
     @Test
     public void testActualizarHabito() throws ModelException {
         // Crear un habito y persistirlo
-        Habito habito = new Habito();
-        habito.setNombre("Hábito inicial");
-        habito.setFrecuencia("Semanal");
+        Cuenta nuevaCuenta = new Cuenta();
+        nuevaCuenta.setUsuario("usuarioPrueba");
+        nuevaCuenta.setContrasena("contrasena");
 
-        habito.setDiasSemana("1001001");
-        gestionarHabitosDAO.crearHabito(habito);
+        nuevaCuenta.setNombre("Brenda");
+
+        Habito nuevoHabito = new Habito();
+        nuevoHabito.setNombre("Hábito de prueba");
+        nuevoHabito.setFrecuencia("Diaria");
+        nuevoHabito.setDiasSemana("1001001");
+        nuevoHabito.setFechaCreacion(new Date());
+        nuevoHabito.setId(2L);
+        nuevoHabito.setFrecuencia("diario");
+        nuevoHabito.setCuenta(nuevaCuenta);
 
         // Actualizar el hábito
-        habito.setFrecuencia("Diaria");
-        Habito actualizado = gestionarHabitosDAO.actualizarHabito(habito);
+        nuevoHabito.setFrecuencia("Diaria");
+        Habito actualizado = gestionarHabitosDAO.actualizarHabito(nuevoHabito);
 
         assertEquals("Diaria", actualizado.getFrecuencia());
     }
 
-//    @Test
-//    public void testEliminarHabito() throws ModelException {
-//         Crear un hábito y persistirlo
-//        Habito habito = new Habito();
-//        habito.setNombre("Hábito para eliminar");
-//        gestionarHabitosDAO.crearHabito(habito);
-//
-//         Eliminar el hábito
-//        boolean eliminado = gestionarHabitosDAO.eliminarHabito(habito.getId());
-//        assertTrue(eliminado);
-//    }
-//
-//    @Test
-//    public void testObtenerHabitos() throws ModelException {
-//         Crear cuenta y hábitos
-//        Cuenta cuenta = new Cuenta();
-//        cuenta.setUsuario("testUser");
-//        cuenta.setContrasena("testPass");
-//        gestionarHabitosDAO.crearCuenta(cuenta);
-//
-//        Habito habito1 = new Habito();
-//        habito1.setNombre("Hábito 1");
-//        habito1.setCuenta(cuenta);
-//        gestionarHabitosDAO.crearHabito(habito1);
-//
-//        Habito habito2 = new Habito();
-//        habito2.setNombre("Hábito 2");
-//        habito2.setCuenta(cuenta);
-//        gestionarHabitosDAO.crearHabito(habito2);
-//
-//        List<Habito> habitos = gestionarHabitosDAO.obtenerHabitos(cuenta);
-//        assertEquals(2, habitos.size());
-//    }
-//
-//    @Test
-//    public void testCrearCuenta() throws ModelException {
-//        Cuenta nuevaCuenta = new Cuenta();
-//        nuevaCuenta.setUsuario("usuarioPrueba");
-//        nuevaCuenta.setContrasena("contrasena");
-//
-//        Cuenta creada = gestionarHabitosDAO.crearCuenta(nuevaCuenta);
-//        assertNotNull(creada);
-//        assertEquals(nuevaCuenta.getUsuario(), creada.getUsuario());
-//    }
-//
-//    @Test
-//    public void testConsultarCuenta() throws ModelException {
+    @Test
+    public void testEliminarHabito() throws ModelException {
+
+        Cuenta nuevaCuenta = new Cuenta();
+        nuevaCuenta.setUsuario("usuarioPrueba");
+        nuevaCuenta.setContrasena("contrasena");
+
+        nuevaCuenta.setNombre("Brenda");
+
+        Habito nuevoHabito = new Habito();
+        nuevoHabito.setNombre("Hábito de prueba");
+        nuevoHabito.setFrecuencia("Diaria");
+        nuevoHabito.setDiasSemana("1001001");
+        nuevoHabito.setFechaCreacion(new Date());
+        nuevoHabito.setId(1L);
+        nuevoHabito.setFrecuencia("diario");
+        nuevoHabito.setCuenta(nuevaCuenta);
+
+        boolean eliminado = gestionarHabitosDAO.eliminarHabito(nuevoHabito.getId());
+        assertTrue(eliminado);
+    }
+
+    @Test
+    public void testObtenerHabitos() throws ModelException {
+        // Crear una cuenta de prueba
+        Cuenta cuenta = new Cuenta();
+        cuenta.setUsuario("Juana");
+        cuenta.setContrasena("contrasena4");
+        cuenta.setNombre("Juana");
+
+        List<Habito> habitos = gestionarHabitosDAO.obtenerHabitos(cuenta);
+        assertEquals(1, habitos.size()); // Verificar que hay dos hábitos
+    }
+
+
+    @Test
+    public void testConsultarCuenta() throws ModelException {
 //         Crear y persistir la cuenta
-//        Cuenta cuenta = new Cuenta();
-//        cuenta.setUsuario("usuarioConsulta");
-//        cuenta.setContrasena("contrasenaConsulta");
-//        gestionarHabitosDAO.crearCuenta(cuenta);
-//
+        Cuenta cuenta = new Cuenta();
+        cuenta.setUsuario("usuarioConsulta");
+        cuenta.setContrasena("contrasenaConsulta");
+        cuenta.setNombre("GelatinPower");
+        gestionarHabitosDAO.crearCuenta(cuenta);
+
 //         Consultar la cuenta
-//        Cuenta consultada = gestionarHabitosDAO.consultarCuenta(cuenta.getUsuario(), cuenta.getContrasena());
-//        assertNotNull(consultada);
-//        assertEquals(cuenta.getUsuario(), consultada.getUsuario());
-//    }
+        Cuenta consultada = gestionarHabitosDAO.consultarCuenta(cuenta.getUsuario(), cuenta.getContrasena());
+        assertNotNull(consultada);
+        assertEquals(cuenta.getUsuario(), consultada.getUsuario());
+    }
+
+    @Test
+    public void testBuscarPorFechaYIdHabito() throws ModelException {
+        // Crear y persistir la nueva cuenta
+        Cuenta nuevaCuenta = new Cuenta();
+        nuevaCuenta.setUsuario("usuarioPruEbonae");
+        nuevaCuenta.setContrasena("contrasena");
+        nuevaCuenta.setNombre("Brenda");
+        gestionarHabitosDAO.crearCuenta(nuevaCuenta); // Asegúrate de que esta llamada persiste la cuenta
+
+        // Crear y persistir el nuevo hábito
+        Habito nuevoHabito = new Habito();
+        nuevoHabito.setNombre("Hábito de prueba");
+        nuevoHabito.setFrecuencia("Diaria");
+        nuevoHabito.setDiasSemana("1001001");
+        nuevoHabito.setFechaCreacion(new Date());
+        nuevoHabito.setId(42L);
+        nuevoHabito.setFrecuencia("diario");
+        nuevoHabito.setCuenta(nuevaCuenta);
+        gestionarHabitosDAO.crearHabito(nuevoHabito); // Asegúrate de que esta llamada persiste el hábito
+
+        // Crear historial
+        HistorialHabitos historial = new HistorialHabitos();
+        historial.setHabito(nuevoHabito);
+        historial.setDia(new Date());
+        historial.setCompletado(false);
+        gestionarHabitosDAO.crearHistorial(historial); // Persistir el historial
+
+        // Buscar por fecha y ID
+        HistorialHabitos encontrado = gestionarHabitosDAO.buscarPorFechaYIdHabito(historial.getDia(), nuevoHabito.getId());
+        assertNotNull(encontrado);
+        assertEquals(nuevoHabito.getId(), encontrado.getHabito().getId());
+    }
+
+    @Test
+    public void testCrearHistorial() throws ModelException {
+        // Crear un nuevo objeto Cuenta
+        Cuenta cuenta = new Cuenta();
+        cuenta.setUsuario("erferfer");
+        cuenta.setContrasena("contrasena");
+        cuenta.setNombre("Prueba Usuario");
+
+        // Persistir la cuenta
+        gestionarHabitosDAO.crearCuenta(cuenta);
+
+        // Crear un nuevo objeto Habito
+        Habito habito = new Habito();
+        habito.setNombre("Hábito de prueba");
+        habito.setFrecuencia("Diaria");
+        habito.setDiasSemana("1001001");
+        habito.setFechaCreacion(new Date());
+        habito.setId(455L);
+        habito.setCuenta(cuenta);
+
+        // Persistir el hábito
+        gestionarHabitosDAO.crearHabito(habito);
+
+        // Crear el objeto HistorialHabitos
+        HistorialHabitos historial = new HistorialHabitos();
+        historial.setHabito(habito);
+        historial.setDia(new Date());
+        historial.setCompletado(false);
+
+        // Llamar al método crearHistorial
+        HistorialHabitos creado = gestionarHabitosDAO.crearHistorial(historial);
+
+        // Verificar que el objeto creado no sea nulo y que tenga el mismo id
+        assertNotNull(creado);
+        assertNotNull(creado.getId()); // Asegúrate de que el ID fue asignado
+        assertEquals(historial.getHabito().getId(), creado.getHabito().getId());
+        assertEquals(historial.getDia(), creado.getDia());
+        assertEquals(historial.isCompletado(), creado.isCompletado());
+    }
 //
-//    @Test
-//    public void testBuscarPorFechaYIdHabito() throws ModelException {
-//         Crear un hábito y persistirlo
-//        Habito habito = new Habito();
-//        habito.setNombre("Hábito para historial");
-//        gestionarHabitosDAO.crearHabito(habito);
-//
-//         Crear historial
-//        HistorialHabitos historial = new HistorialHabitos();
-//        historial.setHabito(habito);
-//        historial.setDia(new Date());
-//        gestionarHabitosDAO.crearHistorial(historial);
-//
-//         Buscar por fecha y ID
-//        HistorialHabitos encontrado = gestionarHabitosDAO.buscarPorFechaYIdHabito(historial.getDia(), habito.getId());
-//        assertNotNull(encontrado);
-//        assertEquals(habito.getId(), encontrado.getHabito().getId());
-//    }
-//
-//    @Test
-//    public void testActualizarHistorial() throws ModelException {
-//         Crear un hábito y persistirlo
-//        Habito habito = new Habito();
-//        habito.setNombre("Hábito para actualizar historial");
-//        gestionarHabitosDAO.crearHabito(habito);
-//
-//         Crear historial
-//        HistorialHabitos historial = new HistorialHabitos();
-//        historial.setHabito(habito);
-//        gestionarHabitosDAO.crearHistorial(historial);
-//
-//         Actualizar historial
-//        historial.setCompletado(true);
-//        HistorialHabitos actualizado = gestionarHabitosDAO.actualizarHistorial(historial);
-//        assertTrue(actualizado.isCompletado());
-//    }
-//
-//    @Test
-//    public void testCuentaExiste() throws ModelException {
+
+    @Test
+    public void testActualizarHistorial() throws ModelException {
+        // Crear un nuevo hábito
+        Cuenta cuenta = new Cuenta();
+        cuenta.setUsuario("GTHTH");
+        cuenta.setContrasena("contrasena");
+        cuenta.setNombre("Prueba Usuario");
+
+        // Persistir la cuenta
+        gestionarHabitosDAO.crearCuenta(cuenta);
+
+        // Crear un nuevo objeto Habito
+        Habito habito = new Habito();
+        habito.setNombre("Hábito de prueba");
+        habito.setFrecuencia("Diaria");
+        habito.setDiasSemana("1001001");
+        habito.setFechaCreacion(new Date());
+        habito.setId(5L);
+        habito.setCuenta(cuenta);
+
+        // Persistir el hábito
+        gestionarHabitosDAO.crearHabito(habito);
+
+        // Crear un nuevo historial asociado al hábito
+        HistorialHabitos historial = new HistorialHabitos();
+        historial.setHabito(habito);
+        historial.setDia(new Date()); // Fecha actual
+        historial.setCompletado(false); // Inicialmente no completado
+
+        // Persistir el historial
+        gestionarHabitosDAO.crearHistorial(historial);
+
+        // Actualizar el historial para marcarlo como completado
+        historial.setCompletado(true);
+        HistorialHabitos actualizado = gestionarHabitosDAO.actualizarHistorial(historial);
+
+        // Verificar que el historial ha sido actualizado correctamente
+        assertNotNull(actualizado);
+        assertTrue(actualizado.isCompletado());
+    }
+
+    @Test
+    public void testCuentaExiste() throws ModelException {
 //         Crear y persistir la cuenta
-//        Cuenta cuenta = new Cuenta();
-//        cuenta.setUsuario("usuarioExistente");
-//        cuenta.setContrasena("contrasenaExistente");
-//        gestionarHabitosDAO.crearCuenta(cuenta);
-//
+        Cuenta cuenta = new Cuenta();
+        cuenta.setUsuario("usuarioExistente");
+        cuenta.setContrasena("contrasenaExistente");
+        cuenta.setNombre("pulunchito");
+        gestionarHabitosDAO.crearCuenta(cuenta);
+
 //         Verificar existencia
-//        boolean existe = gestionarHabitosDAO.cuentaExiste(cuenta.getUsuario());
-//        assertTrue(existe);
-//    }
-//
-//    @Test
-//    public void testConsultarCuentaPorUsuario() throws ModelException {
+        boolean existe = gestionarHabitosDAO.cuentaExiste(cuenta.getUsuario());
+        assertTrue(existe);
+    }
+
+    @Test
+    public void testConsultarCuentaPorUsuario() throws ModelException {
 //         Crear y persistir la cuenta
-//        Cuenta cuenta = new Cuenta();
-//        cuenta.setUsuario("usuarioConsultaPorUsuario");
-//        cuenta.setContrasena("contrasenaConsultaPorUsuario");
-//        gestionarHabitosDAO.crearCuenta(cuenta);
-//
+        Cuenta cuenta = new Cuenta();
+        cuenta.setUsuario("usuarioConsultaPorUsuario");
+        cuenta.setContrasena("contrasenaConsultaPorUsuario");
+        cuenta.setNombre("pulunchitow");
+        gestionarHabitosDAO.crearCuenta(cuenta);
+
 //         Consultar cuenta
-//        Cuenta consultada = gestionarHabitosDAO.consultarCuentaPorUsuario(cuenta.getUsuario());
-//        assertNotNull(consultada);
-//        assertEquals(cuenta.getUsuario(), consultada.getUsuario());
-//    }
-//
+        Cuenta consultada = gestionarHabitosDAO.consultarCuentaPorUsuario(cuenta.getUsuario());
+        assertNotNull(consultada);
+        assertEquals(cuenta.getUsuario(), consultada.getUsuario());
+    }
+
     @Test
     public void testBuscarHabitoPorId() throws ModelException {
 //         Crear un hábito y persistirlo
         Habito habito = new Habito();
         habito.setNombre("Hábito por ID");
-        habito.setId(2L);
+        habito.setId(4L);
 
 //         Buscar por ID
         Habito encontrado = gestionarHabitosDAO.buscarHabitoPorId(habito.getId());
