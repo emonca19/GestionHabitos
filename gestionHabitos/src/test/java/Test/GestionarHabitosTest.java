@@ -62,23 +62,31 @@ public class GestionarHabitosTest {
     }
 
     @Test
-    public void testCrearHabito() throws ModelException {
+    public void testCrearHabitoConPersistenciaManual() throws ModelException {
+        // 1. Crear una nueva cuenta
         Cuenta nuevaCuenta = new Cuenta();
-        nuevaCuenta.setUsuario("usuarioPruebagyuftftyfyf");
+        nuevaCuenta.setUsuario("usuarioPruebaManual");
         nuevaCuenta.setContrasena("contrasena");
-
         nuevaCuenta.setNombre("Brenda");
 
+        // 2. Persistir manualmente la cuenta
+        gestionarHabitosDAO.crearCuenta(nuevaCuenta);  // Este método debe persistir la cuenta
+
+        // 3. Crear un nuevo hábito
         Habito nuevoHabito = new Habito();
-        nuevoHabito.setNombre("Hábito de prueba");
+        nuevoHabito.setNombre("Hábito de prueba manual");
         nuevoHabito.setFrecuencia("Diaria");
         nuevoHabito.setDiasSemana("1001001");
         nuevoHabito.setFechaCreacion(new Date());
-        nuevoHabito.setId(223336L);
         nuevoHabito.setFrecuencia("diario");
+
+        // 4. Asociar la cuenta ya persistida al hábito
         nuevoHabito.setCuenta(nuevaCuenta);
 
+        // 5. Persistir el hábito asociado a la cuenta
         Habito creado = gestionarHabitosDAO.crearHabito(nuevoHabito);
+
+        // 6. Verificar que el hábito se haya creado correctamente
         assertNotNull(creado);
         assertEquals(nuevoHabito.getNombre(), creado.getNombre());
     }
@@ -142,7 +150,6 @@ public class GestionarHabitosTest {
         assertEquals(1, habitos.size()); // Verificar que hay dos hábitos
     }
 
-
     @Test
     public void testConsultarCuenta() throws ModelException {
 //         Crear y persistir la cuenta
@@ -183,7 +190,7 @@ public class GestionarHabitosTest {
         historial.setHabito(nuevoHabito);
         historial.setDia(new Date());
         historial.setCompletado(false);
-        gestionarHabitosDAO.crearHistorial(historial); // Persistir el historial
+        gestionarHabitosDAO.guardarHistorial(historial); // Persistir el historial
 
         // Buscar por fecha y ID
         HistorialHabitos encontrado = gestionarHabitosDAO.buscarPorFechaYIdHabito(historial.getDia(), nuevoHabito.getId());
@@ -221,7 +228,7 @@ public class GestionarHabitosTest {
         historial.setCompletado(false);
 
         // Llamar al método crearHistorial
-        HistorialHabitos creado = gestionarHabitosDAO.crearHistorial(historial);
+        HistorialHabitos creado = gestionarHabitosDAO.guardarHistorial(historial);
 
         // Verificar que el objeto creado no sea nulo y que tenga el mismo id
         assertNotNull(creado);
@@ -262,11 +269,11 @@ public class GestionarHabitosTest {
         historial.setCompletado(false); // Inicialmente no completado
 
         // Persistir el historial
-        gestionarHabitosDAO.crearHistorial(historial);
+        gestionarHabitosDAO.guardarHistorial(historial);
 
         // Actualizar el historial para marcarlo como completado
         historial.setCompletado(true);
-        HistorialHabitos actualizado = gestionarHabitosDAO.actualizarHistorial(historial);
+        HistorialHabitos actualizado = gestionarHabitosDAO.guardarHistorial(historial);
 
         // Verificar que el historial ha sido actualizado correctamente
         assertNotNull(actualizado);
