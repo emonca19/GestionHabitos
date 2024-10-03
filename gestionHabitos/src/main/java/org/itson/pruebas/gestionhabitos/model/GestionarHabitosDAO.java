@@ -22,7 +22,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     EntityManager entityManager;
 
     // Constructor
-
     /**
      *
      * @param conexion
@@ -31,7 +30,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
         this.entityManager = conexion.crearConexion();
     }
 
-     /**
+    /**
      * Cierra el `EntityManager` cuando el DAO ya no se necesite.
      */
     public void cerrar() {
@@ -39,7 +38,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             entityManager.close();
         }
     }
-    
+
     /**
      * Crea un habito
      *
@@ -399,4 +398,40 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             throw new ModelException("Error al consultar la cuenta por usuario", e);
         }
     }
+
+    /**
+     * Busca un hábito por su ID.
+     *
+     * @param id el ID del hábito a buscar.
+     * @return el hábito encontrado o null si no se encuentra.
+     * @throws ModelException Si hay un error al buscar el hábito.
+     */
+    @Override
+    public Habito buscarHabitoPorId(Long id) throws ModelException {
+        Habito habito = null; 
+
+        if (id == null) {
+            throw new ModelException("El ID no puede ser nulo"); 
+        }
+
+        try {
+            
+            habito = entityManager.find(Habito.class, id);
+
+            
+            if (habito == null) {
+                throw new ModelException("No se encontró el hábito con ID: " + id);
+            }
+
+            return habito; 
+
+        } catch (Exception e) {
+            throw new ModelException("Error al buscar el hábito: " + e.getMessage()); 
+        } finally {
+            if (entityManager != null) {
+                entityManager.close();
+            }
+        }
+    }
+
 }

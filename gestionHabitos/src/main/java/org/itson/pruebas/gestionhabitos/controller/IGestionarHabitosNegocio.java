@@ -106,22 +106,33 @@ public interface IGestionarHabitosNegocio {
      * correctamente
      */
     public boolean cuentaExiste(String usuario) throws ControllerException;
-    
+
     /**
-     * Devuelve la cuenta de un usuario si ese usuario ya existe
-     * @param usuario
-     * @return
-     * @throws ModelException
+     * Consulta una cuenta por el nombre de usuario proporcionado.
+     *
+     * Este método busca en la base de datos una cuenta asociada con el nombre
+     * de usuario especificado. Si se encuentra la cuenta, se convierte a un
+     * objeto CuentaDTO y se retorna. Si no se encuentra ninguna cuenta, el
+     * método retornará null.
+     *
+     * @param usuario el nombre de usuario de la cuenta a consultar. Este valor
+     * no debe ser nulo.
+     * @return un objeto CuentaDTO que representa la cuenta encontrada, o null
+     * si no se encuentra ninguna cuenta asociada con el nombre de usuario
+     * proporcionado.
+     * @throws ModelException si hay un error al consultar la cuenta, ya sea por
+     * problemas en la base de datos o en la lógica de negocio.
      */
     public CuentaDTO consultarCuentaPorUsuario(String usuario) throws ModelException;
-    
+
     /**
      * Metodo para obtener la semana de un determinado dia
+     *
      * @param fecha Fecha a obtener la semana
-     * @return Aregglo de los dias de la semana del dia 
+     * @return Aregglo de los dias de la semana del dia
      */
     public Date[] obtenerSemana(Date fecha);
-    
+
     /**
      * Método que toma un array de fechas que representa los días de una semana
      * (del lunes al domingo) y devuelve un nuevo array con los días de la
@@ -140,5 +151,14 @@ public interface IGestionarHabitosNegocio {
      * `"anterior"` o `"posterior"`.
      */
     public Date[] obtenerSemana(Date[] semanaActual, String direccion) throws ControllerException;
+
+    /**
+     * Busca un hábito por su ID.
+     *
+     * @param id el ID del hábito a buscar.
+     * @return el hábito encontrado o null si no se encuentra.
+     * @throws ModelException Si hay un error al buscar el hábito.
+     */
+    public HabitoDTO buscarHabitoPorId(Long id) throws ModelException;
 
 }

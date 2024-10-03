@@ -27,7 +27,6 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     private final IGestionarHabitosDAO habitoDAO;
     private final StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 
-
     /**
      * Constructor de la clase.
      *
@@ -214,10 +213,10 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @return CuenataDTO convertida
      */
     public CuentaDTO entidadACuentaDTO(Cuenta cuenta) {
-       CuentaDTO cuentaDTO = new CuentaDTO();
+        CuentaDTO cuentaDTO = new CuentaDTO();
         cuentaDTO.setUsuario(cuenta.getUsuario());
         cuentaDTO.setNombre(cuenta.getNombre());
-       
+
         return cuentaDTO;
     }
 
@@ -253,57 +252,69 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     }
 
     /**
- * Método que devuelve los hábitos que concuerden con el usuario y el día de la
- * semana.
- *
- * @param cuenta Cuenta a buscar los hábitos.
- * @param diaSemana Día de la semana que concuerde con los hábitos.
- * @return Lista de HabitoDTO que concuerden con las especificaciones.
- * @throws ControllerException Si no se encuentra información.
- */
-public List<HabitoDTO> identificarDias(CuentaDTO cuenta, String diaSemana) throws ControllerException {
-    List<HabitoDTO> habitos = obtenerHabitos(cuenta);
-    List<HabitoDTO> habitosPorDia = new ArrayList<>();
-    
-    for (HabitoDTO habito : habitos) {
-       
-        String dias = String.format("%07d", Long.valueOf(String.valueOf(habito.getDiasSemana()), 2));
-        
-        
-        switch (diaSemana.toLowerCase()) {
-            case "lunes":
-                if (dias.charAt(0) == '1') habitosPorDia.add(habito);
-                break;
-            case "martes":
-                if (dias.charAt(1) == '1') habitosPorDia.add(habito);
-                break;
-            case "miercoles":
-                if (dias.charAt(2) == '1') habitosPorDia.add(habito);
-                break;
-            case "jueves":
-                if (dias.charAt(3) == '1') habitosPorDia.add(habito);
-                break;
-            case "viernes":
-                if (dias.charAt(4) == '1') habitosPorDia.add(habito);
-                break;
-            case "sabado":
-                if (dias.charAt(5) == '1') habitosPorDia.add(habito);
-                break;
-            case "domingo":
-                if (dias.charAt(6) == '1') habitosPorDia.add(habito);
-                break;
-            default:
-                throw new ControllerException("Día de la semana no válido.");
+     * Método que devuelve los hábitos que concuerden con el usuario y el día de
+     * la semana.
+     *
+     * @param cuenta Cuenta a buscar los hábitos.
+     * @param diaSemana Día de la semana que concuerde con los hábitos.
+     * @return Lista de HabitoDTO que concuerden con las especificaciones.
+     * @throws ControllerException Si no se encuentra información.
+     */
+    public List<HabitoDTO> identificarDias(CuentaDTO cuenta, String diaSemana) throws ControllerException {
+        List<HabitoDTO> habitos = obtenerHabitos(cuenta);
+        List<HabitoDTO> habitosPorDia = new ArrayList<>();
+
+        for (HabitoDTO habito : habitos) {
+
+            String dias = String.format("%07d", Long.valueOf(String.valueOf(habito.getDiasSemana()), 2));
+
+            switch (diaSemana.toLowerCase()) {
+                case "lunes":
+                    if (dias.charAt(0) == '1') {
+                        habitosPorDia.add(habito);
+                    }
+                    break;
+                case "martes":
+                    if (dias.charAt(1) == '1') {
+                        habitosPorDia.add(habito);
+                    }
+                    break;
+                case "miercoles":
+                    if (dias.charAt(2) == '1') {
+                        habitosPorDia.add(habito);
+                    }
+                    break;
+                case "jueves":
+                    if (dias.charAt(3) == '1') {
+                        habitosPorDia.add(habito);
+                    }
+                    break;
+                case "viernes":
+                    if (dias.charAt(4) == '1') {
+                        habitosPorDia.add(habito);
+                    }
+                    break;
+                case "sabado":
+                    if (dias.charAt(5) == '1') {
+                        habitosPorDia.add(habito);
+                    }
+                    break;
+                case "domingo":
+                    if (dias.charAt(6) == '1') {
+                        habitosPorDia.add(habito);
+                    }
+                    break;
+                default:
+                    throw new ControllerException("Día de la semana no válido.");
+            }
         }
+
+        if (habitosPorDia.isEmpty()) {
+            throw new ControllerException("No se ha encontrado información para el día solicitado.");
+        }
+
+        return habitosPorDia;
     }
-
-    if (habitosPorDia.isEmpty()) {
-        throw new ControllerException("No se ha encontrado información para el día solicitado.");
-    }
-
-    return habitosPorDia;
-}
-
 
     /**
      * Buscar historial de hábitos por fecha y ID de hábito.
@@ -457,6 +468,22 @@ public List<HabitoDTO> identificarDias(CuentaDTO cuenta, String diaSemana) throw
         return bits.toString();
     }
 
+    /**
+     * Consulta una cuenta por el nombre de usuario proporcionado.
+     *
+     * Este método busca en la base de datos una cuenta asociada con el nombre
+     * de usuario especificado. Si se encuentra la cuenta, se convierte a un
+     * objeto CuentaDTO y se retorna. Si no se encuentra ninguna cuenta,
+     * el método retornará null.
+     *
+     * @param usuario el nombre de usuario de la cuenta a consultar. Este valor
+     * no debe ser nulo.
+     * @return un objeto CuentaDTO que representa la cuenta encontrada,
+     * o null si no se encuentra ninguna cuenta asociada con el nombre de
+     * usuario proporcionado.
+     * @throws ModelException si hay un error al consultar la cuenta, ya sea por
+     * problemas en la base de datos o en la lógica de negocio.
+     */
     @Override
     public CuentaDTO consultarCuentaPorUsuario(String usuario) throws ModelException {
         try {
@@ -465,11 +492,38 @@ public List<HabitoDTO> identificarDias(CuentaDTO cuenta, String diaSemana) throw
                 CuentaDTO cuentaDTO = entidadACuentaDTO(cuenta);
                 return cuentaDTO;
             } else {
-                return null; 
+                return null;
             }
         } catch (ModelException ex) {
-             throw ex;
-        }     
+            throw ex;
+        }
+    }
+
+    /**
+     * Busca un hábito por su ID y devuelve un HabitoDTO.
+     *
+     * @param id el ID del hábito a buscar.
+     * @return HabitoDTO correspondiente al hábito encontrado o null si no se
+     * encuentra.
+     * @throws ModelException si hay un error al buscar el hábito.
+     */
+    @Override
+    public HabitoDTO buscarHabitoPorId(Long id) throws ModelException {
+        if (id == null) {
+            throw new ModelException("El ID no puede ser nulo");
+        }
+
+        try {
+            Habito habito = habitoDAO.buscarHabitoPorId(id);
+
+            if (habito != null) {
+                return HabitoConvertirADTO(habito);
+            } else {
+                throw new ModelException("No se encontró el hábito con ID: " + id);
+            }
+        } catch (ModelException ex) {
+            throw ex;
+        }
     }
 
 }
