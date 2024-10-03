@@ -129,7 +129,6 @@ public class InicioSesion extends javax.swing.JPanel {
 
         if (cuenta != null) {
             Sesion.iniciarSesion(cuenta);
-//            frame.mostrarInformacion("Se inició sesión correctamente.", "Éxito");
             frame.mostrarInicio();
         }
 
