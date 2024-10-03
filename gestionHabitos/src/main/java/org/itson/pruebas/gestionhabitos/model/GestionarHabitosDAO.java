@@ -38,7 +38,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 //            entityManager.close();
 //        }
 //    }
-
     /**
      * Crea un habito
      *
@@ -64,7 +63,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                 throw new ModelException("Transaccion revertida debido a un error al crear el habito");
             }
             throw new ModelException("Error al crear habito ");
-        } 
+        }
     }
 
     /**
@@ -102,7 +101,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                 throw new ModelException("Transaccion revertida debido a un error al actualizar", e);
             }
             throw new ModelException("Error al actualizar habito", e);
-        } 
+        }
     }
 
     /**
@@ -174,10 +173,9 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     @Override
     public Cuenta crearCuenta(Cuenta cuenta) throws ModelException {
         try {
+
             entityManager.getTransaction().begin();
-
             entityManager.persist(cuenta);
-
             entityManager.getTransaction().commit();
 
             return cuenta;
@@ -241,10 +239,8 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Registro de historial de hábitos que coincide con la fecha y el
-     * ID de hábito.
-     * @throws ModelException Si ocurre un error al buscar o si no se encuentra
-     * el registro
+     * @return Registro de historial de hábitos que coincide con la fecha y el ID de hábito.
+     * @throws ModelException Si ocurre un error al buscar o si no se encuentra el registro
      */
     @Override
     public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException {
@@ -400,25 +396,24 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      */
     @Override
     public Habito buscarHabitoPorId(Long id) throws ModelException {
-        Habito habito = null; 
+        Habito habito = null;
 
         if (id == null) {
-            throw new ModelException("El ID no puede ser nulo"); 
+            throw new ModelException("El ID no puede ser nulo");
         }
 
         try {
-            
+
             habito = entityManager.find(Habito.class, id);
 
-            
             if (habito == null) {
                 throw new ModelException("No se encontró el hábito con ID: " + id);
             }
 
-            return habito; 
+            return habito;
 
         } catch (Exception e) {
-            throw new ModelException("Error al buscar el hábito: " + e.getMessage()); 
+            throw new ModelException("Error al buscar el hábito: " + e.getMessage());
         }
     }
 

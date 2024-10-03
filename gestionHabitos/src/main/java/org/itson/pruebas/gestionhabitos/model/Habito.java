@@ -50,7 +50,7 @@ public class Habito implements Serializable {
     private String nombre;
 
 // Relación con la entidad Cuenta (clave foránea)
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToOne
     @JoinColumn(name = "usuario", referencedColumnName = "usuario", nullable = false)
     private Cuenta cuenta;
 
@@ -63,11 +63,9 @@ public class Habito implements Serializable {
     /**
      * Constructor para crear un hábito con los atributos especificados.
      *
-     * @param frecuencia La frecuencia con la que se realiza el hábito (no debe
-     * ser nula).
+     * @param frecuencia La frecuencia con la que se realiza el hábito (no debe ser nula).
      * @param fechaCreacion La fecha de creación del hábito (no debe ser nula).
-     * @param diasSemana Los días de la semana en que se realiza el hábito en
-     * formato de bits.
+     * @param diasSemana Los días de la semana en que se realiza el hábito en formato de bits.
      * @param nombre El nombre del hábito (no debe ser nulo).
      * @param cuenta La cuenta asociada al hábito (no debe ser nula).
      */
@@ -91,8 +89,7 @@ public class Habito implements Serializable {
     /**
      * Establece la fecha de realización del hábito.
      *
-     * @param fechaCreacion la fecha a establecer para la realización del
-     * hábito.
+     * @param fechaCreacion la fecha a establecer para la realización del hábito.
      */
     public void setFechaCreacion(Date fechaCreacion) {
         this.fechaCreacion = fechaCreacion;
@@ -101,8 +98,7 @@ public class Habito implements Serializable {
     /**
      * Obtiene los días de la semana en los que se puede realizar el hábito.
      *
-     * @return diasSemana un valor Long que representa los días de la semana en
-     * los que se puede realizar el hábito, almacenado como un patrón de bits.
+     * @return diasSemana un valor Long que representa los días de la semana en los que se puede realizar el hábito, almacenado como un patrón de bits.
      */
     public String getDiasSemana() {
         return diasSemana;
@@ -111,9 +107,7 @@ public class Habito implements Serializable {
     /**
      * Establece los días de la semana en los que se puede realizar el hábito.
      *
-     * @param diasSemana el valor Long a establecer que representa los días de
-     * la semana en los que se puede realizar el hábito, almacenado como un
-     * patrón de bits.
+     * @param diasSemana el valor Long a establecer que representa los días de la semana en los que se puede realizar el hábito, almacenado como un patrón de bits.
      */
     public void setDiasSemana(String diasSemana) {
         this.diasSemana = diasSemana;
@@ -204,8 +198,7 @@ public class Habito implements Serializable {
     }
 
     /**
-     * Verifica si dos objetos Actividad son iguales. Dos actividades se
-     * consideran iguales si tienen el mismo identificador.
+     * Verifica si dos objetos Actividad son iguales. Dos actividades se consideran iguales si tienen el mismo identificador.
      *
      * @param object el objeto a comparar
      * @return true si los objetos son iguales, false en caso contrario

@@ -585,7 +585,7 @@ public class Inicio extends javax.swing.JPanel {
 
             fechaActual = primerDia;
         } catch (ControllerException ex) {
-            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 
@@ -597,7 +597,7 @@ public class Inicio extends javax.swing.JPanel {
         try {
             mostrarHabitos(); // Refresca la lista de hábitos
         } catch (FontFormatException | IOException e) {
-            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, e);
+//            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, e);
         }
     }//GEN-LAST:event_btnAgregarActionPerformed
 
@@ -661,7 +661,7 @@ public class Inicio extends javax.swing.JPanel {
                 }
             }
         } catch (ControllerException ex) {
-            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+//            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         // Actualizar la interfaz
