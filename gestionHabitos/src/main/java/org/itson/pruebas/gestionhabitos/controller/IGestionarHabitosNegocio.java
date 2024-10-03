@@ -6,7 +6,6 @@ package org.itson.pruebas.gestionhabitos.controller;
 
 import java.util.Date;
 import java.util.List;
-import org.itson.pruebas.gestionhabitos.model.Cuenta;
 import org.itson.pruebas.gestionhabitos.model.ModelException;
 
 /**

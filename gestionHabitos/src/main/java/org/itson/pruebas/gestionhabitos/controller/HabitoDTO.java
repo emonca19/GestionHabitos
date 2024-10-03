@@ -22,7 +22,7 @@ public class HabitoDTO implements Serializable {
     private Date fechaCreacion;
 
     // Días de la semana en los que se puede realizar el hábito, representados como un valor Long
-    private Long diasSemana;
+    private String diasSemana;
 
     // Nombre del hábito
     private String nombre;
@@ -36,7 +36,7 @@ public class HabitoDTO implements Serializable {
     public HabitoDTO() {
     }
 
-    public HabitoDTO(String frecuencia, Date fechaCreacion, Long diasSemana, String nombre, CuentaDTO cuentaId) {
+    public HabitoDTO(String frecuencia, Date fechaCreacion, String diasSemana, String nombre, CuentaDTO cuentaId) {
         this.frecuencia = frecuencia;
         this.fechaCreacion = fechaCreacion;
         this.diasSemana = diasSemana;
@@ -54,7 +54,7 @@ public class HabitoDTO implements Serializable {
      * @param nombre el nombre del hábito.
      * @param cuentaId el identificador de la cuenta asociada al hábito.
      */
-    public HabitoDTO(Long id, String frecuencia, Date fechaCreacion, Long diasSemana, String nombre, CuentaDTO cuentaId) {
+    public HabitoDTO(Long id, String frecuencia, Date fechaCreacion, String diasSemana, String nombre, CuentaDTO cuentaId) {
         this.id = id;
         this.frecuencia = frecuencia;
         this.fechaCreacion = fechaCreacion;
@@ -122,7 +122,7 @@ public class HabitoDTO implements Serializable {
      *
      * @return un valor Long que representa los días de la semana en los que se puede realizar el hábito.
      */
-    public Long getDiasSemana() {
+    public String getDiasSemana() {
         return diasSemana;
     }
 
@@ -131,7 +131,7 @@ public class HabitoDTO implements Serializable {
      *
      * @param diasSemana el valor Long que representa los días de la semana en los que se puede realizar el hábito.
      */
-    public void setDiasSemana(Long diasSemana) {
+    public void setDiasSemana(String diasSemana) {
         this.diasSemana = diasSemana;
     }
 

@@ -253,40 +253,57 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     }
 
     /**
-     * Metodo que devuelve los habitos que concuerden con el usuario y dia de la
-     * semana
-     *
-     * @param cuenta Cuenta a buscar los habitos
-     * @param diaSemana Dia de la semana que concuerde con los habitos
-     * @return Lista de habitosDTO que concuerden con las especificaciones
-     * @throws ControllerException Si no se encuentra infromacion
-     */
-    public List<HabitoDTO> identificarDias(CuentaDTO cuenta, String diaSemana) throws ControllerException {
-        List<HabitoDTO> habitos = obtenerHabitos(cuenta);
-        List<HabitoDTO> habitosPorDia = new ArrayList<>();
-        for (int i = 0; i < habitos.size(); i++) {
-            String dias = String.valueOf(habitos.get(i).getDiasSemana());
-            if (dias.charAt(0) == 1 && diaSemana.equalsIgnoreCase("lunes")) {
-                habitosPorDia.add(habitos.get(i));
-            } else if (dias.charAt(1) == 1 && diaSemana.equalsIgnoreCase("martes")) {
-                habitosPorDia.add(habitos.get(i));
-            } else if (dias.charAt(2) == 1 && diaSemana.equalsIgnoreCase("miercoles")) {
-                habitosPorDia.add(habitos.get(i));
-            } else if (dias.charAt(3) == 1 && diaSemana.equalsIgnoreCase("jueves")) {
-                habitosPorDia.add(habitos.get(i));
-            } else if (dias.charAt(4) == 1 && diaSemana.equalsIgnoreCase("viernes")) {
-                habitosPorDia.add(habitos.get(i));
-            } else if (dias.charAt(5) == 1 && diaSemana.equalsIgnoreCase("sabado")) {
-                habitosPorDia.add(habitos.get(i));
-            } else if (dias.charAt(6) == 1 && diaSemana.equalsIgnoreCase("domingo")) {
-                habitosPorDia.add(habitos.get(i));
-            } else {
-                throw new ControllerException("No se ha encontrado información");
-            }
-
+ * Método que devuelve los hábitos que concuerden con el usuario y el día de la
+ * semana.
+ *
+ * @param cuenta Cuenta a buscar los hábitos.
+ * @param diaSemana Día de la semana que concuerde con los hábitos.
+ * @return Lista de HabitoDTO que concuerden con las especificaciones.
+ * @throws ControllerException Si no se encuentra información.
+ */
+public List<HabitoDTO> identificarDias(CuentaDTO cuenta, String diaSemana) throws ControllerException {
+    List<HabitoDTO> habitos = obtenerHabitos(cuenta);
+    List<HabitoDTO> habitosPorDia = new ArrayList<>();
+    
+    for (HabitoDTO habito : habitos) {
+       
+        String dias = String.format("%07d", Long.valueOf(String.valueOf(habito.getDiasSemana()), 2));
+        
+        
+        switch (diaSemana.toLowerCase()) {
+            case "lunes":
+                if (dias.charAt(0) == '1') habitosPorDia.add(habito);
+                break;
+            case "martes":
+                if (dias.charAt(1) == '1') habitosPorDia.add(habito);
+                break;
+            case "miercoles":
+                if (dias.charAt(2) == '1') habitosPorDia.add(habito);
+                break;
+            case "jueves":
+                if (dias.charAt(3) == '1') habitosPorDia.add(habito);
+                break;
+            case "viernes":
+                if (dias.charAt(4) == '1') habitosPorDia.add(habito);
+                break;
+            case "sabado":
+                if (dias.charAt(5) == '1') habitosPorDia.add(habito);
+                break;
+            case "domingo":
+                if (dias.charAt(6) == '1') habitosPorDia.add(habito);
+                break;
+            default:
+                throw new ControllerException("Día de la semana no válido.");
         }
-        return habitosPorDia;
     }
+
+    if (habitosPorDia.isEmpty()) {
+        throw new ControllerException("No se ha encontrado información para el día solicitado.");
+    }
+
+    return habitosPorDia;
+}
+
 
     /**
      * Buscar historial de hábitos por fecha y ID de hábito.

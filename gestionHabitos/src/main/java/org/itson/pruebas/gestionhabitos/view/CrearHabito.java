@@ -79,7 +79,7 @@ public class CrearHabito extends javax.swing.JPanel {
         };
 
         try {
-            gestion.crearHabito(new HabitoDTO(frecuencia, fechaCreacion, Long.valueOf(diasBits), nombre, Sesion.getCuenta()));
+            gestion.crearHabito(new HabitoDTO(frecuencia, fechaCreacion, diasBits, nombre, Sesion.getCuenta()));
             frame.mostrarInformacion("El hábito se ha creado con éxito.", "Éxito");
             parentDialog.dispose();
         } catch (ControllerException ex) {

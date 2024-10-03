@@ -19,30 +19,39 @@ public class Cuenta implements Serializable {
     // Versión de la clase para garantizar la compatibilidad durante la serialización
     private static final long serialVersionUID = 1L;
 
-    // Identificador único de la cuenta
+    // Identificador único del usuario
     @Id
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(name = "usuario", nullable = false, unique = true, length = 50)
     private String usuario;
 
-    // Contraseña de la cuenta (no nulo)
-    @Column(nullable = false, length = 100)
+// Contraseña de la cuenta (no nulo)
+    @Column(name = "contrasena", nullable = false, length = 100)
     private String contrasena;
 
-    // Nombre del usuario (no nulo)
-    @Column(nullable = false, length = 100)
+// Nombre del usuario (no nulo)
+    @Column(name = "nombre_usuario", nullable = false, length = 100)
     private String nombre;
 
+    /**
+     * Constructor por defecto para la clase Cuenta.
+     * Este constructor no inicializa los atributos de la cuenta.
+     */
     public Cuenta() {
     }
 
-    
+    /**
+     * Constructor para crear una cuenta con los atributos especificados.
+     *
+     * @param usuario   El nombre de usuario de la cuenta (debe ser único).
+     * @param contrasena La contraseña de la cuenta (no debe ser nula).
+     * @param nombre     El nombre del usuario asociado a la cuenta (no debe ser nulo).
+     */
     public Cuenta(String usuario, String contrasena, String nombre) {
         this.usuario = usuario;
         this.contrasena = contrasena;
         this.nombre = nombre;
     }
 
-    
     /**
      * Obtiene el nombre de usuario.
      *
@@ -110,7 +119,8 @@ public class Cuenta implements Serializable {
     }
 
     /**
-     * Verifica si dos objetos Cuenta son iguales. Dos cuentas se consideran iguales si tienen el mismo nombre de usuario.
+     * Verifica si dos objetos Cuenta son iguales. Dos cuentas se consideran
+     * iguales si tienen el mismo nombre de usuario.
      *
      * @param object el objeto a comparar
      * @return true si los objetos son iguales, false en caso contrario
