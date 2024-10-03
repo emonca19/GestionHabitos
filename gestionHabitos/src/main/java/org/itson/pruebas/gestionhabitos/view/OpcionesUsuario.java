@@ -7,6 +7,7 @@ package org.itson.pruebas.gestionhabitos.view;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
+import javax.swing.JDialog;
 import org.itson.pruebas.gestionhabitos.controller.Sesion;
 
 /**
@@ -16,13 +17,15 @@ import org.itson.pruebas.gestionhabitos.controller.Sesion;
 public class OpcionesUsuario extends javax.swing.JPanel {
 
     private final FrameContenedor frame;
+    private final JDialog parentDialog;
 
     /**
      * Creates new form VerHabito
      *
      * @param frame
      */
-    public OpcionesUsuario(FrameContenedor frame) {
+    public OpcionesUsuario(FrameContenedor frame, JDialog parentDialog) {
+        this.parentDialog = parentDialog;
         this.frame = frame;
         initComponents();
         setFonts();
@@ -35,39 +38,38 @@ public class OpcionesUsuario extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblCerrarSesion = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
+        btnCerrarSesion = new javax.swing.JButton();
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        setBackground(new java.awt.Color(118, 152, 82));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblCerrarSesion.setText("Cerrar Sesión");
-        lblCerrarSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        lblCerrarSesion.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblCerrarSesionMouseClicked(evt);
+        btnCerrarSesion.setForeground(new java.awt.Color(245, 245, 245));
+        btnCerrarSesion.setText("Cerrar Sesión");
+        btnCerrarSesion.setBorderPainted(false);
+        btnCerrarSesion.setContentAreaFilled(false);
+        btnCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarSesionActionPerformed(evt);
             }
         });
-        add(lblCerrarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 110, -1));
-        add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 32, 120, 10));
+        add(btnCerrarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 160, 50));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lblCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseClicked
+    private void btnCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarSesionActionPerformed
         Sesion.cerrarSesion();
+        parentDialog.dispose();
         frame.mostrarInicioSesion();
-    }//GEN-LAST:event_lblCerrarSesionMouseClicked
+    }//GEN-LAST:event_btnCerrarSesionActionPerformed
 
     private void setFonts() {
         try {
-            lblCerrarSesion.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Bold.ttf", 14F));
+            btnCerrarSesion.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Bold.ttf", 18F));
         } catch (FontFormatException | IOException ex) {
             frame.mostrarAviso(ex.getMessage(), "Aviso");
         }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel lblCerrarSesion;
+    private javax.swing.JButton btnCerrarSesion;
     // End of variables declaration//GEN-END:variables
 }

@@ -73,10 +73,10 @@ public class Inicio extends javax.swing.JPanel {
         btnDia5 = new javax.swing.JButton();
         btnDia6 = new javax.swing.JButton();
         btnDia7 = new javax.swing.JButton();
+        btnPerfil = new javax.swing.JButton();
         btnAgregar = new javax.swing.JButton();
         pnlContenedorHabitosPendientes = new javax.swing.JPanel();
         pnlContenedorHabitosRealizados = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         lblHabitosPendientes = new javax.swing.JLabel();
         lblHabitosRealizados = new javax.swing.JLabel();
         lblFecha = new javax.swing.JLabel();
@@ -212,6 +212,15 @@ public class Inicio extends javax.swing.JPanel {
         });
         add(btnDia7, new org.netbeans.lib.awtextra.AbsoluteConstraints(615, 106, 60, 60));
 
+        btnPerfil.setBorderPainted(false);
+        btnPerfil.setContentAreaFilled(false);
+        btnPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPerfilActionPerformed(evt);
+            }
+        });
+        add(btnPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(696, 9, 46, 46));
+
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregarHabitos.png"))); // NOI18N
         btnAgregar.setBorderPainted(false);
         btnAgregar.setContentAreaFilled(false);
@@ -228,14 +237,6 @@ public class Inicio extends javax.swing.JPanel {
 
         pnlContenedorHabitosRealizados.setOpaque(false);
         add(pnlContenedorHabitosRealizados, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 460, 700, 170));
-
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
-            }
-        });
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 0, 60, 60));
 
         lblHabitosPendientes.setText("HÁBITOS PENDIENTES");
         add(lblHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 198, -1, -1));
@@ -373,9 +374,9 @@ public class Inicio extends javax.swing.JPanel {
         frame.agregarHabito();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        frame.mostrarOpcionesUsuario();
-    }//GEN-LAST:event_jLabel1MouseClicked
+    private void btnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerfilActionPerformed
+        frame.mostrarOpcionesPerfil();
+    }//GEN-LAST:event_btnPerfilActionPerformed
 
     private void mostrarHabitos() throws FontFormatException, IOException {
         listarHabitosPendientes();
@@ -546,9 +547,9 @@ public class Inicio extends javax.swing.JPanel {
     private javax.swing.JButton btnHabitos;
     private javax.swing.JButton btnHoy;
     private javax.swing.JButton btnIzquierda;
+    private javax.swing.JButton btnPerfil;
     private javax.swing.JButton btnProgreso;
     private javax.swing.JLabel fondo;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblDivision;
     private javax.swing.JLabel lblDomingo;
     private javax.swing.JLabel lblFecha;
