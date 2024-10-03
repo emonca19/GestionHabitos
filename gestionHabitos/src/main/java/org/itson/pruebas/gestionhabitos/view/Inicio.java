@@ -206,7 +206,7 @@ public class Inicio extends javax.swing.JPanel {
         });
         add(btnDia7, new org.netbeans.lib.awtextra.AbsoluteConstraints(615, 106, 60, 60));
 
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregarHabito.png"))); // NOI18N
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregarHabitos.png"))); // NOI18N
         btnAgregar.setBorderPainted(false);
         btnAgregar.setContentAreaFilled(false);
         btnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -215,7 +215,7 @@ public class Inicio extends javax.swing.JPanel {
                 btnAgregarActionPerformed(evt);
             }
         });
-        add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 570, -1, 60));
+        add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 570, 60, 60));
 
         pnlContenedorHabitosPendientes.setOpaque(false);
         add(pnlContenedorHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 238, 700, 165));

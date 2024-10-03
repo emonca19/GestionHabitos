@@ -192,7 +192,7 @@ public class ProgresoMensual extends javax.swing.JPanel {
         lblMensual.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/mensual.png"))); // NOI18N
         add(lblMensual, new org.netbeans.lib.awtextra.AbsoluteConstraints(506, 198, -1, -1));
 
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregarHabito.png"))); // NOI18N
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregarHabitos.png"))); // NOI18N
         btnAgregar.setBorderPainted(false);
         btnAgregar.setContentAreaFilled(false);
         btnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));

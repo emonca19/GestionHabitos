@@ -192,7 +192,7 @@ public class ProgresoSemanal extends javax.swing.JPanel {
         lblSemanal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/semanal.png"))); // NOI18N
         add(lblSemanal, new org.netbeans.lib.awtextra.AbsoluteConstraints(506, 198, -1, -1));
 
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregarHabito.png"))); // NOI18N
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregarHabitos.png"))); // NOI18N
         btnAgregar.setBorderPainted(false);
         btnAgregar.setContentAreaFilled(false);
         btnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));

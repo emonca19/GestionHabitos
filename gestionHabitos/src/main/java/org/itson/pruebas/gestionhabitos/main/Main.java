@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
         FrameContenedor frameContenedor = new FrameContenedor();
-        frameContenedor.mostrarCrearHabito();
+        frameContenedor.mostrarInicioSesion();
         frameContenedor.setVisible(true);
     }
 }
