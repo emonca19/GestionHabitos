@@ -182,7 +182,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @param habitoDTO el DTO HabitoDTO a convertir
      * @return la entidad Habito que representa el hábito
      */
-    private Habito HabitoDTOConvertirAEntidad(HabitoDTO habitoDTO) {
+    public Habito HabitoDTOConvertirAEntidad(HabitoDTO habitoDTO) {
         Habito habito = new Habito();
         habito.setId(habitoDTO.getId());
         habito.setDiasSemana(habitoDTO.getDiasSemana());

@@ -8,8 +8,7 @@ import java.util.Date;
 import org.itson.pruebas.gestionhabitos.model.Habito;
 
 /**
- * Clase DTO que representa un registro de historial de hábitos. Se utiliza para
- * transferir datos sobre un historial de hábitos entre capas de la aplicación.
+ * Clase DTO que representa un registro de historial de hábitos. Se utiliza para transferir datos sobre un historial de hábitos entre capas de la aplicación.
  */
 public class HistorialHabitosDTO {
 
@@ -29,6 +28,12 @@ public class HistorialHabitosDTO {
      * Constructor vacío
      */
     public HistorialHabitosDTO() {
+    }
+
+    public HistorialHabitosDTO(Date dia, boolean completado, Habito habito) {
+        this.dia = dia;
+        this.completado = completado;
+        this.habito = habito;
     }
 
     /**
@@ -118,4 +123,3 @@ public class HistorialHabitosDTO {
         this.habito = habito;
     }
 }
-
