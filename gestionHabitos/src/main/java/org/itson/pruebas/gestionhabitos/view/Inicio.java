@@ -605,6 +605,11 @@ public class Inicio extends javax.swing.JPanel {
     }//GEN-LAST:event_btnPerfilActionPerformed
 
     private void mostrarHabitos() throws FontFormatException, IOException {
+        // Limpiar los paneles antes de listar
+        if (pnlHabitosRealizados != null) {
+            pnlHabitosRealizados.removeAll(); // Limpiar el panel de hábitos realizados
+        }
+
         // Listar los hábitos pendientes y realizados
         listarHabitosPendientes();
         listarHabitosRealizados();
@@ -657,6 +662,10 @@ public class Inicio extends javax.swing.JPanel {
         } catch (ControllerException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        // Actualizar la interfaz
+        pnlHabitosPendientes.revalidate();
+        pnlHabitosPendientes.repaint();
     }
 
     private void registrarCompletado(HabitoDTO habitoDTO) throws FontFormatException, IOException {
@@ -679,28 +688,29 @@ public class Inicio extends javax.swing.JPanel {
     }
 
     private void listarHabitosRealizados() throws FontFormatException, IOException {
-        pnlHabitosRealizados = new JPanel();
-        pnlHabitosRealizados.setLayout(new BoxLayout(pnlHabitosRealizados, BoxLayout.Y_AXIS));  // Establecer el BoxLayout correctamente
-        pnlHabitosRealizados.setName("pnlHabitosRealizados");
-        pnlHabitosRealizados.setOpaque(false);
+        // Solo inicializar el panel si no ha sido creado
+        if (pnlHabitosRealizados == null) {
+            pnlHabitosRealizados = new JPanel();
+            pnlHabitosRealizados.setLayout(new BoxLayout(pnlHabitosRealizados, BoxLayout.Y_AXIS));
+            pnlHabitosRealizados.setName("pnlHabitosRealizados");
+            pnlHabitosRealizados.setOpaque(false);
 
-        JScrollPane scpHabitosRealizados = new JScrollPane(pnlHabitosRealizados);
-        scpHabitosRealizados.setOpaque(false);
-        scpHabitosRealizados.getViewport().setOpaque(false);
-        scpHabitosRealizados.setBorder(null);
-        scpHabitosRealizados.getVerticalScrollBar().setUnitIncrement(16);
-        scpHabitosRealizados.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+            JScrollPane scpHabitosRealizados = new JScrollPane(pnlHabitosRealizados);
+            scpHabitosRealizados.setOpaque(false);
+            scpHabitosRealizados.getViewport().setOpaque(false);
+            scpHabitosRealizados.setBorder(null);
+            scpHabitosRealizados.getVerticalScrollBar().setUnitIncrement(16);
+            scpHabitosRealizados.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+            scpHabitosRealizados.setPreferredSize(new Dimension(700, 170));
 
-        // Aquí puedes ajustar solo el tamaño del JScrollPane
-        scpHabitosRealizados.setPreferredSize(new Dimension(700, 170));
-
+            pnlContenedorHabitosRealizados.add(scpHabitosRealizados);
 //        addHabit("Ejercicio", true);
 //        addHabit("Dormir", true);
 //        addHabit("Gym", true);
 //        addHabit("Pasear al perro", true);
 //        addHabit("Tarea", true);
 //        addHabit("Bitcoin", true);
-        pnlContenedorHabitosRealizados.add(scpHabitosRealizados);
+        }
     }
 
     private void addHabit(HabitoDTO habitoDTO) throws FontFormatException, IOException {
@@ -721,7 +731,6 @@ public class Inicio extends javax.swing.JPanel {
 
                         // Llamar al método para registrar el hábito completado
                         registrarCompletado(habitoDTO); // Pasar el HabitoDTO
-
                     } else {
                         // Mover de realizados a pendientes
                         pnlHabitosRealizados.remove(habit);
