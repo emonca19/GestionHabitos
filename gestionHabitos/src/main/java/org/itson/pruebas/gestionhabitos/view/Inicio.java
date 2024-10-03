@@ -1,21 +1,25 @@
 package org.itson.pruebas.gestionhabitos.view;
 
+import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import org.itson.pruebas.gestionhabitos.controller.Sesion;
 
 /**
@@ -48,9 +52,7 @@ public class Inicio extends javax.swing.JPanel {
         setearDatos();
     }
 
-    public void agregarHabito() {
-        
-    }
+    
 
     public final void setearDatos() {
         lblNombreUsuario.setText(Sesion.getCuenta().getNombre());
@@ -364,7 +366,7 @@ public class Inicio extends javax.swing.JPanel {
     }//GEN-LAST:event_btnDerechaActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        agregarHabito();
+        frame.agregarHabito();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void mostrarHabitos() throws FontFormatException, IOException {
@@ -430,14 +432,14 @@ public class Inicio extends javax.swing.JPanel {
             public void mouseClicked(MouseEvent e) {
                 // Determinar si está en la lista de pendientes o realizados
                 if (!habit.isCompleted()) {
-                    pnlHabitosPendientes.remove(habit);  
-                    pnlHabitosRealizados.add(habit);     
-                    habit.setCompleted(true);            
+                    pnlHabitosPendientes.remove(habit);
+                    pnlHabitosRealizados.add(habit);
+                    habit.setCompleted(true);
 
                 } else {
-                    pnlHabitosRealizados.remove(habit);  
-                    pnlHabitosPendientes.add(habit);     
-                    habit.setCompleted(false);           
+                    pnlHabitosRealizados.remove(habit);
+                    pnlHabitosPendientes.add(habit);
+                    habit.setCompleted(false);
                 }
 
                 // Refrescar las listas

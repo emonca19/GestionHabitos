@@ -302,7 +302,8 @@ public class ProgresoMensual extends javax.swing.JPanel {
     }//GEN-LAST:event_btnProgresoActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-        // TODO add your handling code here:
+        frame.agregarHabito();
+
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnMensualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMensualActionPerformed

@@ -1,14 +1,19 @@
 package org.itson.pruebas.gestionhabitos.view;
 
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.Frame;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -150,6 +155,25 @@ public class FrameContenedor extends javax.swing.JFrame {
         ProgresoMensual progresoMensual = new ProgresoMensual(this);
         ponerEnFrame(progresoMensual);
         panelActual = progresoMensual;
+    }
+
+    public void agregarHabito() {
+// Crear un JDialog para mostrar el JPanel VerHabito
+        JDialog dialog = new JDialog(this, "Agregar Hábito", true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setSize(new Dimension(391, 288));  // Tamaño del diálogo, puedes ajustarlo según tus necesidades
+
+        dialog.setLayout(new BorderLayout());
+
+        // Añadir el JPanel VerHabito al JDialog
+        CrearHabito pnlVerHabito = new CrearHabito(this, dialog);  // Pasar el nombre del hábito, si es necesario
+        dialog.add(pnlVerHabito, BorderLayout.CENTER);
+
+        // Centrar el diálogo en la pantalla
+        dialog.setLocationRelativeTo(null);
+        dialog.setResizable(false);
+        // Mostrar el diálogo de manera modal (bloquea el acceso a otros componentes)
+        dialog.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

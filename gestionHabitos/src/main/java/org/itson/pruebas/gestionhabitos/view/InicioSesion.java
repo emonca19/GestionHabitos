@@ -101,12 +101,10 @@ public class InicioSesion extends javax.swing.JPanel {
         add(btnRegistrarse, new org.netbeans.lib.awtextra.AbsoluteConstraints(233, 605, 283, 25));
 
         txtUsuario.setBackground(new java.awt.Color(245, 245, 245));
-        txtUsuario.setForeground(new java.awt.Color(0, 0, 0));
         txtUsuario.setBorder(null);
         add(txtUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(102, 349, 540, 25));
 
         txtContrasena.setBackground(new java.awt.Color(245, 245, 245));
-        txtContrasena.setForeground(new java.awt.Color(0, 0, 0));
         txtContrasena.setBorder(null);
         add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(102, 443, 540, 25));
 

@@ -81,6 +81,7 @@ public class CrearHabito extends javax.swing.JPanel {
         try {
             gestion.crearHabito(new HabitoDTO(frecuencia, fechaCreacion, Long.valueOf(diasBits), nombre, Sesion.getCuenta()));
             frame.mostrarInformacion("El hábito se ha creado con éxito.", "Éxito");
+            parentDialog.dispose();
         } catch (ControllerException ex) {
             Logger.getLogger(CrearHabito.class.getName()).log(Level.SEVERE, null, ex);
             frame.mostrarInformacion("Ocurrió un error al crear el hábito.", "Error");
@@ -220,7 +221,6 @@ public class CrearHabito extends javax.swing.JPanel {
         }
 
         crearHabito();
-        frame.mostrarInicio();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
