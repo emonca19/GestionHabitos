@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JCheckBox;
 import org.itson.pruebas.gestionhabitos.controller.ControllerException;
 import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
 import org.itson.pruebas.gestionhabitos.controller.HabitoDTO;
@@ -20,6 +21,7 @@ public class CrearHabito extends javax.swing.JPanel {
     private final FrameContenedor frame;
     private ImageIcon[] uncheckedIcons;
     private ImageIcon[] checkedIcons;
+    private int diasSemana;
 
     /**
      * Creates new form CrearHabito
@@ -34,58 +36,45 @@ public class CrearHabito extends javax.swing.JPanel {
         setFonts();
     }
 
-    public void crearHabito() {
-        String nombre = txtHabito.getText().trim();
-        if (nombre.isEmpty()) {
+    public boolean validar() {
+        JCheckBox[] dias = {cbxLunes, cbxMartes, cbxMiercoles, cbxJueves, cbxViernes, cbxSabado, cbxDomingo};
+
+        for (JCheckBox dia : dias) {
+            if (dia.isSelected()) {
+                diasSemana++;
+            }
+        }
+
+        if ((txtHabito.getText()).isEmpty()) {
             frame.mostrarInformacion("El nombre del hábito no puede estar vacío.", "Error");
-            return;
+            return false;
         }
-
-        StringBuilder frecuencia = new StringBuilder();
-        long diasSemana = 0;
-        Date fechaCreacion = new Date();
-
-        if (cbxLunes.isSelected()) {
-            diasSemana++;
-            frecuencia.append(cbxLunes.getText()).append(", ");
-        }
-        if (cbxMartes.isSelected()) {
-            diasSemana++;
-            frecuencia.append(cbxMartes.getText()).append(", ");
-        }
-        if (cbxMiercoles.isSelected()) {
-            diasSemana++;
-            frecuencia.append(cbxMiercoles.getText()).append(", ");
-        }
-        if (cbxJueves.isSelected()) {
-            diasSemana++;
-            frecuencia.append(cbxJueves.getText()).append(", ");
-        }
-        if (cbxViernes.isSelected()) {
-            diasSemana++;
-            frecuencia.append(cbxViernes.getText()).append(", ");
-        }
-        if (cbxSabado.isSelected()) {
-            diasSemana++;
-            frecuencia.append(cbxSabado.getText()).append(", ");
-        }
-        if (cbxDomingo.isSelected()) {
-            diasSemana++;
-            frecuencia.append(cbxDomingo.getText()).append(", ");
-        }
-
         if (diasSemana == 0) {
             frame.mostrarInformacion("Debes seleccionar al menos un día para el hábito.", "Error");
-            return;
+            return false;
         }
+        return true;
+    }
 
-        if (frecuencia.length() > 0) {
-            frecuencia.setLength(frecuencia.length() - 2);
-        }
+    public void crearHabito() {
+        String nombre = txtHabito.getText();
+        String frecuencia = null;
+        Date fechaCreacion = new Date();
+        GestionarHabitosNegocio gestion = new GestionarHabitosNegocio();
+
+        String diasBits = GestionarHabitosNegocio.convertirABits(cbxLunes.isSelected(), cbxMartes.isSelected(), cbxMiercoles.isSelected(), cbxJueves.isSelected(), cbxViernes.isSelected(), cbxSabado.isSelected(), cbxDomingo.isSelected());
+
+        frecuencia = switch (diasSemana) {
+            case 7 ->
+                "Diario";
+            case 1 ->
+                "Semanal";
+            default ->
+                "Ocasional";
+        };
 
         try {
-            GestionarHabitosNegocio gestion = new GestionarHabitosNegocio();
-            gestion.crearHabito(new HabitoDTO(frecuencia.toString(), fechaCreacion, diasSemana, nombre, Sesion.getCuenta()));
+            gestion.crearHabito(new HabitoDTO(frecuencia, fechaCreacion, Long.valueOf(diasBits), nombre, Sesion.getCuenta()));
             frame.mostrarInformacion("El hábito se ha creado con éxito.", "Éxito");
         } catch (ControllerException ex) {
             Logger.getLogger(CrearHabito.class.getName()).log(Level.SEVERE, null, ex);
@@ -219,12 +208,16 @@ public class CrearHabito extends javax.swing.JPanel {
     }//GEN-LAST:event_cbxLunesItemStateChanged
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        if (!validar()) {
+            return;
+        }
+
         crearHabito();
         frame.mostrarInicio();
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
+        frame.mostrarInicio();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void cbxMartesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxMartesItemStateChanged
