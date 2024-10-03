@@ -22,6 +22,11 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     EntityManager entityManager;
 
     // Constructor
+
+    /**
+     *
+     * @param conexion
+     */
     public GestionarHabitosDAO(IConexion conexion) {
         this.entityManager = conexion.crearConexion();
     }
@@ -372,6 +377,26 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             return !cuentas.isEmpty();
         } catch (Exception e) {
             throw new ModelException("Error al consultar si la cuenta existe: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Devuelve la cuenta del usuario si el usuario ya existe
+     *
+     * @param usuario Cadena del nombre del usuario para verificar su existencia
+     * @return True si existe, false en caso contrario
+     * @throws ModelException Si ocurre un error al consultar la cuenta
+     */
+    @Override
+    public Cuenta consultarCuentaPorUsuario(String usuario) throws ModelException {
+        try {
+            return entityManager.createQuery("SELECT c FROM Cuenta c WHERE c.usuario = :usuario", Cuenta.class)
+                    .setParameter("usuario", usuario)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null; // Si no encuentra la cuenta, retorna null
+        } catch (Exception e) {
+            throw new ModelException("Error al consultar la cuenta por usuario", e);
         }
     }
 }

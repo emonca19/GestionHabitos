@@ -103,5 +103,13 @@ public interface IGestionarHabitosDAO {
      * @throws ModelException Si ocurre un error al consultar la cuenta
      */
     public boolean cuentaExiste(String usuario) throws ModelException;
+    
+    /**
+     * Devuelve la cuenta de un usuario si ese usuario ya existe
+     * @param usuario
+     * @return
+     * @throws ModelException
+     */
+    public Cuenta consultarCuentaPorUsuario(String usuario) throws ModelException;
 
 }

@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.itson.pruebas.gestionhabitos.model.Conexion;
 import org.itson.pruebas.gestionhabitos.model.Cuenta;
@@ -17,6 +19,7 @@ import org.itson.pruebas.gestionhabitos.model.HistorialHabitos;
 import org.itson.pruebas.gestionhabitos.model.IConexion;
 import org.itson.pruebas.gestionhabitos.model.IGestionarHabitosDAO;
 import org.itson.pruebas.gestionhabitos.model.ModelException;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 /**
  * Clase que implementa la lógica de negocio para gestionar los hábitos.
@@ -24,6 +27,8 @@ import org.itson.pruebas.gestionhabitos.model.ModelException;
 public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
 
     private final IGestionarHabitosDAO habitoDAO;
+    private final StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+
 
     /**
      * Constructor de la clase.
@@ -137,7 +142,21 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     @Override
     public CuentaDTO consultarCuenta(String usuario, String contraseña) throws ControllerException {
         try {
-            return entidadACuentaDTO(habitoDAO.consultarCuenta(usuario, contraseña));
+            // Obtiene la cuenta desde la base de datos usando el nombre de usuario
+            Cuenta cuenta = habitoDAO.consultarCuentaPorUsuario(usuario);
+
+            // Si la cuenta existe, verifica la contraseña
+            if (cuenta != null) {
+                boolean passwordMatches = passwordEncryptor.checkPassword(contraseña, cuenta.getContrasena());
+                if (passwordMatches) {
+                    return entidadACuentaDTO(cuenta); // Si la contraseña es correcta, retorna la cuenta convertida a DTO
+                } else {
+                    throw new ControllerException("Contraseña incorrecta.");
+                }
+            } else {
+                throw new ControllerException("Usuario no encontrado.");
+            }
+
         } catch (ModelException e) {
             throw new ControllerException(e);
         }
@@ -184,8 +203,9 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @return la entidad Cuenta
      */
     public Cuenta cuentaDTOAEntidad(CuentaDTO cuentaDTO) {
-        Cuenta cuenta = new Cuenta(cuentaDTO.getUsuario(), cuentaDTO.getContraseña(), cuentaDTO.getNombre());
-
+        Cuenta cuenta = new Cuenta(cuentaDTO.getUsuario(),
+                passwordEncryptor.encryptPassword(cuentaDTO.getContraseña()),
+                cuentaDTO.getNombre());
         return cuenta;
     }
 
@@ -196,7 +216,10 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @return CuenataDTO convertida
      */
     public CuentaDTO entidadACuentaDTO(Cuenta cuenta) {
-        CuentaDTO cuentaDTO = new CuentaDTO(cuenta.getNombre(), cuenta.getUsuario(), cuenta.getContrasena());
+       CuentaDTO cuentaDTO = new CuentaDTO();
+        cuentaDTO.setUsuario(cuenta.getUsuario());
+        cuentaDTO.setNombre(cuenta.getNombre());
+       
         return cuentaDTO;
     }
 
@@ -417,6 +440,21 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         }
 
         return bits.toString();
+    }
+
+    @Override
+    public CuentaDTO consultarCuentaPorUsuario(String usuario) throws ModelException {
+        try {
+            Cuenta cuenta = habitoDAO.consultarCuentaPorUsuario(usuario);
+            if (cuenta != null) {
+                CuentaDTO cuentaDTO = entidadACuentaDTO(cuenta);
+                return cuentaDTO;
+            } else {
+                return null; 
+            }
+        } catch (ModelException ex) {
+             throw ex;
+        }     
     }
 
 }

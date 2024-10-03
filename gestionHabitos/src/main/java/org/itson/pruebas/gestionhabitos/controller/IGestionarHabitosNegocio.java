@@ -6,6 +6,8 @@ package org.itson.pruebas.gestionhabitos.controller;
 
 import java.util.Date;
 import java.util.List;
+import org.itson.pruebas.gestionhabitos.model.Cuenta;
+import org.itson.pruebas.gestionhabitos.model.ModelException;
 
 /**
  *
@@ -106,6 +108,13 @@ public interface IGestionarHabitosNegocio {
      */
     public boolean cuentaExiste(String usuario) throws ControllerException;
     
+    /**
+     * Devuelve la cuenta de un usuario si ese usuario ya existe
+     * @param usuario
+     * @return
+     * @throws ModelException
+     */
+    public CuentaDTO consultarCuentaPorUsuario(String usuario) throws ModelException;
     
     /**
      * Metodo para obtener la semana de un determinado dia
