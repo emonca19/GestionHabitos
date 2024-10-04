@@ -1,5 +1,6 @@
 package org.itson.pruebas.gestionhabitos.model;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -245,39 +246,52 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      * el registro
      */
     @Override
-    public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException {
-        EntityManager entityManager = null;
-        EntityTransaction transaction = null;
-        HistorialHabitos resultado = null;
+public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException {
+    EntityTransaction transaction = null;
+    HistorialHabitos resultado = null;
 
-        try {
-            transaction = entityManager.getTransaction();
-            transaction.begin();
+    try {
+        transaction = entityManager.getTransaction();
+        transaction.begin();
 
-            // Consulta para buscar por fecha y idHabito
-            resultado = entityManager.createQuery(
-                    "SELECT h FROM HistorialHabitos h WHERE h.dia = :dia AND h.habito.id = :idHabito", HistorialHabitos.class)
-                    .setParameter("dia", dia)
-                    .setParameter("idHabito", idHabito)
-                    .getSingleResult(); // Cambiado a getSingleResult()
+        // Asegúrate de que las horas en la fecha son cero
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dia);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        Date diaSinHora = calendar.getTime();
 
-            transaction.commit();
-        } catch (NoResultException e) {
+        // Usa una consulta para comparar la fecha sin hora
+        resultado = entityManager.createQuery(
+                "SELECT h FROM HistorialHabitos h WHERE h.dia = :diaSinHora AND h.habito.id = :idHabito", HistorialHabitos.class)
+                .setParameter("diaSinHora", diaSinHora)
+                .setParameter("idHabito", idHabito)
+                .getSingleResult();
+
+        transaction.commit();
+    } catch (NoResultException e) {
+        if (transaction != null && transaction.isActive()) {
             transaction.rollback();
-            throw new ModelException("No se encontró ningún historial de hábitos para la fecha y el ID proporcionados", e);
-        } catch (NonUniqueResultException e) {
-            transaction.rollback();
-            throw new ModelException("Se encontraron múltiples registros, se esperaba uno solo", e);
-        } catch (Exception e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-                throw new ModelException("Transacción revertida debido a un error al buscar", e);
-            }
-            throw new ModelException("Error al buscar historial de hábitos", e);
         }
-
-        return resultado; // Retorna el resultado
+        throw new ModelException("No se encontró ningún historial de hábitos para la fecha y el ID proporcionados", e);
+    } catch (NonUniqueResultException e) {
+        if (transaction != null && transaction.isActive()) {
+            transaction.rollback();
+        }
+        throw new ModelException("Se encontraron múltiples registros, se esperaba uno solo", e);
+    } catch (Exception e) {
+        if (transaction != null && transaction.isActive()) {
+            transaction.rollback();
+        }
+        throw new ModelException("Error al buscar historial de hábitos", e);
     }
+
+    return resultado; // Retorna el resultado
+}
+
+
 
     /**
      * Crear o actualizar un historial de hábitos. Si el historial ya existe, se
