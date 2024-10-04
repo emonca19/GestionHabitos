@@ -95,13 +95,11 @@ public class RegistrarUsuario extends javax.swing.JPanel {
         String usuario = txtUsuario.getText();
 
         if (usuario.trim().isEmpty()) {
-//            dialogAviso = frame.avisoNombreRegistro("El campo de usuario está vacío.", btnAvisoUsuario.getX(), btnAvisoUsuario.getY());
             btnAvisoUsuario.setVisible(true);
             return false;
         }
 
         if (usuario.length() > 10) {
-//            frame.mostrarAviso("El usuario no puede tener más de 10 caracteres.", "Error de validación");
             btnAvisoUsuario.setVisible(true);
             return false;
         }
@@ -117,6 +115,8 @@ public class RegistrarUsuario extends javax.swing.JPanel {
             btnAvisoContraseña.setVisible(true);
             return false;
         }
+
+        btnAvisoContraseña.setVisible(false);
         return true;
     }
 
@@ -127,15 +127,18 @@ public class RegistrarUsuario extends javax.swing.JPanel {
             btnAvisoConfirmar.setVisible(true);
             return false;
         }
+
+        btnAvisoConfirmar.setVisible(false);
         return true;
     }
 
     public boolean validarCoincidencia() {
         if (!txtContrasena.getText().equals(txtContrasenaConfirmar.getText())) {
-            frame.mostrarAviso("Las contraseñas no coinciden.", "Error de validación");
+            btnAvisoConfirmar.setVisible(true);
             return false;
         }
 
+        btnAvisoConfirmar.setVisible(false);
         return true;
     }
 
@@ -355,7 +358,12 @@ public class RegistrarUsuario extends javax.swing.JPanel {
     }//GEN-LAST:event_txtNombreActionPerformed
 
     private void btnAvisoConfirmarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAvisoConfirmarMouseEntered
-        dialogAvisoConfirmar = frame.avisoNombreRegistro("El campo de confirmar contraseña está vacío.", btnAvisoConfirmar.getX(), btnAvisoConfirmar.getY());
+        String confirmar = txtContrasenaConfirmar.getText().trim();
+        if (confirmar.isEmpty()) {
+            dialogAvisoConfirmar = frame.avisoNombreRegistro("El campo de confirmar contraseña está vacío.", btnAvisoConfirmar.getX(), btnAvisoConfirmar.getY());
+        } else if (!txtContrasena.getText().equals(txtContrasenaConfirmar.getText())) {
+            dialogAvisoConfirmar = frame.avisoNombreRegistro("Las contraseñas no coinciden.", btnAvisoConfirmar.getX(), btnAvisoConfirmar.getY());
+        }
     }//GEN-LAST:event_btnAvisoConfirmarMouseEntered
 
     private void btnAvisoConfirmarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAvisoConfirmarMouseExited
@@ -405,7 +413,12 @@ public class RegistrarUsuario extends javax.swing.JPanel {
     }//GEN-LAST:event_txtUsuarioKeyReleased
 
     private void btnAvisoNombreMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAvisoNombreMouseEntered
-        dialogAvisoNombre = frame.avisoNombreRegistro("El campo de nombre está vacío.", btnAvisoNombre.getX(), btnAvisoNombre.getY());
+        String nombre = txtNombre.getText().trim();
+        if (nombre.isEmpty()) {
+            dialogAvisoNombre = frame.avisoNombreRegistro("El campo de nombre está vacío.", btnAvisoNombre.getX(), btnAvisoNombre.getY());
+        } else if (!nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
+            dialogAvisoNombre = frame.avisoNombreRegistro("El nombre solo debe de contener letras.", btnAvisoNombre.getX(), btnAvisoNombre.getY());
+        }
     }//GEN-LAST:event_btnAvisoNombreMouseEntered
 
     private void btnAvisoNombreMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAvisoNombreMouseExited
@@ -419,7 +432,12 @@ public class RegistrarUsuario extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAvisoNombreActionPerformed
 
     private void btnAvisoUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAvisoUsuarioMouseEntered
-        dialogAvisoUsuario = frame.avisoNombreRegistro("El campo de usuario está vacío.", btnAvisoUsuario.getX(), btnAvisoUsuario.getY());
+        String usuario = txtUsuario.getText();
+        if (usuario.trim().isEmpty()) {
+            dialogAvisoUsuario = frame.avisoNombreRegistro("El campo de usuario está vacío.", btnAvisoUsuario.getX(), btnAvisoUsuario.getY());
+        } else if (usuario.length() > 10) {
+            dialogAvisoUsuario = frame.avisoNombreRegistro("El usuario no puede tener más de 10 caracteres.", btnAvisoUsuario.getX(), btnAvisoUsuario.getY());
+        }
     }//GEN-LAST:event_btnAvisoUsuarioMouseEntered
 
     private void btnAvisoUsuarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAvisoUsuarioMouseExited
@@ -433,7 +451,10 @@ public class RegistrarUsuario extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAvisoUsuarioActionPerformed
 
     private void btnAvisoContraseñaMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAvisoContraseñaMouseEntered
-        dialogAvisoContraseña = frame.avisoNombreRegistro("El campo de contraseña está vacío.", btnAvisoContraseña.getX(), btnAvisoContraseña.getY());
+        String contrasena = txtContrasena.getText();
+        if (contrasena.trim().isEmpty()) {
+            dialogAvisoContraseña = frame.avisoNombreRegistro("El campo de contraseña está vacío.", btnAvisoContraseña.getX(), btnAvisoContraseña.getY());
+        }
     }//GEN-LAST:event_btnAvisoContraseñaMouseEntered
 
     private void btnAvisoContraseñaMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAvisoContraseñaMouseExited
@@ -465,7 +486,7 @@ public class RegistrarUsuario extends javax.swing.JPanel {
     }//GEN-LAST:event_txtContrasenaKeyReleased
 
     private void txtContrasenaConfirmarFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtContrasenaConfirmarFocusLost
-        if (validarConfirmar()) {
+        if (validarConfirmar() && validarCoincidencia()) {
             if (dialogAvisoConfirmar != null) {
                 dialogAvisoConfirmar.dispose();
                 dialogAvisoConfirmar = null;
@@ -474,7 +495,7 @@ public class RegistrarUsuario extends javax.swing.JPanel {
     }//GEN-LAST:event_txtContrasenaConfirmarFocusLost
 
     private void txtContrasenaConfirmarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContrasenaConfirmarKeyReleased
-        if (validarConfirmar()) {
+        if (validarConfirmar() && validarCoincidencia()) {
             if (dialogAvisoConfirmar != null) {
                 dialogAvisoConfirmar.dispose();
                 dialogAvisoConfirmar = null;
