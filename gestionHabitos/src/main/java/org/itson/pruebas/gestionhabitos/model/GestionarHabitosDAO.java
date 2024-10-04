@@ -303,6 +303,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 
             if (historialExistente != null) {
                 // Actualizar el historial existente
+                
                 historialExistente.setDia(historial.getDia());
                 historialExistente.setCompletado(historial.isCompletado());
                 historialExistente.setHabito(historial.getHabito());
@@ -393,6 +394,44 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 
         } catch (Exception e) {
             throw new ModelException("Error al buscar el hábito: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Consultar historial de hábitos para una cuenta en una fecha específica
+     * utilizando Criteria API.
+     *
+     * @param date La fecha en la que se desea consultar el historial.
+     * @param cuenta La cuenta asociada al historial a través del hábito.
+     * @return Una lista de objetos HistorialHabitos que coinciden con los
+     * criterios de búsqueda.
+     * @throws ModelException Si ocurre un error durante la consulta.
+     */
+    @Override
+    public List<HistorialHabitos> consultarHistorialHabitos(Date date, Cuenta cuenta) throws ModelException {
+
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<HistorialHabitos> criteriaQuery = cb.createQuery(HistorialHabitos.class);
+
+            // Root de la consulta
+            Root<HistorialHabitos> historialRoot = criteriaQuery.from(HistorialHabitos.class);
+
+            // Predicado para filtrar por fecha
+            Predicate datePredicate = cb.equal(historialRoot.get("dia"), date);
+            // Predicado para filtrar por la cuenta relacionada a través del hábito
+            Predicate cuentaPredicate = cb.equal(historialRoot.get("habito").get("cuenta"), cuenta);
+
+            // Construcción de la consulta
+            criteriaQuery.select(historialRoot).where(cb.and(datePredicate, cuentaPredicate));
+
+            // Ejecución de la consulta
+            List<HistorialHabitos> historialList = entityManager.createQuery(criteriaQuery).getResultList();
+
+            return historialList;
+
+        } catch (Exception e) {
+            throw new ModelException("Error al consultar el historial de hábitos: " + e.getMessage(), e);
         }
     }
 

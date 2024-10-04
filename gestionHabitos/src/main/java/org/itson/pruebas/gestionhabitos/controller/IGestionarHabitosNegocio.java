@@ -80,15 +80,15 @@ public interface IGestionarHabitosNegocio {
     public HistorialHabitosDTO buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ControllerException;
 
     public HistorialHabitosDTO guardarHistorial(HistorialHabitosDTO historial) throws ControllerException;
-    
-        /**
-         * Consulta la existencia de una cuenta
-         *
-         * @param usuario Usuario a consultar
-         * @return Cuenta consultada
-         * @throws ControllerException si no se puede consultar la cuenta
-         * correctamente
-         */
+
+    /**
+     * Consulta la existencia de una cuenta
+     *
+     * @param usuario Usuario a consultar
+     * @return Cuenta consultada
+     * @throws ControllerException si no se puede consultar la cuenta
+     * correctamente
+     */
     public boolean cuentaExiste(String usuario) throws ControllerException;
 
     /**
@@ -145,4 +145,5 @@ public interface IGestionarHabitosNegocio {
      */
     public HabitoDTO buscarHabitoPorId(Long id) throws ModelException;
 
+    public List<HistorialHabitosDTO> consultarHisorialHabitos(Date date, CuentaDTO cuentaDTO) throws ControllerException;
 }

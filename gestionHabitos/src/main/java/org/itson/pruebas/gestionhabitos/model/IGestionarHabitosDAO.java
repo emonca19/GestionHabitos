@@ -108,4 +108,6 @@ public interface IGestionarHabitosDAO {
      */
     public Habito buscarHabitoPorId(Long id) throws ModelException;
 
+    public List<HistorialHabitos> consultarHistorialHabitos(Date date, Cuenta cuenta) throws ModelException;
+
 }
