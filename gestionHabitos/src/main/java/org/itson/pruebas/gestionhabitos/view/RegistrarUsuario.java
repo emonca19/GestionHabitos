@@ -99,6 +99,11 @@ public class RegistrarUsuario extends javax.swing.JPanel {
             return false;
         }
 
+        if (usuario.matches(".*\\s.*")) {
+            btnAvisoUsuario.setVisible(true);
+            return false;
+        }
+
         if (usuario.length() > 10) {
             btnAvisoUsuario.setVisible(true);
             return false;
@@ -111,7 +116,14 @@ public class RegistrarUsuario extends javax.swing.JPanel {
     public boolean validarContraseña() {
         String contrasena = txtContrasena.getText();
 
+        // Verifica si la contraseña está vacía
         if (contrasena.trim().isEmpty()) {
+            btnAvisoContraseña.setVisible(true);
+            return false;
+        }
+
+        // Verifica si la contraseña contiene espacios en cualquier parte
+        if (contrasena.matches(".*\\s.*")) {
             btnAvisoContraseña.setVisible(true);
             return false;
         }
@@ -437,7 +449,10 @@ public class RegistrarUsuario extends javax.swing.JPanel {
             dialogAvisoUsuario = frame.avisoNombreRegistro("El campo de usuario está vacío.", btnAvisoUsuario.getX(), btnAvisoUsuario.getY());
         } else if (usuario.length() > 10) {
             dialogAvisoUsuario = frame.avisoNombreRegistro("El usuario no puede tener más de 10 caracteres.", btnAvisoUsuario.getX(), btnAvisoUsuario.getY());
+        } else if (usuario.matches(".*\\s.*")) {
+            dialogAvisoUsuario = frame.avisoNombreRegistro("El usuario no puede tener espacios.", btnAvisoUsuario.getX(), btnAvisoUsuario.getY());
         }
+
     }//GEN-LAST:event_btnAvisoUsuarioMouseEntered
 
     private void btnAvisoUsuarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAvisoUsuarioMouseExited
@@ -454,6 +469,8 @@ public class RegistrarUsuario extends javax.swing.JPanel {
         String contrasena = txtContrasena.getText();
         if (contrasena.trim().isEmpty()) {
             dialogAvisoContraseña = frame.avisoNombreRegistro("El campo de contraseña está vacío.", btnAvisoContraseña.getX(), btnAvisoContraseña.getY());
+        } else if (contrasena.matches(".*\\s.*")) {
+            dialogAvisoContraseña = frame.avisoNombreRegistro("El campo de contraseña no puede tener espacios.", btnAvisoContraseña.getX(), btnAvisoContraseña.getY());
         }
     }//GEN-LAST:event_btnAvisoContraseñaMouseEntered
 
