@@ -44,18 +44,11 @@ public class GestionarHabitosTest {
 
     @AfterEach
     public void tearDown() {
-        try {
-            // Elimina las tablas existentes
-            entityManager.createNativeQuery("DROP TABLE IF EXISTS historial_habitos").executeUpdate();
-            entityManager.createNativeQuery("DROP TABLE IF EXISTS habito").executeUpdate();
-            entityManager.createNativeQuery("DROP TABLE IF EXISTS cuenta").executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace(); // Maneja la excepción según sea necesario
-        } finally {
+        
             if (entityManager.isOpen()) {
                 entityManager.close();
             }
-        }
+        
     }
 
     @Test
