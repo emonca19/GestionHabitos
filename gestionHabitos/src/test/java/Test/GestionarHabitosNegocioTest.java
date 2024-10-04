@@ -13,6 +13,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Date;
 import java.util.List;
+import org.itson.pruebas.gestionhabitos.controller.ControllerException;
 import org.itson.pruebas.gestionhabitos.controller.CuentaDTO;
 import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
 import org.itson.pruebas.gestionhabitos.controller.HabitoDTO;
@@ -52,7 +53,20 @@ public class GestionarHabitosNegocioTest {
     }
 
     @Test
-    public void testObtenerHabitos() {
+    public void testObtenerHabitos() throws ControllerException {
+        cuentaDTO = new CuentaDTO();
+        cuentaDTO.setUsuario("testUser3");
+        cuentaDTO.setNombre("Test User3");
+        cuentaDTO.setContraseña("password123");
+        gestionarHabitosNegocio.crearCuenta(cuentaDTO);
+        habitoDTO = new HabitoDTO();
+        habitoDTO.setId(1L);
+        habitoDTO.setNombre("Test Habito3");
+        habitoDTO.setFrecuencia("Diario");
+        habitoDTO.setDiasSemana("1000000"); // Ejemplo binario que representa días de la semana
+        habitoDTO.setFechaCreacion(new Date());
+        habitoDTO.setCuentaId(cuentaDTO);
+        gestionarHabitosNegocio.crearHabito(habitoDTO);
         assertDoesNotThrow(() -> {
             List<HabitoDTO> habitos = gestionarHabitosNegocio.obtenerHabitos(cuentaDTO);
             assertNotNull(habitos);
@@ -68,8 +82,23 @@ public class GestionarHabitosNegocioTest {
     }
 
     @Test
-    public void testActualizarHabito() {
+    public void testActualizarHabito() throws ControllerException {
+         cuentaDTO = new CuentaDTO();
+        cuentaDTO.setUsuario("testUser4");
+        cuentaDTO.setNombre("Test User4");
+        cuentaDTO.setContraseña("password123");
+        gestionarHabitosNegocio.crearCuenta(cuentaDTO);
+        habitoDTO = new HabitoDTO();
+        habitoDTO.setId(1L);
+        habitoDTO.setNombre("Test Habito4");
+        habitoDTO.setFrecuencia("Diario");
+        habitoDTO.setDiasSemana("1000000"); 
+        habitoDTO.setFechaCreacion(new Date());
+        habitoDTO.setCuentaId(cuentaDTO);
+        gestionarHabitosNegocio.crearHabito(habitoDTO);
+        
         assertDoesNotThrow(() -> {
+            habitoDTO.setFrecuencia("Diaria");
             HabitoDTO actualizado = gestionarHabitosNegocio.actualizarHabito(habitoDTO);
             assertNotNull(actualizado);
             assertEquals(habitoDTO.getNombre(), actualizado.getNombre());
@@ -94,15 +123,33 @@ public class GestionarHabitosNegocioTest {
     }
 
     @Test
-    public void testCuentaExiste() {
+    public void testCuentaExiste() throws ControllerException {
+        cuentaDTO = new CuentaDTO();
+        cuentaDTO.setUsuario("testUser2");
+        cuentaDTO.setNombre("Test User2");
+        cuentaDTO.setContraseña("password123");
+        gestionarHabitosNegocio.crearCuenta(cuentaDTO);
         assertDoesNotThrow(() -> {
-            boolean existe = gestionarHabitosNegocio.cuentaExiste("testUser");
+            boolean existe = gestionarHabitosNegocio.cuentaExiste("testUser2");
             assertTrue(existe);
         });
     }
 
     @Test
-    public void testIdentificarDias() {
+    public void testIdentificarDias() throws ControllerException {
+          cuentaDTO = new CuentaDTO();
+        cuentaDTO.setUsuario("testUser5");
+        cuentaDTO.setNombre("Test User5");
+        cuentaDTO.setContraseña("password123");
+        gestionarHabitosNegocio.crearCuenta(cuentaDTO);
+        habitoDTO = new HabitoDTO();
+        habitoDTO.setId(1L);
+        habitoDTO.setNombre("Test Habito5");
+        habitoDTO.setFrecuencia("Diario");
+        habitoDTO.setDiasSemana("1000000"); 
+        habitoDTO.setFechaCreacion(new Date());
+        habitoDTO.setCuentaId(cuentaDTO);
+        gestionarHabitosNegocio.crearHabito(habitoDTO);
         assertDoesNotThrow(() -> {
             List<HabitoDTO> habitosPorDia = gestionarHabitosNegocio.identificarDias(cuentaDTO, "lunes");
             assertNotNull(habitosPorDia);
