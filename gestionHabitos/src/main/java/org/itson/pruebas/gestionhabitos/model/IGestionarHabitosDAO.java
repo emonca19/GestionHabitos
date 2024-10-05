@@ -6,6 +6,8 @@ package org.itson.pruebas.gestionhabitos.model;
 
 import java.util.Date;
 import java.util.List;
+import org.itson.pruebas.gestionhabitos.controller.ControllerException;
+import org.itson.pruebas.gestionhabitos.controller.HabitoDTO;
 
 /**
  *
@@ -73,8 +75,7 @@ public interface IGestionarHabitosDAO {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Lista de registros de historial de hábitos que coinciden con la
-     * fecha y el ID de hábito.
+     * @return Lista de registros de historial de hábitos que coinciden con la fecha y el ID de hábito.
      * @throws ModelException Si ocurre un error al buscar
      */
     public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException;
@@ -109,5 +110,7 @@ public interface IGestionarHabitosDAO {
     public Habito buscarHabitoPorId(Long id) throws ModelException;
 
     public List<HistorialHabitos> consultarHistorialHabitos(Date date, Cuenta cuenta) throws ModelException;
+
+    public boolean habitoCompletado(Habito habito) throws ModelException;
 
 }

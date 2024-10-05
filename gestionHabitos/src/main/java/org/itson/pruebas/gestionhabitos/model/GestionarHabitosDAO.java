@@ -240,62 +240,57 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Registro de historial de hábitos que coincide con la fecha y el
-     * ID de hábito.
-     * @throws ModelException Si ocurre un error al buscar o si no se encuentra
-     * el registro
+     * @return Registro de historial de hábitos que coincide con la fecha y el ID de hábito.
+     * @throws ModelException Si ocurre un error al buscar o si no se encuentra el registro
      */
     @Override
-public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException {
-    EntityTransaction transaction = null;
-    HistorialHabitos resultado = null;
+    public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException {
+        EntityTransaction transaction = null;
+        HistorialHabitos resultado = null;
 
-    try {
-        transaction = entityManager.getTransaction();
-        transaction.begin();
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
 
-        // Asegúrate de que las horas en la fecha son cero
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(dia);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-        Date diaSinHora = calendar.getTime();
+            // Asegúrate de que las horas en la fecha son cero
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dia);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+            Date diaSinHora = calendar.getTime();
 
-        // Usa una consulta para comparar la fecha sin hora
-        resultado = entityManager.createQuery(
-                "SELECT h FROM HistorialHabitos h WHERE h.dia = :diaSinHora AND h.habito.id = :idHabito", HistorialHabitos.class)
-                .setParameter("diaSinHora", diaSinHora)
-                .setParameter("idHabito", idHabito)
-                .getSingleResult();
+            // Usa una consulta para comparar la fecha sin hora
+            resultado = entityManager.createQuery(
+                    "SELECT h FROM HistorialHabitos h WHERE h.dia = :diaSinHora AND h.habito.id = :idHabito", HistorialHabitos.class)
+                    .setParameter("diaSinHora", diaSinHora)
+                    .setParameter("idHabito", idHabito)
+                    .getSingleResult();
 
-        transaction.commit();
-    } catch (NoResultException e) {
-        if (transaction != null && transaction.isActive()) {
-            transaction.rollback();
+            transaction.commit();
+        } catch (NoResultException e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw new ModelException("No se encontró ningún historial de hábitos para la fecha y el ID proporcionados", e);
+        } catch (NonUniqueResultException e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw new ModelException("Se encontraron múltiples registros, se esperaba uno solo", e);
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw new ModelException("Error al buscar historial de hábitos", e);
         }
-        throw new ModelException("No se encontró ningún historial de hábitos para la fecha y el ID proporcionados", e);
-    } catch (NonUniqueResultException e) {
-        if (transaction != null && transaction.isActive()) {
-            transaction.rollback();
-        }
-        throw new ModelException("Se encontraron múltiples registros, se esperaba uno solo", e);
-    } catch (Exception e) {
-        if (transaction != null && transaction.isActive()) {
-            transaction.rollback();
-        }
-        throw new ModelException("Error al buscar historial de hábitos", e);
+
+        return resultado; // Retorna el resultado
     }
 
-    return resultado; // Retorna el resultado
-}
-
-
-
     /**
-     * Crear o actualizar un historial de hábitos. Si el historial ya existe, se
-     * actualiza; si no, se crea.
+     * Crear o actualizar un historial de hábitos. Si el historial ya existe, se actualiza; si no, se crea.
      *
      * @param historial El objeto HistorialHabitos a persistir.
      * @return El objeto HistorialHabitos persistido (creado o actualizado).
@@ -317,7 +312,7 @@ public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws 
 
             if (historialExistente != null) {
                 // Actualizar el historial existente
-                
+
                 historialExistente.setDia(historial.getDia());
                 historialExistente.setCompletado(historial.isCompletado());
                 historialExistente.setHabito(historial.getHabito());
@@ -412,13 +407,11 @@ public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws 
     }
 
     /**
-     * Consultar historial de hábitos para una cuenta en una fecha específica
-     * utilizando Criteria API.
+     * Consultar historial de hábitos para una cuenta en una fecha específica utilizando Criteria API.
      *
      * @param date La fecha en la que se desea consultar el historial.
      * @param cuenta La cuenta asociada al historial a través del hábito.
-     * @return Una lista de objetos HistorialHabitos que coinciden con los
-     * criterios de búsqueda.
+     * @return Una lista de objetos HistorialHabitos que coinciden con los criterios de búsqueda.
      * @throws ModelException Si ocurre un error durante la consulta.
      */
     @Override
@@ -446,6 +439,41 @@ public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws 
 
         } catch (Exception e) {
             throw new ModelException("Error al consultar el historial de hábitos: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public boolean habitoCompletado(Habito habito) throws ModelException {
+        // Validación inicial del hábito
+        if (habito == null || habito.getId() == null) {
+            throw new ModelException("El hábito no puede ser nulo y debe tener un ID válido.");
+        }
+
+        try {
+            // Consultar el historial de hábitos para este hábito y verificar si alguno está completado
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Long> criteriaQuery = cb.createQuery(Long.class);
+            Root<HistorialHabitos> historialRoot = criteriaQuery.from(HistorialHabitos.class);
+
+            // Filtrar por el ID del hábito y completado = 1
+            Predicate habitoPredicate = cb.equal(historialRoot.get("habito").get("id"), habito.getId());
+            Predicate completadoPredicate = cb.equal(historialRoot.get("completado"), 1); // 1 representa completado
+
+            // Contar cuántos registros hay con el hábito completado
+            criteriaQuery.select(cb.count(historialRoot)).where(cb.and(habitoPredicate, completadoPredicate));
+
+            // Ejecutar la consulta
+            Long count = entityManager.createQuery(criteriaQuery).getSingleResult();
+
+            // Si hay al menos un registro, el hábito está completado
+            return count > 0;
+
+        } catch (NoResultException e) {
+            // No hay resultados, el hábito no está completado
+            return false; // O lanzar una excepción dependiendo de tu lógica
+        } catch (Exception e) {
+            // Manejo de excepción
+            throw new ModelException("Error al verificar si el hábito está completado: " + e.getMessage(), e);
         }
     }
 

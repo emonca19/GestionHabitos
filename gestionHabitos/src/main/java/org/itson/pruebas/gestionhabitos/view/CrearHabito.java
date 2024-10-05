@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import org.itson.pruebas.gestionhabitos.controller.ControllerException;
 import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
 import org.itson.pruebas.gestionhabitos.controller.HabitoDTO;
+import org.itson.pruebas.gestionhabitos.controller.HistorialHabitosDTO;
 import org.itson.pruebas.gestionhabitos.controller.Sesion;
 
 /**
@@ -73,12 +74,12 @@ public class CrearHabito extends javax.swing.JPanel {
         GestionarHabitosNegocio gestion = new GestionarHabitosNegocio();
 
         String diasBits = GestionarHabitosNegocio.convertirABits(
-                cbxLunes.isSelected(), 
-                cbxMartes.isSelected(), 
+                cbxLunes.isSelected(),
+                cbxMartes.isSelected(),
                 cbxMiercoles.isSelected(),
-                cbxJueves.isSelected(), 
-                cbxViernes.isSelected(), 
-                cbxSabado.isSelected(), 
+                cbxJueves.isSelected(),
+                cbxViernes.isSelected(),
+                cbxSabado.isSelected(),
                 cbxDomingo.isSelected());
 
         frecuencia = switch (diasSemana) {
@@ -91,7 +92,8 @@ public class CrearHabito extends javax.swing.JPanel {
         };
 
         try {
-            gestion.crearHabito(new HabitoDTO(frecuencia, fechaCreacion, diasBits, nombre, Sesion.getCuenta()));
+            HabitoDTO habito = gestion.crearHabito(new HabitoDTO(frecuencia, fechaCreacion, diasBits, nombre, Sesion.getCuenta()));
+            gestion.guardarHistorial(new HistorialHabitosDTO(fechaCreacion, false, habito));
             frame.mostrarInformacion("El hábito se ha creado con éxito.", "Éxito");
             parentDialog.dispose();
             frame.refrescarPanelActual();
