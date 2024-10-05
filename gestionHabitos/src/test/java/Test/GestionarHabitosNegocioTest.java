@@ -79,6 +79,7 @@ public class GestionarHabitosNegocioTest {
             boolean eliminado = gestionarHabitosNegocio.eliminarHabito(1L);
             assertTrue(eliminado);
         });
+        
     }
 
     @Test
