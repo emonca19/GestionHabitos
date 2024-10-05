@@ -240,8 +240,10 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Registro de historial de hábitos que coincide con la fecha y el ID de hábito.
-     * @throws ModelException Si ocurre un error al buscar o si no se encuentra el registro
+     * @return Registro de historial de hábitos que coincide con la fecha y el
+     * ID de hábito.
+     * @throws ModelException Si ocurre un error al buscar o si no se encuentra
+     * el registro
      */
     @Override
     public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException {
@@ -249,8 +251,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
         HistorialHabitos resultado = null;
 
         try {
-            transaction = entityManager.getTransaction();
-            transaction.begin();
+
 
             // Asegúrate de que las horas en la fecha son cero
             Calendar calendar = Calendar.getInstance();
@@ -268,7 +269,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                     .setParameter("idHabito", idHabito)
                     .getSingleResult();
 
-            transaction.commit();
         } catch (NoResultException e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
@@ -283,14 +283,16 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            throw new ModelException("Error al buscar historial de hábitos", e);
+             e.printStackTrace();
+//            throw new ModelException("Error al buscar historial de hábitos", e);
         }
 
         return resultado; // Retorna el resultado
     }
 
     /**
-     * Crear o actualizar un historial de hábitos. Si el historial ya existe, se actualiza; si no, se crea.
+     * Crear o actualizar un historial de hábitos. Si el historial ya existe, se
+     * actualiza; si no, se crea.
      *
      * @param historial El objeto HistorialHabitos a persistir.
      * @return El objeto HistorialHabitos persistido (creado o actualizado).
@@ -298,39 +300,35 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      */
     @Override
     public HistorialHabitos guardarHistorial(HistorialHabitos historial) throws ModelException {
-        EntityTransaction transaction = null;
-        HistorialHabitos historialExistente = null;
 
+        EntityTransaction transaction = entityManager.getTransaction();
         try {
-            transaction = entityManager.getTransaction();
             transaction.begin();
 
-            // Solo buscar si el historial tiene un ID (no es nuevo)
-            if (historial.getId() != null) {
-                historialExistente = entityManager.find(HistorialHabitos.class, historial.getId());
-            }
+            HistorialHabitos historialExistente = buscarPorFechaYIdHabito(historial.getDia(), historial.getHabito().getId());
 
-            if (historialExistente != null) {
-                // Actualizar el historial existente
-
-                historialExistente.setDia(historial.getDia());
-                historialExistente.setCompletado(historial.isCompletado());
-                historialExistente.setHabito(historial.getHabito());
-            } else {
-                // Crear un nuevo historial
-                entityManager.persist(historial);
-                historialExistente = historial;
-            }
-
+            historialExistente.setCompletado(historial.isCompletado());
+            entityManager.merge(historialExistente);
             transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
-            throw new ModelException("Error al guardar el historial de hábitos", e);
-        }
+            return historialExistente;
 
-        return historialExistente;
+        } catch (ModelException e) {
+            if (transaction.isActive()) {
+                transaction.rollback(); // Revertimos la transacción fallida
+            }
+
+            // Iniciamos una nueva transacción para persistir el nuevo historial
+            transaction.begin();
+            entityManager.persist(historial);
+            transaction.commit();
+            return historial;
+
+        } finally {
+            if (transaction.isActive()) {
+                transaction.rollback(); // Aseguramos que cualquier transacción pendiente se deshaga
+            }
+            entityManager.close();
+        }
     }
 
     /**
@@ -407,11 +405,13 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     }
 
     /**
-     * Consultar historial de hábitos para una cuenta en una fecha específica utilizando Criteria API.
+     * Consultar historial de hábitos para una cuenta en una fecha específica
+     * utilizando Criteria API.
      *
      * @param date La fecha en la que se desea consultar el historial.
      * @param cuenta La cuenta asociada al historial a través del hábito.
-     * @return Una lista de objetos HistorialHabitos que coinciden con los criterios de búsqueda.
+     * @return Una lista de objetos HistorialHabitos que coinciden con los
+     * criterios de búsqueda.
      * @throws ModelException Si ocurre un error durante la consulta.
      */
     @Override
