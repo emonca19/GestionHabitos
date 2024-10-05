@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -56,19 +55,21 @@ public class Inicio extends javax.swing.JPanel {
      */
     public Inicio(FrameContenedor frame) {
         initComponents();
+        // Inicializar variables
         lista = new Date[7];
         gestionar = new GestionarHabitosNegocio();
         fechaActual = LocalDate.now();
         cargarDias(Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant()));
         this.frame = frame;
+
         try {
-            setFonts();
+            setFonts();  // Configurar fuentes
         } catch (FontFormatException | IOException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         actualizarHistorialHabitos();
-        setearDatos();
+        setearDatos(); // Llama a mostrarHabitos y establece el nombre del usuario
     }
 
     public final void setearDatos() {
@@ -605,7 +606,7 @@ public class Inicio extends javax.swing.JPanel {
         frame.mostrarOpcionesPerfil();
     }//GEN-LAST:event_btnPerfilActionPerformed
 
-    public void actualizarHistorialHabitos() {
+    private void actualizarHistorialHabitos() {
         try {
             historialHabitos = obtenerHistorial(new Date());
         } catch (ControllerException ex) {
@@ -614,16 +615,9 @@ public class Inicio extends javax.swing.JPanel {
     }
 
     private void mostrarHabitos() throws FontFormatException, IOException {
-        // Clear panels before listing
-        if (pnlHabitosRealizados != null) {
-            pnlHabitosRealizados.removeAll(); // Clear the completed habits panel
-        }
-
-        // List the pending and completed habits
         listarHabitosPendientes();
         listarHabitosRealizados();
 
-        // Revalidate and repaint for both panels only if they are initialized
         if (pnlHabitosPendientes != null) {
             pnlHabitosPendientes.revalidate();
             pnlHabitosPendientes.repaint();
@@ -655,12 +649,12 @@ public class Inicio extends javax.swing.JPanel {
         }
 
         try {
-            // Obtener todos los hábitos desde la base de datos
             GestionarHabitosNegocio gestion = new GestionarHabitosNegocio();
-            // Filtrar solo los hábitos pendientes
+
             if (!historialHabitos.isEmpty()) {
                 for (HistorialHabitosDTO habito : historialHabitos) {
                     if (!gestion.habitoCompletado(habito.getHabito())) {
+                        System.out.println(habito.getHabito().getNombre());
                         addHabit(habito, false);
                     }
                 }
@@ -669,30 +663,19 @@ public class Inicio extends javax.swing.JPanel {
                 pnlHabitosPendientes.add(noHabitsLabel);
             }
         } catch (ControllerException ex) {
-            // Manejar la excepción según sea necesario
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, "Error al listar hábitos pendientes", ex);
         }
 
-        // Actualizar la interfaz
         pnlHabitosPendientes.revalidate();
         pnlHabitosPendientes.repaint();
     }
 
     private void registrarHabito(HabitoDTO habitoDTO, Boolean isDone) throws FontFormatException, IOException {
         try {
-
-            // Crear el historial del hábito completado
-            HistorialHabitosDTO historial = new HistorialHabitosDTO(
-                    new Date(), // Fecha actual
-                    isDone, // Completado
-                    habitoDTO
-            );
-
-            // Registrar el historial
-            new GestionarHabitosNegocio().guardarHistorial(historial);
+            new GestionarHabitosNegocio().guardarHistorial(new HistorialHabitosDTO(new Date(), isDone, habitoDTO));
 
         } catch (ControllerException ex) {
             Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
-            // Manejar el error si es necesario
         }
     }
 
@@ -716,21 +699,22 @@ public class Inicio extends javax.swing.JPanel {
             pnlHabitosRealizados.removeAll();
         }
 
-        try {
-            // Obtener todos los hábitos desde la base de datos
-            GestionarHabitosNegocio gestion = new GestionarHabitosNegocio();
+        GestionarHabitosNegocio gestion = new GestionarHabitosNegocio();
 
-            if (!historialHabitos.isEmpty()) {
-                for (HistorialHabitosDTO habito : historialHabitos) {
+        if (!historialHabitos.isEmpty()) {
+            for (HistorialHabitosDTO habito : historialHabitos) {
+                try {
                     if (gestion.habitoCompletado(habito.getHabito())) {
-                        addHabit(habito, true);
+                        System.out.println(habito.getHabito().getNombre());
+                        addHabit(habito, true); 
                     }
+                } catch (ControllerException ex) {
+                    Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } else {
-                JLabel noHabitsLabel = new JLabel("No hay hábitos realizados.");
-                pnlHabitosRealizados.add(noHabitsLabel);
             }
-        } catch (ControllerException ex) {
+        } else {
+            JLabel noHabitsLabel = new JLabel("No hay hábitos realizados.");
+            pnlHabitosRealizados.add(noHabitsLabel);
         }
 
         pnlHabitosRealizados.revalidate();
@@ -741,7 +725,6 @@ public class Inicio extends javax.swing.JPanel {
         String habitName = habitoDTO.getHabito().getNombre();
         HabitPanel habit = new HabitPanel(habitName, isCompleted);
 
-        // Add mouse listener to handle the habit's completion state
         habit.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -750,25 +733,34 @@ public class Inicio extends javax.swing.JPanel {
                         pnlHabitosPendientes.remove(habit);
                         if (pnlHabitosRealizados == null) {
                             pnlHabitosRealizados = new JPanel();
-                            // Initialize pnlHabitosRealizados here
                         }
+                        System.out.println("agrega un habito a habitos realizados");
                         pnlHabitosRealizados.add(habit);
                         habit.setCompleted(true);
+                        System.out.println("aqui si entra, esta es si se pasa de pendiente a realizado");
                         registrarHabito(habitoDTO.getHabito(), true);
                         actualizarHistorialHabitos();
                     } else {
                         pnlHabitosRealizados.remove(habit);
+                        System.out.println("agrega un habito a habitos pendientes");
                         pnlHabitosPendientes.add(habit);
                         habit.setCompleted(false);
+                        System.out.println("es de realizado a pendiente");
                         registrarHabito(habitoDTO.getHabito(), false);
                         actualizarHistorialHabitos();
                     }
 
                     pnlHabitosPendientes.revalidate();
                     pnlHabitosPendientes.repaint();
+
                     if (pnlHabitosRealizados != null) {
                         pnlHabitosRealizados.revalidate();
                         pnlHabitosRealizados.repaint();
+                    }
+
+                    if (pnlHabitosPendientes != null) {
+                        pnlHabitosPendientes.revalidate();
+                        pnlHabitosPendientes.repaint();
                     }
 
                 } catch (FontFormatException | IOException ex) {
@@ -779,7 +771,7 @@ public class Inicio extends javax.swing.JPanel {
 
         if (isCompleted) {
             if (pnlHabitosRealizados == null) {
-                pnlHabitosRealizados = new JPanel(); // Initialize if it's null
+                pnlHabitosRealizados = new JPanel(); 
             }
             pnlHabitosRealizados.add(habit);
         } else {
