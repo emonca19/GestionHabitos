@@ -12,6 +12,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.BoxLayout;
@@ -20,6 +23,11 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import org.itson.pruebas.gestionhabitos.controller.ControllerException;
+import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
+import org.itson.pruebas.gestionhabitos.controller.IGestionarHabitosNegocio;
+import org.itson.pruebas.gestionhabitos.controller.ProgresoHabitoDTO;
+import org.itson.pruebas.gestionhabitos.controller.Sesion;
 
 /**
  *
@@ -28,17 +36,20 @@ import javax.swing.ScrollPaneConstants;
 public class ProgresoMensual extends javax.swing.JPanel {
 
     private FrameContenedor frame;
+    private IGestionarHabitosNegocio gestionar;
 
     /**
      * Creates new form ListaHabitos
      */
     public ProgresoMensual(FrameContenedor frame) {
         this.frame = frame;
+
         initComponents();
+        gestionar = new GestionarHabitosNegocio();
         try {
             listarHabitos();
             setFonts();
-        } catch (FontFormatException | IOException ex) {
+        } catch (FontFormatException | IOException | ControllerException ex) {
             frame.mostrarAviso(ex.getMessage(), "Aviso");
         }
     }
@@ -328,7 +339,7 @@ public class ProgresoMensual extends javax.swing.JPanel {
         frame.mostrarProgresoSemanal();
     }//GEN-LAST:event_btnMensualActionPerformed
 
-    private void listarHabitos() throws FontFormatException, IOException {
+    private void listarHabitos() throws FontFormatException, IOException, ControllerException {
         JPanel pnlHabitos = new JPanel();
         pnlHabitos.setLayout(new BoxLayout(pnlHabitos, BoxLayout.Y_AXIS));  // Usar BoxLayout para colocar los hábitos en forma vertical
         pnlHabitos.setOpaque(false);
@@ -343,16 +354,25 @@ public class ProgresoMensual extends javax.swing.JPanel {
         // Agregar el JScrollPane al contenedor principal
 
         // Añadir hábitos
-        addHabit("Leer", pnlHabitos);
-        addHabit("Meditar", pnlHabitos);
-        addHabit("Ejercicio", pnlHabitos);
-        addHabit("Dormir", pnlHabitos);
-        addHabit("Gym", pnlHabitos);
+        Date[] limitesMes = gestionar.obtenerLimitesMes(new Date());
+
+        List<ProgresoHabitoDTO> progresoHabitos = gestionar.obtenerProgresoHabitos(
+                Sesion.getCuenta(),
+                limitesMes[0],
+                limitesMes[1]);
+
+        // Añadir hábitos
+        for (ProgresoHabitoDTO progresoHabito : progresoHabitos) {
+            agregarHabito(progresoHabito.getNombreHabito(),
+                    progresoHabito.getDiasRealizados(),
+                    progresoHabito.getDiasTotales() * 4,
+                    pnlHabitos);
+        }
         pnlContenedorHabitos.add(scpHabitos);
     }
 
-    private void addHabit(String habitName, JPanel parentPanel) throws FontFormatException, IOException {
-        HabitPanel habit = new HabitPanel(habitName);
+    private void agregarHabito(String nombreHabito, int diasRealizados, int diasTotales, JPanel parentPanel) throws FontFormatException, IOException {
+        HabitPanel habit = new HabitPanel(nombreHabito, diasRealizados, diasTotales);
 
         parentPanel.add(habit);
 
@@ -364,14 +384,14 @@ public class ProgresoMensual extends javax.swing.JPanel {
 // Panel personalizado para cada hábito
     private class HabitPanel extends JPanel {
 
-        public HabitPanel(String habitName) throws FontFormatException, IOException {
+        public HabitPanel(String nombreHabito, int diasRealizados, int diasTotales) throws FontFormatException, IOException {
             setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             setPreferredSize(new Dimension(0, 60));  // Altura ajustada
             setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));  // Establece la altura máxima
 
             // Etiqueta con el nombre del hábito
-            JLabel nameLabel = new JLabel(habitName);
+            JLabel nameLabel = new JLabel(nombreHabito);
             nameLabel.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Regular.ttf", 18F));
             setOpaque(false);
 
@@ -384,7 +404,7 @@ public class ProgresoMensual extends javax.swing.JPanel {
             add(nameLabel, gbc);
 
             // Etiqueta para los días cumplidos
-            JLabel diasLabel = new JLabel("12/28");
+            JLabel diasLabel = new JLabel(diasRealizados + "/" + diasTotales);
             diasLabel.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-SemiBold.ttf", 18F));
 
             // Configurar constraints para diasLabel
@@ -396,8 +416,8 @@ public class ProgresoMensual extends javax.swing.JPanel {
             add(diasLabel, gbc);
 
             // Barra de progreso
-            JProgressBar jpb = new JProgressBar(0, 28);  // Rango de la barra
-            jpb.setValue(12);  // Valor actual (puedes cambiarlo dinámicamente)
+            JProgressBar jpb = new JProgressBar(0, diasTotales);  // Rango de la barra
+            jpb.setValue(diasRealizados);  // Valor actual (puedes cambiarlo dinámicamente)
             jpb.setPreferredSize(new Dimension(100, 10));
             jpb.setMinimumSize(new Dimension(100, 10));
             jpb.setForeground(new Color(118, 152, 82));
