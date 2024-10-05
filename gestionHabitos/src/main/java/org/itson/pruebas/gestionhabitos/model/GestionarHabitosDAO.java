@@ -3,6 +3,7 @@ package org.itson.pruebas.gestionhabitos.model;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
@@ -10,6 +11,9 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -230,7 +234,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                 throw new ModelException("La cuenta no existe.");
             }
 
-        } catch (Exception e) {
+        } catch (ModelException e) {
             throw new ModelException("Error al consultar la cuenta: " + e.getMessage(), e);
         }
     }
@@ -251,7 +255,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
         HistorialHabitos resultado = null;
 
         try {
-
 
             // Asegúrate de que las horas en la fecha son cero
             Calendar calendar = Calendar.getInstance();
@@ -283,7 +286,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-             e.printStackTrace();
+            e.printStackTrace();
 //            throw new ModelException("Error al buscar historial de hábitos", e);
         }
 
@@ -383,7 +386,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      */
     @Override
     public Habito buscarHabitoPorId(Long id) throws ModelException {
-        Habito habito = null;
+        Habito habito;
 
         if (id == null) {
             throw new ModelException("El ID no puede ser nulo");
@@ -399,7 +402,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 
             return habito;
 
-        } catch (Exception e) {
+        } catch (ModelException e) {
             throw new ModelException("Error al buscar el hábito: " + e.getMessage());
         }
     }
@@ -475,6 +478,53 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             // Manejo de excepción
             throw new ModelException("Error al verificar si el hábito está completado: " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * Obtiene el progreso de los hábitos de una cuenta en un rango de fechas
+     * determinado.
+     *
+     * @param cuenta La cuenta para la cual se desea obtener el progreso de los
+     * hábitos.
+     * @param fechaInicio La fecha de inicio del rango de fechas.
+     * @param fechaFin La fecha de fin del rango de fechas.
+     * @return Una lista de objetos {@link ProgresoHabito} que representan el
+     * progreso de los hábitos de la cuenta en el rango de fechas especificado.
+     * @throws ModelException Si ocurre un error al obtener el progreso de los
+     * hábitos.
+     */
+    @Override
+    public List<ProgresoHabito> obtenerProgresoHabitos(Cuenta cuenta, Date fechaInicio, Date fechaFin) throws ModelException {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+
+        CriteriaQuery<Object[]> query = cb.createQuery(Object[].class);
+
+        Root<HistorialHabitos> hh = query.from(HistorialHabitos.class);
+        Join<HistorialHabitos, Habito> h = hh.join("habito", JoinType.LEFT);
+
+        // Crear las expresiones para el conteo y la longitud
+        Expression<Long> diasRealizados = cb.count(
+                cb.selectCase()
+                        .when(cb.and(cb.between(hh.get("dia"), fechaInicio, fechaFin), cb.isTrue(hh.get("completado"))), 1)
+                        .otherwise((Long) null)
+        );
+        Expression<Integer> diasTotal = cb.length(cb.function("REPLACE", String.class, h.get("diasSemana"), cb.literal("0"), cb.literal("")));
+
+        // Definir la consulta
+        query.multiselect(h.get("nombre"), diasRealizados, diasTotal)
+                .where(cb.equal(h.get("cuenta").get("usuario"), cuenta.getUsuario()))
+                .groupBy(h.get("id"), h.get("nombre"), h.get("diasSemana"));
+
+        // Ejecutar la consulta y transformar resultados
+        return entityManager.createQuery(query)
+                .getResultList()
+                .stream()
+                .map(result -> new ProgresoHabito(
+                (String) result[0],
+                ((Long) result[1]).intValue(), // Cambia Long a Integer para diasRealizados
+                ((Integer) result[2])) // Asegúrate de que esto sea Integer
+                )
+                .collect(Collectors.toList());
     }
 
 }

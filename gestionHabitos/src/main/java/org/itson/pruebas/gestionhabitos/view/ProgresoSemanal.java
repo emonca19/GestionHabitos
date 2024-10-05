@@ -8,8 +8,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -17,15 +15,18 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import org.itson.pruebas.gestionhabitos.controller.ControllerException;
 import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
 import org.itson.pruebas.gestionhabitos.controller.IGestionarHabitosNegocio;
+import org.itson.pruebas.gestionhabitos.controller.ProgresoHabitoDTO;
+import org.itson.pruebas.gestionhabitos.controller.Sesion;
 
 /**
  *
@@ -36,21 +37,20 @@ public class ProgresoSemanal extends javax.swing.JPanel {
     private FrameContenedor frame;
     private IGestionarHabitosNegocio gestionar;
     private LocalDate fechaActual;
-    private Date[] lista;
 
     /**
      * Creates new form ListaHabitos
+     * @param frame
      */
     public ProgresoSemanal(FrameContenedor frame) {
         this.frame = frame;
         initComponents();
-        lista = new Date[7];
         gestionar = new GestionarHabitosNegocio();
         fechaActual = LocalDate.now();
         try {
             listarHabitos();
             setFonts();
-        } catch (FontFormatException | IOException ex) {
+        } catch (FontFormatException | IOException | ControllerException ex) {
             frame.mostrarAviso(ex.getMessage(), "Aviso");
         }
     }
@@ -339,7 +339,7 @@ public class ProgresoSemanal extends javax.swing.JPanel {
         frame.mostrarProgresoMensual();
     }//GEN-LAST:event_btnSemanalActionPerformed
 
-    private void listarHabitos() throws FontFormatException, IOException {
+    private void listarHabitos() throws FontFormatException, IOException, ControllerException {
         JPanel pnlHabitos = new JPanel();
         pnlHabitos.setLayout(new BoxLayout(pnlHabitos, BoxLayout.Y_AXIS));  // Usar BoxLayout para colocar los hábitos en forma vertical
         pnlHabitos.setOpaque(false);
@@ -353,17 +353,25 @@ public class ProgresoSemanal extends javax.swing.JPanel {
         scpHabitos.setPreferredSize(new Dimension(700, 390));  // Ajusta el tamaño del JScrollPane si es necesario
         // Agregar el JScrollPane al contenedor principal
 
+        Date[] limitesSemana = gestionar.obtenerLimitesSemana(new Date());
+        
+        List<ProgresoHabitoDTO> progresoHabitos = gestionar.obtenerProgresoHabitos(
+                Sesion.getCuenta(), 
+                limitesSemana[0], 
+                limitesSemana[1]);
+        
         // Añadir hábitos
-        addHabit("Leer", pnlHabitos);
-        addHabit("Meditar", pnlHabitos);
-        addHabit("Ejercicio", pnlHabitos);
-        addHabit("Dormir", pnlHabitos);
-        addHabit("Gym", pnlHabitos);
+        for (ProgresoHabitoDTO progresoHabito : progresoHabitos) {
+            agregarHabito(progresoHabito.getNombreHabito(), 
+                    progresoHabito.getDiasRealizados(), 
+                    progresoHabito.getDiasTotales(), 
+                    pnlHabitos);
+        }
         pnlContenedorHabitos.add(scpHabitos);
     }
 
-    private void addHabit(String habitName, JPanel parentPanel) throws FontFormatException, IOException {
-        HabitPanel habit = new HabitPanel(habitName);
+    private void agregarHabito(String nombreHabito, int diasRealizados,int diasTotales, JPanel parentPanel) throws FontFormatException, IOException {
+        HabitPanel habit = new HabitPanel(nombreHabito, diasRealizados, diasTotales);
 
         parentPanel.add(habit);
 
@@ -375,14 +383,14 @@ public class ProgresoSemanal extends javax.swing.JPanel {
 // Panel personalizado para cada hábito
     private class HabitPanel extends JPanel {
 
-        public HabitPanel(String habitName) throws FontFormatException, IOException {
+        public HabitPanel(String nombreHabito, int diasRealizados,int diasTotales) throws FontFormatException, IOException {
             setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
             setPreferredSize(new Dimension(0, 60));  // Altura ajustada
             setMaximumSize(new Dimension(Integer.MAX_VALUE, 60));  // Establece la altura máxima
 
             // Etiqueta con el nombre del hábito
-            JLabel nameLabel = new JLabel(habitName);
+            JLabel nameLabel = new JLabel(nombreHabito);
             nameLabel.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Regular.ttf", 18F));
             setOpaque(false);
 
@@ -395,7 +403,7 @@ public class ProgresoSemanal extends javax.swing.JPanel {
             add(nameLabel, gbc);
 
             // Etiqueta para los días cumplidos
-            JLabel diasLabel = new JLabel("5/7");
+            JLabel diasLabel = new JLabel(diasRealizados + "/" + diasTotales);
             diasLabel.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-SemiBold.ttf", 18F));
 
             // Configurar constraints para diasLabel
@@ -407,8 +415,8 @@ public class ProgresoSemanal extends javax.swing.JPanel {
             add(diasLabel, gbc);
 
             // Barra de progreso
-            JProgressBar jpb = new JProgressBar(0, 7);  // Rango de la barra
-            jpb.setValue(5);  // Valor actual (puedes cambiarlo dinámicamente)
+            JProgressBar jpb = new JProgressBar(0, diasTotales);  // Rango de la barra
+            jpb.setValue(diasRealizados);  // Valor actual (puedes cambiarlo dinámicamente)
             jpb.setPreferredSize(new Dimension(100, 10));
             jpb.setMinimumSize(new Dimension(100, 10));
             jpb.setForeground(new Color(118, 152, 82));
@@ -442,7 +450,7 @@ public class ProgresoSemanal extends javax.swing.JPanel {
 
     public void consultarHabitos() {
         Date fecha = Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        lista = gestionar.obtenerSemana(fecha);
+        gestionar.obtenerSemana(fecha);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

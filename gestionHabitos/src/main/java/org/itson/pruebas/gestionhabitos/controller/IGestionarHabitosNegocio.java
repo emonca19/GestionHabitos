@@ -64,7 +64,8 @@ public interface IGestionarHabitosNegocio {
      * @param usuario Usuario a consultar
      * @param contraseña Verificar que concuerda con la contraseña
      * @return Cuenta consultada
-     * @throws ControllerException si no se puede consultar la cuenta correctamente
+     * @throws ControllerException si no se puede consultar la cuenta
+     * correctamente
      */
     public CuentaDTO consultarCuenta(String usuario, String contraseña) throws ControllerException;
 
@@ -73,7 +74,8 @@ public interface IGestionarHabitosNegocio {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Lista de registros de historial de hábitos que coinciden con la fecha y el ID de hábito.
+     * @return Lista de registros de historial de hábitos que coinciden con la
+     * fecha y el ID de hábito.
      * @throws ControllerException Si ocurre un error al buscar
      */
     public HistorialHabitosDTO buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ControllerException;
@@ -85,18 +87,26 @@ public interface IGestionarHabitosNegocio {
      *
      * @param usuario Usuario a consultar
      * @return Cuenta consultada
-     * @throws ControllerException si no se puede consultar la cuenta correctamente
+     * @throws ControllerException si no se puede consultar la cuenta
+     * correctamente
      */
     public boolean cuentaExiste(String usuario) throws ControllerException;
 
     /**
      * Consulta una cuenta por el nombre de usuario proporcionado.
      *
-     * Este método busca en la base de datos una cuenta asociada con el nombre de usuario especificado. Si se encuentra la cuenta, se convierte a un objeto CuentaDTO y se retorna. Si no se encuentra ninguna cuenta, el método retornará null.
+     * Este método busca en la base de datos una cuenta asociada con el nombre
+     * de usuario especificado. Si se encuentra la cuenta, se convierte a un
+     * objeto CuentaDTO y se retorna. Si no se encuentra ninguna cuenta, el
+     * método retornará null.
      *
-     * @param usuario el nombre de usuario de la cuenta a consultar. Este valor no debe ser nulo.
-     * @return un objeto CuentaDTO que representa la cuenta encontrada, o null si no se encuentra ninguna cuenta asociada con el nombre de usuario proporcionado.
-     * @throws ModelException si hay un error al consultar la cuenta, ya sea por problemas en la base de datos o en la lógica de negocio.
+     * @param usuario el nombre de usuario de la cuenta a consultar. Este valor
+     * no debe ser nulo.
+     * @return un objeto CuentaDTO que representa la cuenta encontrada, o null
+     * si no se encuentra ninguna cuenta asociada con el nombre de usuario
+     * proporcionado.
+     * @throws ModelException si hay un error al consultar la cuenta, ya sea por
+     * problemas en la base de datos o en la lógica de negocio.
      */
     public CuentaDTO consultarCuentaPorUsuario(String usuario) throws ModelException;
 
@@ -109,13 +119,39 @@ public interface IGestionarHabitosNegocio {
     public Date[] obtenerSemana(Date fecha);
 
     /**
-     * Método que toma un array de fechas que representa los días de una semana (del lunes al domingo) y devuelve un nuevo array con los días de la semana anterior o posterior.
+     * Metodo para obtener la fecha del Lunes y Domingo de la semana de un
+     * determinado día
      *
-     * @param semanaActual Un array de `Date` que contiene exactamente 7 elementos, representando una semana completa desde el lunes hasta el domingo.
-     * @param direccion Un `String` que indica la dirección a calcular: `"anterior"` o `"posterior"`.
-     * @return Un array de `Date` que contiene los días de la semana anterior o posterior, comenzando desde el lunes y terminando el domingo.
+     * @param fecha Fecha a obtener la semana
+     * @return Array con las fechas del Lunes y Domingo de la semana
+     */
+    public Date[] obtenerLimitesSemana(Date fecha);
+
+    /**
+     * Metodo para obtener la fecha del primer y último día del mes de un
+     * determinado día
+     *
+     * @param fecha Fecha a obtener los límites del mes
+     * @return Array con las fechas del primer y último día del mes
+     */
+    public Date[] obtenerLimitesMes(Date fecha);
+
+    /**
+     * Método que toma un array de fechas que representa los días de una semana
+     * (del lunes al domingo) y devuelve un nuevo array con los días de la
+     * semana anterior o posterior.
+     *
+     * @param semanaActual Un array de `Date` que contiene exactamente 7
+     * elementos, representando una semana completa desde el lunes hasta el
+     * domingo.
+     * @param direccion Un `String` que indica la dirección a calcular:
+     * `"anterior"` o `"posterior"`.
+     * @return Un array de `Date` que contiene los días de la semana anterior o
+     * posterior, comenzando desde el lunes y terminando el domingo.
      * @throws org.itson.pruebas.gestionhabitos.controller.ControllerException
-     * @throws IllegalArgumentException Si el array `semanaActual` es nulo, no contiene exactamente 7 elementos, o si el valor de `direccion` no es `"anterior"` o `"posterior"`.
+     * @throws IllegalArgumentException Si el array `semanaActual` es nulo, no
+     * contiene exactamente 7 elementos, o si el valor de `direccion` no es
+     * `"anterior"` o `"posterior"`.
      */
     public Date[] obtenerSemana(Date[] semanaActual, String direccion) throws ControllerException;
 
@@ -131,4 +167,20 @@ public interface IGestionarHabitosNegocio {
     public List<HistorialHabitosDTO> consultarHisorialHabitos(Date date, CuentaDTO cuentaDTO) throws ControllerException;
 
     public boolean habitoCompletado(HabitoDTO habitoDTO) throws ControllerException;
+
+    /**
+     * Obtiene el progreso de los hábitos de una cuenta en un rango de fechas
+     * determinado.
+     *
+     * @param cuenta La cuenta para la cual se desea obtener el progreso de los
+     * hábitos en forma de {@link CuentaDTO}.
+     * @param fechaInicio La fecha de inicio del rango de fechas.
+     * @param fechaFin La fecha de fin del rango de fechas.
+     * @return Una lista de objetos {@link ProgresoHabitoDTO} que representan el
+     * progreso de los hábitos de la cuenta en el rango de fechas especificado.
+     * @throws ControllerException Si ocurre un error al obtener el progreso de
+     * los hábitos.
+     */
+    public List<ProgresoHabitoDTO> obtenerProgresoHabitos(CuentaDTO cuenta, Date fechaInicio, Date fechaFin) throws ControllerException;
+
 }

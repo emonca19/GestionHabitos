@@ -75,7 +75,8 @@ public interface IGestionarHabitosDAO {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Lista de registros de historial de hábitos que coinciden con la fecha y el ID de hábito.
+     * @return Lista de registros de historial de hábitos que coinciden con la
+     * fecha y el ID de hábito.
      * @throws ModelException Si ocurre un error al buscar
      */
     public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException;
@@ -112,5 +113,20 @@ public interface IGestionarHabitosDAO {
     public List<HistorialHabitos> consultarHistorialHabitos(Date date, Cuenta cuenta) throws ModelException;
 
     public boolean habitoCompletado(Habito habito) throws ModelException;
+
+    /**
+     * Obtiene el progreso de los hábitos de una cuenta en un rango de fechas
+     * determinado.
+     *
+     * @param cuenta La cuenta para la cual se desea obtener el progreso de los
+     * hábitos.
+     * @param fechaInicio La fecha de inicio del rango de fechas.
+     * @param fechaFin La fecha de fin del rango de fechas.
+     * @return Una lista de objetos {@link ProgresoHabito} que representan el
+     * progreso de los hábitos de la cuenta en el rango de fechas especificado.
+     * @throws ModelException Si ocurre un error al obtener el progreso de los
+     * hábitos.
+     */
+    public List<ProgresoHabito> obtenerProgresoHabitos(Cuenta cuenta, Date fechaInicio, Date fechaFin) throws ModelException;
 
 }

@@ -15,13 +15,14 @@ import org.itson.pruebas.gestionhabitos.model.HistorialHabitos;
 import org.itson.pruebas.gestionhabitos.model.IConexion;
 import org.itson.pruebas.gestionhabitos.model.IGestionarHabitosDAO;
 import org.itson.pruebas.gestionhabitos.model.ModelException;
+import org.itson.pruebas.gestionhabitos.model.ProgresoHabito;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
 /**
  * Clase que implementa la lógica de negocio para gestionar los hábitos.
  */
 public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
-    
+
     private final IGestionarHabitosDAO habitoDAO;
     private final StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 
@@ -89,7 +90,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         }
         return habitos.stream().map(this::HabitoConvertirADTO).collect(Collectors.toList());
     }
-    
+
     @Override
     public List<HistorialHabitosDTO> consultarHisorialHabitos(Date date, CuentaDTO cuentaDTO) throws ControllerException {
         List<HistorialHabitos> habitos;
@@ -147,7 +148,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @param usuario Usuario a consultar
      * @param contraseña Verificar que concuerda con la contraseña
      * @return Cuenta consultada
-     * @throws ControllerException si no se puede consultar la cuenta correctamente
+     * @throws ControllerException si no se puede consultar la cuenta
+     * correctamente
      */
     @Override
     public CuentaDTO consultarCuenta(String usuario, String contraseña) throws ControllerException {
@@ -166,7 +168,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
             } else {
                 throw new ControllerException("Usuario no encontrado.");
             }
-            
+
         } catch (ModelException e) {
             throw new ControllerException(e);
         }
@@ -230,7 +232,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         cuentaDTO.setUsuario(cuenta.getUsuario());
         cuentaDTO.setNombre(cuenta.getNombre());
         cuentaDTO.setContraseña(cuenta.getContrasena());
-        
+
         return cuentaDTO;
     }
 
@@ -253,7 +255,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * Convierte un DTO HistorialHabitosDTO en una entidad HistorialHabitos.
      *
      * @param historialDTO el DTO HistorialHabitosDTO a convertir
-     * @return la entidad HistorialHabitos que representa el historial de hábitos
+     * @return la entidad HistorialHabitos que representa el historial de
+     * hábitos
      */
     private HistorialHabitos historialDTOConvertirAEntidad(HistorialHabitosDTO historialDTO) {
         HistorialHabitos historial = new HistorialHabitos();
@@ -265,7 +268,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     }
 
     /**
-     * Método que devuelve los hábitos que concuerden con el usuario y el día de la semana.
+     * Método que devuelve los hábitos que concuerden con el usuario y el día de
+     * la semana.
      *
      * @param cuenta Cuenta a buscar los hábitos.
      * @param diaSemana Día de la semana que concuerde con los hábitos.
@@ -275,56 +279,56 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     public List<HabitoDTO> identificarDias(CuentaDTO cuenta, String diaSemana) throws ControllerException {
         List<HabitoDTO> habitos = obtenerHabitos(cuenta);
         List<HabitoDTO> habitosPorDia = new ArrayList<>();
-        
+
         for (HabitoDTO habito : habitos) {
-            
+
             String dias = String.format("%07d", Long.valueOf(String.valueOf(habito.getDiasSemana()), 2));
-            
+
             switch (diaSemana.toLowerCase()) {
-                case "lunes":
+                case "lunes" -> {
                     if (dias.charAt(0) == '1') {
                         habitosPorDia.add(habito);
                     }
-                    break;
-                case "martes":
+                }
+                case "martes" -> {
                     if (dias.charAt(1) == '1') {
                         habitosPorDia.add(habito);
                     }
-                    break;
-                case "miercoles":
+                }
+                case "miercoles" -> {
                     if (dias.charAt(2) == '1') {
                         habitosPorDia.add(habito);
                     }
-                    break;
-                case "jueves":
+                }
+                case "jueves" -> {
                     if (dias.charAt(3) == '1') {
                         habitosPorDia.add(habito);
                     }
-                    break;
-                case "viernes":
+                }
+                case "viernes" -> {
                     if (dias.charAt(4) == '1') {
                         habitosPorDia.add(habito);
                     }
-                    break;
-                case "sabado":
+                }
+                case "sabado" -> {
                     if (dias.charAt(5) == '1') {
                         habitosPorDia.add(habito);
                     }
-                    break;
-                case "domingo":
+                }
+                case "domingo" -> {
                     if (dias.charAt(6) == '1') {
                         habitosPorDia.add(habito);
                     }
-                    break;
-                default:
+                }
+                default ->
                     throw new ControllerException("Día de la semana no válido.");
             }
         }
-        
+
         if (habitosPorDia.isEmpty()) {
             throw new ControllerException("No se ha encontrado información para el día solicitado.");
         }
-        
+
         return habitosPorDia;
     }
 
@@ -333,7 +337,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Lista de registros de historial de hábitos que coinciden con la fecha y el ID de hábito.
+     * @return Lista de registros de historial de hábitos que coinciden con la
+     * fecha y el ID de hábito.
      * @throws ControllerException Si ocurre un error al buscar
      */
     @Override
@@ -367,7 +372,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      *
      * @param usuario Usuario a consultar
      * @return Cuenta consultada
-     * @throws ControllerException si no se puede consultar la cuenta correctamente
+     * @throws ControllerException si no se puede consultar la cuenta
+     * correctamente
      */
     @Override
     public boolean cuentaExiste(String usuario) throws ControllerException {
@@ -388,50 +394,107 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     public Date[] obtenerSemana(Date fecha) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(fecha);
-        
+
         while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
             calendar.add(Calendar.DAY_OF_MONTH, -1);
         }
-        
+
         Date[] semana = new Date[7];
         for (int i = 0; i < 7; i++) {
             semana[i] = calendar.getTime();
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
-        
+
         return semana;
     }
 
     /**
-     * Método que toma un array de fechas que representa los días de una semana (del lunes al domingo) y devuelve un nuevo array con los días de la semana anterior o posterior.
+     * Metodo para obtener la fecha del Lunes y Domingo de la semana de un
+     * determinado día
      *
-     * @param semanaActual Un array de `Date` que contiene exactamente 7 elementos, representando una semana completa desde el lunes hasta el domingo.
-     * @param direccion Un `String` que indica la dirección a calcular: `"anterior"` o `"posterior"`.
-     * @return Un array de `Date` que contiene los días de la semana anterior o posterior, comenzando desde el lunes y terminando el domingo.
-     * @throws IllegalArgumentException Si el array `semanaActual` es nulo, no contiene exactamente 7 elementos, o si el valor de `direccion` no es `"anterior"` o `"posterior"`.
+     * @param fecha Fecha a obtener la semana
+     * @return Array con las fechas del Lunes y Domingo de la semana
+     */
+    @Override
+    public Date[] obtenerLimitesSemana(Date fecha) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha);
+
+        // Encontrar el lunes de la semana
+        while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+            calendar.add(Calendar.DAY_OF_MONTH, -1);
+        }
+
+        Date lunes = calendar.getTime(); // Lunes de la semana
+
+        // Encontrar el domingo de la semana
+        calendar.add(Calendar.DAY_OF_MONTH, 6); // Moverse al domingo
+        Date domingo = calendar.getTime(); // Domingo de la semana
+
+        return new Date[]{lunes, domingo}; // Devolver un array con Lunes y Domingo
+    }
+
+    /**
+     * Metodo para obtener la fecha del primer y último día del mes de un
+     * determinado día
+     *
+     * @param fecha Fecha a obtener los límites del mes
+     * @return Array con las fechas del primer y último día del mes
+     */
+    @Override
+    public Date[] obtenerLimitesMes(Date fecha) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fecha);
+
+        // Encontrar el primer día del mes
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        Date primerDia = calendar.getTime(); // Primer día del mes
+
+        // Encontrar el último día del mes
+        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+        Date ultimoDia = calendar.getTime(); // Último día del mes
+
+        return new Date[]{primerDia, ultimoDia}; // Devolver un array con el primer y último día del mes
+    }
+
+    /**
+     * Método que toma un array de fechas que representa los días de una semana
+     * (del lunes al domingo) y devuelve un nuevo array con los días de la
+     * semana anterior o posterior.
+     *
+     * @param semanaActual Un array de `Date` que contiene exactamente 7
+     * elementos, representando una semana completa desde el lunes hasta el
+     * domingo.
+     * @param direccion Un `String` que indica la dirección a calcular:
+     * `"anterior"` o `"posterior"`.
+     * @return Un array de `Date` que contiene los días de la semana anterior o
+     * posterior, comenzando desde el lunes y terminando el domingo.
+     * @throws IllegalArgumentException Si el array `semanaActual` es nulo, no
+     * contiene exactamente 7 elementos, o si el valor de `direccion` no es
+     * `"anterior"` o `"posterior"`.
      */
     @Override
     public Date[] obtenerSemana(Date[] semanaActual, String direccion) throws ControllerException {
         if (semanaActual == null || semanaActual.length != 7) {
             throw new ControllerException("El array debe contener exactamente 7 días.");
         }
-        
+
         if (!"anterior".equalsIgnoreCase(direccion) && !"posterior".equalsIgnoreCase(direccion)) {
             throw new ControllerException("La dirección debe ser 'anterior' o 'posterior'.");
         }
-        
+
         Date[] nuevaSemana = new Date[7];
         Calendar calendar = Calendar.getInstance();
-        
+
         calendar.setTime(semanaActual[0]);
-        
+
         int diasAjuste = "anterior".equalsIgnoreCase(direccion) ? -7 : 7;
         calendar.add(Calendar.DAY_OF_MONTH, diasAjuste);
         for (int i = 0; i < 7; i++) {
             nuevaSemana[i] = calendar.getTime();
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
-        
+
         return nuevaSemana;
     }
 
@@ -445,28 +508,36 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @param b5 Quinto valor booleano.
      * @param b6 Sexto valor booleano.
      * @param b7 Séptimo valor booleano.
-     * @return Una cadena de siete caracteres representando los valores booleanos como bits (1 o 0).
+     * @return Una cadena de siete caracteres representando los valores
+     * booleanos como bits (1 o 0).
      */
     public static String convertirABits(boolean b1, boolean b2, boolean b3, boolean b4, boolean b5, boolean b6, boolean b7) {
         StringBuilder bits = new StringBuilder();
-        
+
         boolean[] booleanos = {b1, b2, b3, b4, b5, b6, b7};
-        
+
         for (boolean b : booleanos) {
             bits.append(b ? "1" : "0");
         }
-        
+
         return bits.toString();
     }
 
     /**
      * Consulta una cuenta por el nombre de usuario proporcionado.
      *
-     * Este método busca en la base de datos una cuenta asociada con el nombre de usuario especificado. Si se encuentra la cuenta, se convierte a un objeto CuentaDTO y se retorna. Si no se encuentra ninguna cuenta, el método retornará null.
+     * Este método busca en la base de datos una cuenta asociada con el nombre
+     * de usuario especificado. Si se encuentra la cuenta, se convierte a un
+     * objeto CuentaDTO y se retorna. Si no se encuentra ninguna cuenta, el
+     * método retornará null.
      *
-     * @param usuario el nombre de usuario de la cuenta a consultar. Este valor no debe ser nulo.
-     * @return un objeto CuentaDTO que representa la cuenta encontrada, o null si no se encuentra ninguna cuenta asociada con el nombre de usuario proporcionado.
-     * @throws ModelException si hay un error al consultar la cuenta, ya sea por problemas en la base de datos o en la lógica de negocio.
+     * @param usuario el nombre de usuario de la cuenta a consultar. Este valor
+     * no debe ser nulo.
+     * @return un objeto CuentaDTO que representa la cuenta encontrada, o null
+     * si no se encuentra ninguna cuenta asociada con el nombre de usuario
+     * proporcionado.
+     * @throws ModelException si hay un error al consultar la cuenta, ya sea por
+     * problemas en la base de datos o en la lógica de negocio.
      */
     @Override
     public CuentaDTO consultarCuentaPorUsuario(String usuario) throws ModelException {
@@ -487,7 +558,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * Busca un hábito por su ID y devuelve un HabitoDTO.
      *
      * @param id el ID del hábito a buscar.
-     * @return HabitoDTO correspondiente al hábito encontrado o null si no se encuentra.
+     * @return HabitoDTO correspondiente al hábito encontrado o null si no se
+     * encuentra.
      * @throws ModelException si hay un error al buscar el hábito.
      */
     @Override
@@ -495,10 +567,10 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         if (id == null) {
             throw new ModelException("El ID no puede ser nulo");
         }
-        
+
         try {
             Habito habito = habitoDAO.buscarHabitoPorId(id);
-            
+
             if (habito != null) {
                 return HabitoConvertirADTO(habito);
             } else {
@@ -531,10 +603,10 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         // Convertir el habito asociado de HabitoDTO a Habito (dependiendo de cómo esté implementada esa conversión)
         Habito habito = HabitoDTOConvertirAEntidad(historialHabitosDTO.getHabito());
         historialHabitos.setHabito(habito);
-        
+
         return historialHabitos;
     }
-    
+
     @Override
     public boolean habitoCompletado(HabitoDTO habito) throws ControllerException {
         try {
@@ -544,5 +616,35 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         }
         return false;
     }
-    
+
+    /**
+     * Obtiene el progreso de los hábitos de una cuenta en un rango de fechas
+     * determinado.
+     *
+     * @param cuenta La cuenta para la cual se desea obtener el progreso de los
+     * hábitos en forma de {@link CuentaDTO}.
+     * @param fechaInicio La fecha de inicio del rango de fechas.
+     * @param fechaFin La fecha de fin del rango de fechas.
+     * @return Una lista de objetos {@link ProgresoHabitoDTO} que representan el
+     * progreso de los hábitos de la cuenta en el rango de fechas especificado.
+     * @throws ControllerException Si ocurre un error al obtener el progreso de
+     * los hábitos.
+     */
+    @Override
+    public List<ProgresoHabitoDTO> obtenerProgresoHabitos(CuentaDTO cuenta, Date fechaInicio, Date fechaFin) throws ControllerException {
+        try {
+            List<ProgresoHabito> habitos = habitoDAO.obtenerProgresoHabitos(cuentaDTOAEntidad(cuenta), fechaInicio, fechaFin);
+
+            // Convertir la lista de POJO a DTO usando Streams
+            List<ProgresoHabitoDTO> habitoDTOs = habitos.stream()
+                    .map(habito -> new ProgresoHabitoDTO(habito.getNombre(), habito.getDiasRealizados(), habito.getTotalDias()))
+                    // Ajusta los nombres de los métodos según tu POJO y DTO
+                    .collect(Collectors.toList());
+
+            return habitoDTOs;
+        } catch (ModelException e) {
+            throw new ControllerException(e);
+        }
+    }
+
 }
