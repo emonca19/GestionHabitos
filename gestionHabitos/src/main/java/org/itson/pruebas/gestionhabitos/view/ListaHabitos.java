@@ -4,6 +4,7 @@
  */
 package org.itson.pruebas.gestionhabitos.view;
 
+import static com.mysql.cj.conf.PropertyKey.logger;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -14,7 +15,16 @@ import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JDialog;
@@ -25,8 +35,11 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import org.itson.pruebas.gestionhabitos.controller.ControllerException;
+import org.itson.pruebas.gestionhabitos.controller.FechaUtil;
 import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
 import org.itson.pruebas.gestionhabitos.controller.HabitoDTO;
+import org.itson.pruebas.gestionhabitos.controller.HistorialHabitosDTO;
+import org.itson.pruebas.gestionhabitos.controller.IGestionarHabitosNegocio;
 import org.itson.pruebas.gestionhabitos.controller.Sesion;
 
 /**
@@ -37,14 +50,24 @@ public class ListaHabitos extends javax.swing.JPanel {
 
     private FrameContenedor frame;
 
+    private static final Logger logger = Logger.getLogger(Inicio.class.getName());
+    private List<HistorialHabitosDTO> historialHabitos;
+    private IGestionarHabitosNegocio gestionar;
+    private LocalDate fechaActual;
+    private Date[] lista;
+
     /**
      * Creates new form Progreso
      *
      * @param frame
      */
     public ListaHabitos(FrameContenedor frame) {
-        this.frame = frame;
         initComponents();
+        this.frame = frame;
+        lista = new Date[7];
+        gestionar = new GestionarHabitosNegocio();
+        fechaActual = FechaUtil.getFechaActual() == null ? LocalDate.now() : FechaUtil.getFechaActual();
+        cargarDias(Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant()));
         try {
             setFonts();
             listarHabitos();
@@ -65,10 +88,10 @@ public class ListaHabitos extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnPerfil = new javax.swing.JButton();
         lblMes = new javax.swing.JLabel();
         btnIzquierda = new javax.swing.JButton();
         btnDerecha = new javax.swing.JButton();
-        btnPerfil = new javax.swing.JButton();
         btnDia1 = new javax.swing.JButton();
         btnDia2 = new javax.swing.JButton();
         btnDia3 = new javax.swing.JButton();
@@ -76,6 +99,20 @@ public class ListaHabitos extends javax.swing.JPanel {
         btnDia5 = new javax.swing.JButton();
         btnDia6 = new javax.swing.JButton();
         btnDia7 = new javax.swing.JButton();
+        lblLunes = new javax.swing.JLabel();
+        lblLunes1 = new javax.swing.JLabel();
+        lblMartes = new javax.swing.JLabel();
+        lblMartes1 = new javax.swing.JLabel();
+        lblMiercoles = new javax.swing.JLabel();
+        lblMiercoles1 = new javax.swing.JLabel();
+        lblJueves = new javax.swing.JLabel();
+        lblJueves1 = new javax.swing.JLabel();
+        lblViernes = new javax.swing.JLabel();
+        lblViernes1 = new javax.swing.JLabel();
+        lblSabado = new javax.swing.JLabel();
+        lblSabado1 = new javax.swing.JLabel();
+        lblDomingo = new javax.swing.JLabel();
+        lblDomingo1 = new javax.swing.JLabel();
         btnAgregar = new javax.swing.JButton();
         lblListaHabitos = new javax.swing.JLabel();
         lblMasInfomacion = new javax.swing.JLabel();
@@ -89,6 +126,16 @@ public class ListaHabitos extends javax.swing.JPanel {
         setMaximumSize(new java.awt.Dimension(750, 750));
         setMinimumSize(new java.awt.Dimension(750, 750));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnPerfil.setBorderPainted(false);
+        btnPerfil.setContentAreaFilled(false);
+        btnPerfil.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPerfilActionPerformed(evt);
+            }
+        });
+        add(btnPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(696, 9, 46, 46));
 
         lblMes.setForeground(new java.awt.Color(255, 255, 255));
         lblMes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -119,18 +166,7 @@ public class ListaHabitos extends javax.swing.JPanel {
         });
         add(btnDerecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(713, 105, 16, 27));
 
-        btnPerfil.setBorderPainted(false);
-        btnPerfil.setContentAreaFilled(false);
-        btnPerfil.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPerfilActionPerformed(evt);
-            }
-        });
-        add(btnPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(696, 9, 46, 46));
-
         btnDia1.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia1.setText("<html>D<br>N</html>");
         btnDia1.setBorderPainted(false);
         btnDia1.setContentAreaFilled(false);
         btnDia1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -143,7 +179,6 @@ public class ListaHabitos extends javax.swing.JPanel {
         add(btnDia1, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 106, 60, 60));
 
         btnDia2.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia2.setText("<html>D<br>N</html>");
         btnDia2.setBorderPainted(false);
         btnDia2.setContentAreaFilled(false);
         btnDia2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -156,7 +191,6 @@ public class ListaHabitos extends javax.swing.JPanel {
         add(btnDia2, new org.netbeans.lib.awtextra.AbsoluteConstraints(165, 106, 60, 60));
 
         btnDia3.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia3.setText("<html>D<br>N</html>");
         btnDia3.setBorderPainted(false);
         btnDia3.setContentAreaFilled(false);
         btnDia3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -169,7 +203,6 @@ public class ListaHabitos extends javax.swing.JPanel {
         add(btnDia3, new org.netbeans.lib.awtextra.AbsoluteConstraints(255, 106, 60, 60));
 
         btnDia4.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia4.setText("<html>D<br>N</html>");
         btnDia4.setBorderPainted(false);
         btnDia4.setContentAreaFilled(false);
         btnDia4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -182,7 +215,6 @@ public class ListaHabitos extends javax.swing.JPanel {
         add(btnDia4, new org.netbeans.lib.awtextra.AbsoluteConstraints(345, 106, 60, 60));
 
         btnDia5.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia5.setText("<html>D<br>N</html>");
         btnDia5.setBorderPainted(false);
         btnDia5.setContentAreaFilled(false);
         btnDia5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -195,7 +227,6 @@ public class ListaHabitos extends javax.swing.JPanel {
         add(btnDia5, new org.netbeans.lib.awtextra.AbsoluteConstraints(435, 106, 60, 60));
 
         btnDia6.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia6.setText("<html>D<br>N</html>");
         btnDia6.setBorderPainted(false);
         btnDia6.setContentAreaFilled(false);
         btnDia6.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -208,7 +239,6 @@ public class ListaHabitos extends javax.swing.JPanel {
         add(btnDia6, new org.netbeans.lib.awtextra.AbsoluteConstraints(525, 106, 60, 60));
 
         btnDia7.setForeground(new java.awt.Color(245, 245, 245));
-        btnDia7.setText("<html>D<br>N</html>");
         btnDia7.setBorderPainted(false);
         btnDia7.setContentAreaFilled(false);
         btnDia7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -219,6 +249,76 @@ public class ListaHabitos extends javax.swing.JPanel {
             }
         });
         add(btnDia7, new org.netbeans.lib.awtextra.AbsoluteConstraints(615, 106, 60, 60));
+
+        lblLunes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblLunes.setForeground(new java.awt.Color(255, 255, 255));
+        lblLunes.setText("L");
+        add(lblLunes, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 10, 20));
+
+        lblLunes1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblLunes1.setForeground(new java.awt.Color(255, 255, 255));
+        lblLunes1.setText("21");
+        add(lblLunes1, new org.netbeans.lib.awtextra.AbsoluteConstraints(92, 130, 30, 20));
+
+        lblMartes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblMartes.setForeground(new java.awt.Color(255, 255, 255));
+        lblMartes.setText("M");
+        add(lblMartes, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 110, 30, 20));
+
+        lblMartes1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblMartes1.setForeground(new java.awt.Color(255, 255, 255));
+        lblMartes1.setText("22");
+        add(lblMartes1, new org.netbeans.lib.awtextra.AbsoluteConstraints(183, 130, 60, 20));
+
+        lblMiercoles.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblMiercoles.setForeground(new java.awt.Color(255, 255, 255));
+        lblMiercoles.setText("X");
+        add(lblMiercoles, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 110, 10, 20));
+
+        lblMiercoles1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblMiercoles1.setForeground(new java.awt.Color(255, 255, 255));
+        lblMiercoles1.setText("23");
+        add(lblMiercoles1, new org.netbeans.lib.awtextra.AbsoluteConstraints(273, 130, 60, 20));
+
+        lblJueves.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblJueves.setForeground(new java.awt.Color(255, 255, 255));
+        lblJueves.setText("J");
+        add(lblJueves, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 110, 10, 20));
+
+        lblJueves1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblJueves1.setForeground(new java.awt.Color(255, 255, 255));
+        lblJueves1.setText("24");
+        add(lblJueves1, new org.netbeans.lib.awtextra.AbsoluteConstraints(362, 130, 60, 20));
+
+        lblViernes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblViernes.setForeground(new java.awt.Color(255, 255, 255));
+        lblViernes.setText("V");
+        add(lblViernes, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 110, 10, 20));
+
+        lblViernes1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblViernes1.setForeground(new java.awt.Color(255, 255, 255));
+        lblViernes1.setText("25");
+        add(lblViernes1, new org.netbeans.lib.awtextra.AbsoluteConstraints(453, 130, 50, 20));
+
+        lblSabado.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblSabado.setForeground(new java.awt.Color(255, 255, 255));
+        lblSabado.setText("S");
+        add(lblSabado, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 110, 10, 20));
+
+        lblSabado1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblSabado1.setForeground(new java.awt.Color(255, 255, 255));
+        lblSabado1.setText("26");
+        add(lblSabado1, new org.netbeans.lib.awtextra.AbsoluteConstraints(543, 130, 60, 20));
+
+        lblDomingo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblDomingo.setForeground(new java.awt.Color(255, 255, 255));
+        lblDomingo.setText("D");
+        add(lblDomingo, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 110, 10, 20));
+
+        lblDomingo1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        lblDomingo1.setForeground(new java.awt.Color(255, 255, 255));
+        lblDomingo1.setText("27");
+        add(lblDomingo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(633, 130, 60, 20));
 
         btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregarHabitos.png"))); // NOI18N
         btnAgregar.setBorderPainted(false);
@@ -284,43 +384,9 @@ public class ListaHabitos extends javax.swing.JPanel {
         add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzquierdaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnIzquierdaActionPerformed
-
-    private void btnDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDerechaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDerechaActionPerformed
-
-    private void btnDia1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDia1ActionPerformed
-
-    private void btnDia2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDia2ActionPerformed
-
-    private void btnDia3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDia3ActionPerformed
-
-    private void btnDia4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDia4ActionPerformed
-
-    private void btnDia5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDia5ActionPerformed
-
-    private void btnDia6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDia6ActionPerformed
-
-    private void btnDia7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDia7ActionPerformed
-
     private void btnHoyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoyActionPerformed
+        frame.obtenerHabitosHoy();
+        FechaUtil.establecerFechaHoy();
         frame.mostrarInicio();
     }//GEN-LAST:event_btnHoyActionPerformed
 
@@ -339,6 +405,271 @@ public class ListaHabitos extends javax.swing.JPanel {
     private void btnPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerfilActionPerformed
         frame.mostrarOpcionesPerfil();
     }//GEN-LAST:event_btnPerfilActionPerformed
+
+    private void btnIzquierdaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIzquierdaActionPerformed
+        try {
+            Date fecha = Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            lista = gestionar.obtenerSemana(gestionar.obtenerSemana(fecha), "anterior");
+
+            // Formatear los días y establecer el texto en las etiquetas
+            lblLunes1.setText(String.format("%02d", lista[0].getDate()));
+            lblMartes1.setText(String.format("%02d", lista[1].getDate()));
+            lblMiercoles1.setText(String.format("%02d", lista[2].getDate()));
+            lblJueves1.setText(String.format("%02d", lista[3].getDate()));
+            lblViernes1.setText(String.format("%02d", lista[4].getDate()));
+            lblSabado1.setText(String.format("%02d", lista[5].getDate()));
+            lblDomingo1.setText(String.format("%02d", lista[6].getDate()));
+
+            // Obtener LocalDate para el primer y último día de la semana
+            LocalDate primerDia = lista[0].toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            LocalDate ultimoDia = lista[6].toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+
+            // Obtener los meses y años correspondientes
+            String mesInicio = primerDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+            String mesFin = ultimoDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+            int anioInicio = primerDia.getYear();
+            int anioFin = ultimoDia.getYear();
+
+            // Determinar la salida de la etiqueta lblMes
+            if (!mesInicio.equals(mesFin)) {
+                // Si los meses son diferentes
+                if (anioInicio == anioFin) {
+                    // Si los años son iguales, formatear como "mes1 - mes2 año"
+                    lblMes.setText(mesInicio + " - " + mesFin + " " + anioInicio);
+                } else {
+                    // Si los años son diferentes, formatear como "mes1 año1 - mes2 año2"
+                    lblMes.setText(mesInicio + " " + anioInicio + " - " + mesFin + " " + anioFin);
+                }
+            } else {
+                // Si los meses son iguales
+                lblMes.setText(mesInicio + " " + anioInicio);
+            }
+
+            fechaActual = primerDia;
+        } catch (ControllerException ex) {
+            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnIzquierdaActionPerformed
+
+    private void btnDerechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDerechaActionPerformed
+        // TODO add your handling code here:
+        try {
+            Date fecha = Date.from(fechaActual.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            lista = gestionar.obtenerSemana(gestionar.obtenerSemana(fecha), "posterior");
+
+            // Formatear los días y establecer el texto en las etiquetas
+            lblLunes1.setText(String.format("%02d", lista[0].getDate()));
+            lblMartes1.setText(String.format("%02d", lista[1].getDate()));
+            lblMiercoles1.setText(String.format("%02d", lista[2].getDate()));
+            lblJueves1.setText(String.format("%02d", lista[3].getDate()));
+            lblViernes1.setText(String.format("%02d", lista[4].getDate()));
+            lblSabado1.setText(String.format("%02d", lista[5].getDate()));
+            lblDomingo1.setText(String.format("%02d", lista[6].getDate()));
+
+            // Obtener LocalDate para el primer y último día de la semana
+            LocalDate primerDia = lista[0].toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+            LocalDate ultimoDia = lista[6].toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+
+            // Obtener los meses y años correspondientes
+            String mesInicio = primerDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+            String mesFin = ultimoDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+            int anioInicio = primerDia.getYear();
+            int anioFin = ultimoDia.getYear();
+
+            // Determinar la salida de la etiqueta lblMes
+            if (!mesInicio.equals(mesFin)) {
+                // Si los meses son diferentes
+                if (anioInicio == anioFin) {
+                    // Si los años son iguales, formatear como "mes1 - mes2 año"
+                    lblMes.setText(mesInicio + " - " + mesFin + " " + anioInicio);
+                } else {
+                    // Si los años son diferentes, formatear como "mes1 año1 - mes2 año2"
+                    lblMes.setText(mesInicio + " " + anioInicio + " - " + mesFin + " " + anioFin);
+                }
+            } else {
+                // Si los meses son iguales
+                lblMes.setText(mesInicio + " " + anioInicio);
+            }
+
+            fechaActual = primerDia;
+        } catch (ControllerException ex) {
+            //            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnDerechaActionPerformed
+
+    private void btnDia1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia1ActionPerformed
+        // TODO add your handling code here:
+
+        fechaActual = lista[0].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String nombreDia = fechaActual.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es"));
+        String mes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        FechaUtil.setFechaFormateada(nombreDia + " " + fechaActual.getDayOfMonth() + " de " + mes + " de " + fechaActual.getYear());
+        try {
+            historialHabitos = gestionar.obtenerHabitosDia(fechaActual, "lunes");
+            HistorialHabitosDTO.setHistorialHabitosDTOs(historialHabitos);
+        } catch (ControllerException ex) {
+            logger.log(Level.WARNING, ex.getMessage());
+        } catch (NoSuchElementException e) {
+            logger.log(Level.INFO, "El usuario no tiene hábitos asignados este día");
+            HistorialHabitosDTO.setHistorialHabitosDTOs(new ArrayList<>());
+
+        }
+        FechaUtil.setFechaActual(fechaActual);
+        frame.mostrarInicio();
+    }//GEN-LAST:event_btnDia1ActionPerformed
+
+    private void btnDia2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia2ActionPerformed
+        // TODO add your handling code here:
+        fechaActual = lista[1].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String nombreDia = fechaActual.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es"));
+        String mes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        FechaUtil.setFechaFormateada(nombreDia + " " + fechaActual.getDayOfMonth() + " de " + mes + " de " + fechaActual.getYear());
+        try {
+            historialHabitos = gestionar.obtenerHabitosDia(fechaActual, "martes");
+            HistorialHabitosDTO.setHistorialHabitosDTOs(historialHabitos);
+        } catch (ControllerException ex) {
+            logger.log(Level.WARNING, ex.getMessage());
+        } catch (NoSuchElementException e) {
+            logger.log(Level.INFO, "El usuario no tiene hábitos asignados este día");
+            HistorialHabitosDTO.setHistorialHabitosDTOs(new ArrayList<>());
+        }
+        FechaUtil.setFechaActual(fechaActual);
+
+        frame.mostrarInicio();
+    }//GEN-LAST:event_btnDia2ActionPerformed
+
+    private void btnDia3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia3ActionPerformed
+        // TODO add your handling code here:
+        fechaActual = lista[2].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String nombreDia = fechaActual.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es"));
+        String mes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        FechaUtil.setFechaFormateada(nombreDia + " " + fechaActual.getDayOfMonth() + " de " + mes + " de " + fechaActual.getYear());
+        try {
+            historialHabitos = gestionar.obtenerHabitosDia(fechaActual, "miercoles");
+            HistorialHabitosDTO.setHistorialHabitosDTOs(historialHabitos);
+        } catch (ControllerException ex) {
+            logger.log(Level.WARNING, ex.getMessage());
+        } catch (NoSuchElementException e) {
+            logger.log(Level.INFO, "El usuario no tiene hábitos asignados este día");
+            HistorialHabitosDTO.setHistorialHabitosDTOs(new ArrayList<>());
+        }
+        FechaUtil.setFechaActual(fechaActual);
+
+        frame.mostrarInicio();
+    }//GEN-LAST:event_btnDia3ActionPerformed
+
+    private void btnDia4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia4ActionPerformed
+        // TODO add your handling code here:
+        fechaActual = lista[3].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String nombreDia = fechaActual.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es"));
+        String mes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        FechaUtil.setFechaFormateada(nombreDia + " " + fechaActual.getDayOfMonth() + " de " + mes + " de " + fechaActual.getYear());
+        try {
+            historialHabitos = gestionar.obtenerHabitosDia(fechaActual, "jueves");
+            HistorialHabitosDTO.setHistorialHabitosDTOs(historialHabitos);
+        } catch (ControllerException ex) {
+            logger.log(Level.WARNING, ex.getMessage());
+        } catch (NoSuchElementException e) {
+            logger.log(Level.INFO, "El usuario no tiene hábitos asignados este día");
+            HistorialHabitosDTO.setHistorialHabitosDTOs(new ArrayList<>());
+        }
+        FechaUtil.setFechaActual(fechaActual);
+
+        frame.mostrarInicio();
+    }//GEN-LAST:event_btnDia4ActionPerformed
+
+    private void btnDia5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia5ActionPerformed
+        // TODO add your handling code here:
+        fechaActual = lista[4].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String nombreDia = fechaActual.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es"));
+        String mes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        FechaUtil.setFechaFormateada(nombreDia + " " + fechaActual.getDayOfMonth() + " de " + mes + " de " + fechaActual.getYear());
+        try {
+            historialHabitos = gestionar.obtenerHabitosDia(fechaActual, "viernes");
+            HistorialHabitosDTO.setHistorialHabitosDTOs(historialHabitos);
+        } catch (ControllerException ex) {
+            logger.log(Level.WARNING, ex.getMessage());
+        } catch (NoSuchElementException e) {
+            logger.log(Level.INFO, "El usuario no tiene hábitos asignados este día");
+            HistorialHabitosDTO.setHistorialHabitosDTOs(new ArrayList<>());
+        }
+        FechaUtil.setFechaActual(fechaActual);
+
+        frame.mostrarInicio();
+    }//GEN-LAST:event_btnDia5ActionPerformed
+
+    private void btnDia6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia6ActionPerformed
+        // TODO add your handling code here:
+        fechaActual = lista[5].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String nombreDia = fechaActual.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es"));
+        String mes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        FechaUtil.setFechaFormateada(nombreDia + " " + fechaActual.getDayOfMonth() + " de " + mes + " de " + fechaActual.getYear());
+        try {
+            historialHabitos = gestionar.obtenerHabitosDia(fechaActual, "sabado");
+            HistorialHabitosDTO.setHistorialHabitosDTOs(historialHabitos);
+        } catch (ControllerException ex) {
+            logger.log(Level.WARNING, ex.getMessage());
+        } catch (NoSuchElementException e) {
+            logger.log(Level.INFO, "El usuario no tiene hábitos asignados este día");
+            HistorialHabitosDTO.setHistorialHabitosDTOs(new ArrayList<>());
+        }
+        FechaUtil.setFechaActual(fechaActual);
+
+        frame.mostrarInicio();
+    }//GEN-LAST:event_btnDia6ActionPerformed
+
+    private void btnDia7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDia7ActionPerformed
+        // TODO add your handling code here:
+        fechaActual = lista[6].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        String nombreDia = fechaActual.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es"));
+        String mes = fechaActual.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        FechaUtil.setFechaFormateada(nombreDia + " " + fechaActual.getDayOfMonth() + " de " + mes + " de " + fechaActual.getYear());
+        try {
+            historialHabitos = gestionar.obtenerHabitosDia(fechaActual, "domingo");
+            HistorialHabitosDTO.setHistorialHabitosDTOs(historialHabitos);
+        } catch (ControllerException ex) {
+            logger.log(Level.WARNING, ex.getMessage());
+        } catch (NoSuchElementException e) {
+            logger.log(Level.INFO, "El usuario no tiene hábitos asignados este día");
+            HistorialHabitosDTO.setHistorialHabitosDTOs(new ArrayList<>());
+        }
+        FechaUtil.setFechaActual(fechaActual);
+
+        frame.mostrarInicio();
+    }//GEN-LAST:event_btnDia7ActionPerformed
 
     private void listarHabitos() throws FontFormatException, IOException {
         JPanel pnlHabitos = new JPanel();
@@ -360,7 +691,7 @@ public class ListaHabitos extends javax.swing.JPanel {
         } catch (ControllerException e) {
             return;
         }
-        
+
         for (HabitoDTO habitoDTO : habitosDTO) {
             addHabit(habitoDTO.getNombre(), pnlHabitos);
         }
@@ -428,6 +759,44 @@ public class ListaHabitos extends javax.swing.JPanel {
         dialog.setVisible(true);
     }
 
+    private void cargarDias(Date hoy) {
+
+        lista = gestionar.obtenerSemana(hoy);
+
+        LocalDate primerDia = lista[0].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+        LocalDate ultimoDia = lista[6].toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
+        String mesInicio = primerDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+        String mesFin = ultimoDia.getMonth().getDisplayName(TextStyle.FULL, new Locale("es", "ES")).toLowerCase();
+
+        int anioInicio = primerDia.getYear();
+        int anioFin = ultimoDia.getYear();
+
+        if (!mesInicio.equals(mesFin)) {
+            if (anioInicio == anioFin) {
+                lblMes.setText(mesInicio + " - " + mesFin + " " + anioInicio);
+            } else {
+                lblMes.setText(mesInicio + " - " + mesFin + " " + anioFin);
+            }
+        } else {
+            lblMes.setText(mesInicio + " " + anioInicio);
+        }
+
+        fechaActual = primerDia;
+
+        lblLunes1.setText(String.format("%02d", lista[0].getDate()));
+        lblMartes1.setText(String.format("%02d", lista[1].getDate()));
+        lblMiercoles1.setText(String.format("%02d", lista[2].getDate()));
+        lblJueves1.setText(String.format("%02d", lista[3].getDate()));
+        lblViernes1.setText(String.format("%02d", lista[4].getDate()));
+        lblSabado1.setText(String.format("%02d", lista[5].getDate()));
+        lblDomingo1.setText(String.format("%02d", lista[6].getDate()));
+    }
+
     private void setFonts() throws FontFormatException, IOException {
         lblNombreUsuario.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Medium.ttf", 20F));
         lblMes.setFont(frame.cargarFuente("/fonts/Kurale/Kurale-Regular.ttf", 20F));
@@ -460,10 +829,24 @@ public class ListaHabitos extends javax.swing.JPanel {
     private javax.swing.JButton btnPerfil;
     private javax.swing.JButton btnProgreso;
     private javax.swing.JLabel fondo;
+    private javax.swing.JLabel lblDomingo;
+    private javax.swing.JLabel lblDomingo1;
+    private javax.swing.JLabel lblJueves;
+    private javax.swing.JLabel lblJueves1;
     private javax.swing.JLabel lblListaHabitos;
+    private javax.swing.JLabel lblLunes;
+    private javax.swing.JLabel lblLunes1;
+    private javax.swing.JLabel lblMartes;
+    private javax.swing.JLabel lblMartes1;
     private javax.swing.JLabel lblMasInfomacion;
     private javax.swing.JLabel lblMes;
+    private javax.swing.JLabel lblMiercoles;
+    private javax.swing.JLabel lblMiercoles1;
     private javax.swing.JLabel lblNombreUsuario;
+    private javax.swing.JLabel lblSabado;
+    private javax.swing.JLabel lblSabado1;
+    private javax.swing.JLabel lblViernes;
+    private javax.swing.JLabel lblViernes1;
     private javax.swing.JPanel pnlContenedorHabitos;
     // End of variables declaration//GEN-END:variables
 }

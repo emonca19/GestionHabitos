@@ -94,6 +94,7 @@ public class Inicio extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnPerfil = new javax.swing.JButton();
         lblMes = new javax.swing.JLabel();
         btnIzquierda = new javax.swing.JButton();
         btnDerecha = new javax.swing.JButton();
@@ -104,18 +105,6 @@ public class Inicio extends javax.swing.JPanel {
         btnDia5 = new javax.swing.JButton();
         btnDia6 = new javax.swing.JButton();
         btnDia7 = new javax.swing.JButton();
-        btnPerfil = new javax.swing.JButton();
-        btnAgregar = new javax.swing.JButton();
-        pnlContenedorHabitosPendientes = new javax.swing.JPanel();
-        pnlContenedorHabitosRealizados = new javax.swing.JPanel();
-        lblHabitosPendientes = new javax.swing.JLabel();
-        lblHabitosRealizados = new javax.swing.JLabel();
-        lblFecha = new javax.swing.JLabel();
-        lblDivision = new javax.swing.JLabel();
-        btnHoy = new javax.swing.JButton();
-        btnHabitos = new javax.swing.JButton();
-        btnProgreso = new javax.swing.JButton();
-        lblNombreUsuario = new javax.swing.JLabel();
         lblLunes = new javax.swing.JLabel();
         lblLunes1 = new javax.swing.JLabel();
         lblMartes = new javax.swing.JLabel();
@@ -130,12 +119,33 @@ public class Inicio extends javax.swing.JPanel {
         lblSabado1 = new javax.swing.JLabel();
         lblDomingo = new javax.swing.JLabel();
         lblDomingo1 = new javax.swing.JLabel();
+        btnAgregar = new javax.swing.JButton();
+        pnlContenedorHabitosPendientes = new javax.swing.JPanel();
+        pnlContenedorHabitosRealizados = new javax.swing.JPanel();
+        lblHabitosPendientes = new javax.swing.JLabel();
+        lblHabitosRealizados = new javax.swing.JLabel();
+        lblFecha = new javax.swing.JLabel();
+        lblDivision = new javax.swing.JLabel();
+        btnHoy = new javax.swing.JButton();
+        btnHabitos = new javax.swing.JButton();
+        btnProgreso = new javax.swing.JButton();
+        lblNombreUsuario = new javax.swing.JLabel();
         fondo = new javax.swing.JLabel();
 
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setMaximumSize(new java.awt.Dimension(750, 750));
         setMinimumSize(new java.awt.Dimension(750, 750));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnPerfil.setBorderPainted(false);
+        btnPerfil.setContentAreaFilled(false);
+        btnPerfil.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnPerfil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPerfilActionPerformed(evt);
+            }
+        });
+        add(btnPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(696, 9, 46, 46));
 
         lblMes.setForeground(new java.awt.Color(255, 255, 255));
         lblMes.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -250,83 +260,6 @@ public class Inicio extends javax.swing.JPanel {
         });
         add(btnDia7, new org.netbeans.lib.awtextra.AbsoluteConstraints(615, 106, 60, 60));
 
-        btnPerfil.setBorderPainted(false);
-        btnPerfil.setContentAreaFilled(false);
-        btnPerfil.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnPerfil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPerfilActionPerformed(evt);
-            }
-        });
-        add(btnPerfil, new org.netbeans.lib.awtextra.AbsoluteConstraints(696, 9, 46, 46));
-
-        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregarHabitos.png"))); // NOI18N
-        btnAgregar.setBorderPainted(false);
-        btnAgregar.setContentAreaFilled(false);
-        btnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
-            }
-        });
-        add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 572, 50, -1));
-
-        pnlContenedorHabitosPendientes.setOpaque(false);
-        add(pnlContenedorHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 233, 700, 170));
-
-        pnlContenedorHabitosRealizados.setOpaque(false);
-        add(pnlContenedorHabitosRealizados, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 460, 700, 170));
-
-        lblHabitosPendientes.setText("HÁBITOS PENDIENTES");
-        add(lblHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 198, -1, -1));
-
-        lblHabitosRealizados.setText("HÁBITOS REALIZADOS");
-        add(lblHabitosRealizados, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 425, -1, -1));
-
-        lblFecha.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lblFecha.setText("fecha");
-        add(lblFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 193, 410, 25));
-
-        lblDivision.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/division.png"))); // NOI18N
-        add(lblDivision, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 415, -1, -1));
-
-        btnHoy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/hoy.png"))); // NOI18N
-        btnHoy.setBorderPainted(false);
-        btnHoy.setContentAreaFilled(false);
-        btnHoy.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnHoy.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHoyActionPerformed(evt);
-            }
-        });
-        add(btnHoy, new org.netbeans.lib.awtextra.AbsoluteConstraints(208, 654, 80, 81));
-
-        btnHabitos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/habitos.png"))); // NOI18N
-        btnHabitos.setBorderPainted(false);
-        btnHabitos.setContentAreaFilled(false);
-        btnHabitos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnHabitos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnHabitosActionPerformed(evt);
-            }
-        });
-        add(btnHabitos, new org.netbeans.lib.awtextra.AbsoluteConstraints(335, 654, 80, 81));
-
-        btnProgreso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/progreso.png"))); // NOI18N
-        btnProgreso.setBorderPainted(false);
-        btnProgreso.setContentAreaFilled(false);
-        btnProgreso.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnProgreso.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProgresoActionPerformed(evt);
-            }
-        });
-        add(btnProgreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(462, 654, 80, 81));
-
-        lblNombreUsuario.setForeground(new java.awt.Color(37, 52, 18));
-        lblNombreUsuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        add(lblNombreUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(387, 18, 300, 27));
-
         lblLunes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblLunes.setForeground(new java.awt.Color(255, 255, 255));
         lblLunes.setText("L");
@@ -396,6 +329,73 @@ public class Inicio extends javax.swing.JPanel {
         lblDomingo1.setForeground(new java.awt.Color(255, 255, 255));
         lblDomingo1.setText("27");
         add(lblDomingo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(633, 130, 60, 20));
+
+        btnAgregar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregarHabitos.png"))); // NOI18N
+        btnAgregar.setBorderPainted(false);
+        btnAgregar.setContentAreaFilled(false);
+        btnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+        add(btnAgregar, new org.netbeans.lib.awtextra.AbsoluteConstraints(675, 572, 50, -1));
+
+        pnlContenedorHabitosPendientes.setOpaque(false);
+        add(pnlContenedorHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 233, 700, 170));
+
+        pnlContenedorHabitosRealizados.setOpaque(false);
+        add(pnlContenedorHabitosRealizados, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 460, 700, 170));
+
+        lblHabitosPendientes.setText("HÁBITOS PENDIENTES");
+        add(lblHabitosPendientes, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 198, -1, -1));
+
+        lblHabitosRealizados.setText("HÁBITOS REALIZADOS");
+        add(lblHabitosRealizados, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 425, -1, -1));
+
+        lblFecha.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        lblFecha.setText("fecha");
+        add(lblFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 193, 410, 25));
+
+        lblDivision.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/division.png"))); // NOI18N
+        add(lblDivision, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 415, -1, -1));
+
+        btnHoy.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/hoy.png"))); // NOI18N
+        btnHoy.setBorderPainted(false);
+        btnHoy.setContentAreaFilled(false);
+        btnHoy.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnHoy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHoyActionPerformed(evt);
+            }
+        });
+        add(btnHoy, new org.netbeans.lib.awtextra.AbsoluteConstraints(208, 654, 80, 81));
+
+        btnHabitos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/habitos.png"))); // NOI18N
+        btnHabitos.setBorderPainted(false);
+        btnHabitos.setContentAreaFilled(false);
+        btnHabitos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnHabitos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHabitosActionPerformed(evt);
+            }
+        });
+        add(btnHabitos, new org.netbeans.lib.awtextra.AbsoluteConstraints(335, 654, 80, 81));
+
+        btnProgreso.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/progreso.png"))); // NOI18N
+        btnProgreso.setBorderPainted(false);
+        btnProgreso.setContentAreaFilled(false);
+        btnProgreso.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnProgreso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnProgresoActionPerformed(evt);
+            }
+        });
+        add(btnProgreso, new org.netbeans.lib.awtextra.AbsoluteConstraints(462, 654, 80, 81));
+
+        lblNombreUsuario.setForeground(new java.awt.Color(37, 52, 18));
+        lblNombreUsuario.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        add(lblNombreUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(387, 18, 300, 27));
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondo.png"))); // NOI18N
         add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));

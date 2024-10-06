@@ -258,11 +258,9 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      */
     @Override
     public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException {
-        EntityTransaction transaction = null;
         HistorialHabitos resultado = null;
 
         try {
-
             // Asegúrate de que las horas en la fecha son cero
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(dia);
@@ -272,6 +270,11 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             calendar.set(Calendar.MILLISECOND, 0);
             Date diaSinHora = calendar.getTime();
 
+            // Verifica que el EntityManager esté abierto antes de la consulta
+            if (!entityManager.isOpen()) {
+                throw new ModelException("El EntityManager está cerrado.");
+            }
+
             // Usa una consulta para comparar la fecha sin hora
             resultado = entityManager.createQuery(
                     "SELECT h FROM HistorialHabitos h WHERE h.dia = :diaSinHora AND h.habito.id = :idHabito", HistorialHabitos.class)
@@ -280,21 +283,9 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                     .getSingleResult();
 
         } catch (NoResultException e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
-            throw new ModelException();
+            throw new ModelException("No se encontró el registro del historial de hábitos", e);
         } catch (NonUniqueResultException e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
             throw new ModelException("Se encontraron múltiples registros, se esperaba uno solo", e);
-        } catch (Exception e) {
-            if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-            }
-            e.printStackTrace();
-//            throw new ModelException("Error al buscar historial de hábitos", e);
         }
 
         return resultado; // Retorna el resultado
@@ -310,34 +301,44 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      */
     @Override
     public HistorialHabitos guardarYActualizarHistorial(HistorialHabitos historial) throws ModelException {
-
         EntityTransaction transaction = entityManager.getTransaction();
         try {
             transaction.begin();
 
-            HistorialHabitos historialExistente = buscarPorFechaYIdHabito(historial.getDia(), historial.getHabito().getId());
+            // Intentamos buscar un historial existente
+            HistorialHabitos historialExistente;
+            historialExistente = buscarPorFechaYIdHabito(historial.getDia(), historial.getHabito().getId());
 
+            // Si se encuentra el historial, actualizamos el campo 'completado'
             historialExistente.setCompletado(historial.isCompletado());
             entityManager.merge(historialExistente);
             transaction.commit();
             return historialExistente;
 
         } catch (ModelException e) {
+            // Si no se encuentra ningún historial, persistimos uno nuevo
             if (transaction.isActive()) {
-                transaction.rollback(); // Revertimos la transacción fallida
+                transaction.rollback();
             }
 
-            // Iniciamos una nueva transacción para persistir el nuevo historial
+            // Iniciamos una nueva transacción para crear un nuevo historial
             transaction.begin();
             entityManager.persist(historial);
             transaction.commit();
             return historial;
 
-        } finally {
+        } catch (Exception e) {
             if (transaction.isActive()) {
-                transaction.rollback(); // Aseguramos que cualquier transacción pendiente se deshaga
+                transaction.rollback();
             }
-            entityManager.close();
+            throw new ModelException("Error al guardar o actualizar el historial de hábitos", e);
+
+        } finally {
+            // Aquí no deberías cerrar el EntityManager manualmente
+            // Sólo aseguramos que no haya transacciones abiertas
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
         }
     }
 
@@ -351,7 +352,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     @Override
     public boolean cuentaExiste(String usuario) throws ModelException {
         try {
-            
+
             TypedQuery<Cuenta> query = entityManager.createQuery(
                     "SELECT c FROM Cuenta c WHERE c.usuario = :usuario", Cuenta.class
             );
@@ -375,7 +376,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     @Override
     public Cuenta consultarCuentaPorUsuario(String usuario) throws ModelException {
         try {
-            
+
             return entityManager.createQuery("SELECT c FROM Cuenta c WHERE c.usuario = :usuario", Cuenta.class)
                     .setParameter("usuario", usuario)
                     .getSingleResult();

@@ -81,7 +81,7 @@ public interface IGestionarHabitosNegocio {
      * fecha y el ID de hábito.
      * @throws ControllerException Si ocurre un error al buscar
      */
-    public HistorialHabitosDTO buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ControllerException;
+    public HistorialHabitosDTO buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ControllerException, Exception;
 
     public HistorialHabitosDTO guardarHistorial(HistorialHabitosDTO historial) throws ControllerException;
 
