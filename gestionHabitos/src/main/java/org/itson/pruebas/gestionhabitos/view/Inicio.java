@@ -480,6 +480,8 @@ public class Inicio extends javax.swing.JPanel {
             logger.log(Level.INFO, "El usuario no tiene hábitos asignados este día");
             HistorialHabitosDTO.setHistorialHabitosDTOs(new ArrayList<>());
         }
+        FechaUtil.setFechaActual(fechaActual);
+
         frame.mostrarInicio();
     }//GEN-LAST:event_btnDia3ActionPerformed
 
@@ -501,6 +503,8 @@ public class Inicio extends javax.swing.JPanel {
             logger.log(Level.INFO, "El usuario no tiene hábitos asignados este día");
             HistorialHabitosDTO.setHistorialHabitosDTOs(new ArrayList<>());
         }
+        FechaUtil.setFechaActual(fechaActual);
+
         frame.mostrarInicio();
     }//GEN-LAST:event_btnDia4ActionPerformed
 
@@ -522,6 +526,8 @@ public class Inicio extends javax.swing.JPanel {
             logger.log(Level.INFO, "El usuario no tiene hábitos asignados este día");
             HistorialHabitosDTO.setHistorialHabitosDTOs(new ArrayList<>());
         }
+        FechaUtil.setFechaActual(fechaActual);
+
         frame.mostrarInicio();
     }//GEN-LAST:event_btnDia5ActionPerformed
 
@@ -543,6 +549,8 @@ public class Inicio extends javax.swing.JPanel {
             logger.log(Level.INFO, "El usuario no tiene hábitos asignados este día");
             HistorialHabitosDTO.setHistorialHabitosDTOs(new ArrayList<>());
         }
+        FechaUtil.setFechaActual(fechaActual);
+
         frame.mostrarInicio();
     }//GEN-LAST:event_btnDia6ActionPerformed
 
@@ -564,6 +572,8 @@ public class Inicio extends javax.swing.JPanel {
             logger.log(Level.INFO, "El usuario no tiene hábitos asignados este día");
             HistorialHabitosDTO.setHistorialHabitosDTOs(new ArrayList<>());
         }
+        FechaUtil.setFechaActual(fechaActual);
+
         frame.mostrarInicio();
     }//GEN-LAST:event_btnDia7ActionPerformed
 
@@ -743,23 +753,23 @@ public class Inicio extends javax.swing.JPanel {
             pnlHabitosPendientes.removeAll();
         }
 
-        try {
-            GestionarHabitosNegocio gestion = new GestionarHabitosNegocio();
-
-            if (!historialHabitos.isEmpty()) {
-                for (HistorialHabitosDTO habito : historialHabitos) {
-                    if (!gestion.habitoCompletado(habito.getHabito())) {
-                        System.out.println(habito.getHabito().getNombre());
-                        addHabit(habito, false);
-                    }
+        GestionarHabitosNegocio gestion = new GestionarHabitosNegocio();
+        if (!historialHabitos.isEmpty()) {
+            for (HistorialHabitosDTO habito : historialHabitos) {
+//                    if (!gestion.habitoCompletado(habito.getHabito())) {
+//                        System.out.println(habito.getHabito().getNombre());
+//                        addHabit(habito, false);
+//                    }
+                if (!habito.isCompletado()) {
+//                    System.out.println(habito.getHabito().getNombre());
+                    addHabit(habito, false);
                 }
-            } else {
-                JLabel noHabitsLabel = new JLabel("No hay hábitos pendientes el día de hoy.");
-                noHabitsLabel.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Regular.ttf", 18F));
-                pnlHabitosPendientes.add(noHabitsLabel);
+
             }
-        } catch (ControllerException ex) {
-            Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, "Error al listar hábitos pendientes", ex);
+        } else {
+            JLabel noHabitsLabel = new JLabel("No hay hábitos pendientes el día de hoy.");
+            noHabitsLabel.setFont(frame.cargarFuente("/fonts/Nunito/static/Nunito-Regular.ttf", 18F));
+            pnlHabitosPendientes.add(noHabitsLabel);
         }
 
         pnlHabitosPendientes.revalidate();
@@ -770,8 +780,8 @@ public class Inicio extends javax.swing.JPanel {
         try {
             new GestionarHabitosNegocio().guardarHistorial(
                     new HistorialHabitosDTO(
-                            FechaUtil.convertirLocalDateADate(FechaUtil.getFechaActual()), 
-                            isDone, 
+                            FechaUtil.convertirLocalDateADate(FechaUtil.getFechaActual()),
+                            isDone,
                             habitoDTO));
 
         } catch (ControllerException ex) {
@@ -803,13 +813,9 @@ public class Inicio extends javax.swing.JPanel {
 
         if (!historialHabitos.isEmpty()) {
             for (HistorialHabitosDTO habito : historialHabitos) {
-                try {
-                    if (gestion.habitoCompletado(habito.getHabito())) {
-                        System.out.println(habito.getHabito().getNombre());
-                        addHabit(habito, true);
-                    }
-                } catch (ControllerException ex) {
-                    Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+                if (habito.isCompletado()) {
+//                    System.out.println(habito.getHabito().getNombre());
+                    addHabit(habito, true);
                 }
             }
         } else {

@@ -98,7 +98,7 @@ public class CrearHabito extends javax.swing.JPanel {
                     diasBits,
                     nombre, 
                     Sesion.getCuenta()));
-            gestion.guardarHistorial(new HistorialHabitosDTO(fechaCreacion, false, habito));
+//            gestion.guardarHistorial(new HistorialHabitosDTO(fechaCreacion, false, habito));
             frame.mostrarInformacion("El hábito se ha creado con éxito.", "Éxito");
             parentDialog.dispose();
             frame.refrescarPanelActual();
