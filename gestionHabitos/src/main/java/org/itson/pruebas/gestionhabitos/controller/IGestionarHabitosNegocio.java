@@ -4,8 +4,10 @@
  */
 package org.itson.pruebas.gestionhabitos.controller;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import org.itson.pruebas.gestionhabitos.model.ModelException;
 
 /**
@@ -192,5 +194,9 @@ public interface IGestionarHabitosNegocio {
      * @return Lista de HabitoDTO que concuerden con las especificaciones.
      * @throws ControllerException Si no se encuentra información.
      */
-    public List<HabitoDTO> identificarDias(CuentaDTO cuenta, String diaSemana) throws ControllerException;
+    public List<HabitoDTO> identificarDias(CuentaDTO cuenta, String diaSemana) throws ControllerException, NullPointerException;
+    
+    public String obtenerDia(LocalDate hoy);
+    
+     public List<HistorialHabitosDTO> obtenerHabitosDia(LocalDate dia, String diaString) throws ControllerException, NoSuchElementException;
 }

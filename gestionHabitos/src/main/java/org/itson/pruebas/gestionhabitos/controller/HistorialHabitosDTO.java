@@ -5,6 +5,7 @@
 package org.itson.pruebas.gestionhabitos.controller;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Clase DTO que representa un registro de historial de hábitos. Se utiliza para transferir datos sobre un historial de hábitos entre capas de la aplicación.
@@ -23,6 +24,7 @@ public class HistorialHabitosDTO {
     // Identificador del hábito asociado
     private HabitoDTO habito;
 
+    private static List<HistorialHabitosDTO> historialHabitosDTOs;
     /**
      * Constructor vacío
      */
@@ -121,4 +123,14 @@ public class HistorialHabitosDTO {
     public void setHabito(HabitoDTO habito) {
         this.habito = habito;
     }
+
+    public static List<HistorialHabitosDTO> getHistorialHabitosDTOs() {
+        return historialHabitosDTOs;
+    }
+
+    public static void setHistorialHabitosDTOs(List<HistorialHabitosDTO> historialHabitosDTOs) {
+        HistorialHabitosDTO.historialHabitosDTOs = historialHabitosDTOs;
+    }
+    
+    
 }

@@ -3,6 +3,7 @@ package org.itson.pruebas.gestionhabitos.model;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -157,19 +158,19 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      * @throws ModelException Si hubo un error al obtener los habitos
      */
     @Override
-    public List<Habito> obtenerHabitos(Cuenta cuenta) throws ModelException {
+    public List<Habito> obtenerHabitos(Cuenta cuenta) throws NoSuchElementException, ModelException {
         try {
             TypedQuery<Habito> query = entityManager.createQuery(
                     "SELECT h FROM Habito h WHERE h.cuenta.usuario = :usuario", Habito.class
             );
             query.setParameter("usuario", cuenta.getUsuario());
             List<Habito> habitos = query.getResultList();
-            if (habitos.isEmpty()) {
-                throw new ModelException("No se encontro habitos en la cuenta");
+            if (habitos == null) {
+                throw new NoSuchElementException("No se encontro habitos en la cuenta");
             }
             return habitos;
 
-        } catch (ModelException e) {
+        } catch (Exception e) {
             throw new ModelException("Error al obtener la lista de hábitos", e);
         }
     }
@@ -282,7 +283,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            throw new ModelException("No se encontró ningún historial de hábitos para la fecha y el ID proporcionados", e);
+            throw new ModelException();
         } catch (NonUniqueResultException e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();

@@ -6,6 +6,7 @@ package org.itson.pruebas.gestionhabitos.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  *
@@ -47,7 +48,7 @@ public interface IGestionarHabitosDAO {
      * @return Lista de habitos de la cuenta
      * @throws ModelException Si hubo un error al obtener los habitos
      */
-    public List<Habito> obtenerHabitos(Cuenta cuenta) throws ModelException;
+    public List<Habito> obtenerHabitos(Cuenta cuenta) throws NoSuchElementException, ModelException;
 
     /**
      * Crea una cuenta

@@ -1,13 +1,17 @@
 package org.itson.pruebas.gestionhabitos.controller;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import org.itson.pruebas.gestionhabitos.controller.IGestionarHabitosNegocio;
 import org.itson.pruebas.gestionhabitos.model.Conexion;
 import org.itson.pruebas.gestionhabitos.model.Cuenta;
 import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
@@ -82,7 +86,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @throws ControllerException si ocurre un error al obtener los hábitos
      */
     @Override
-    public List<HabitoDTO> obtenerHabitos(CuentaDTO cuentaDTO) throws ControllerException {
+    public List<HabitoDTO> obtenerHabitos(CuentaDTO cuentaDTO) throws ControllerException, NoSuchElementException {
         List<Habito> habitos = null;
         try {
             habitos = habitoDAO.obtenerHabitos(cuentaDTOAEntidad(cuentaDTO));
@@ -251,7 +255,10 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @param historial el objeto HistorialHabitos a convertir
      * @return el DTO HistorialHabitosDTO que representa el historial de hábitos
      */
-    private HistorialHabitosDTO historialConvertirADTO(HistorialHabitos historial) {
+    private HistorialHabitosDTO historialConvertirADTO(HistorialHabitos historial) throws ControllerException {
+        if (historial == null) {
+            throw new ControllerException("Hábito nulo");
+        }
         return new HistorialHabitosDTO(
                 historial.getId(),
                 historial.getDia(),
@@ -286,7 +293,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @throws ControllerException Si no se encuentra información.
      */
     @Override
-    public List<HabitoDTO> identificarDias(CuentaDTO cuenta, String diaSemana) throws ControllerException {
+    public List<HabitoDTO> identificarDias(CuentaDTO cuenta, String diaSemana) throws NoSuchElementException, ControllerException {
         List<HabitoDTO> habitos = obtenerHabitos(cuenta);
         List<HabitoDTO> habitosPorDia = new ArrayList<>();
 
@@ -335,7 +342,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         }
 
         if (habitosPorDia.isEmpty()) {
-            throw new ControllerException("No se ha encontrado información para el día solicitado.");
+            throw new NoSuchElementException("No se ha encontrado información para el día solicitado.");
         }
 
         return habitosPorDia;
@@ -355,7 +362,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         try {
             return historialConvertirADTO(habitoDAO.buscarPorFechaYIdHabito(dia, idHabito));
         } catch (ModelException ex) {
-            throw new ControllerException(ex);
+            throw new ControllerException();
         }
     }
 
@@ -656,4 +663,47 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         }
     }
 
+    @Override
+    public String obtenerDia(LocalDate hoy) {
+        String diaEnIngles = hoy.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toLowerCase();
+
+        return switch (diaEnIngles) {
+            case "monday" ->
+                "lunes";
+            case "tuesday" ->
+                "lartes";
+            case "wednesday" ->
+                "miercoles";
+            case "thursday" ->
+                "jueves";
+            case "friday" ->
+                "viernes";
+            case "saturday" ->
+                "sabado";
+            case "sunday" ->
+                "domingo";
+            default ->
+                "dia desconocido";
+        };
+    }
+
+    @Override
+    public List<HistorialHabitosDTO> obtenerHabitosDia(LocalDate dia, String diaString) throws ControllerException, NoSuchElementException {
+        List<HistorialHabitosDTO> historialHabitos = new ArrayList<>();
+        List<HabitoDTO> habitos;
+
+        habitos = identificarDias(Sesion.getCuenta(), diaString);
+
+        Date diaDate = Date.from(dia.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        for (HabitoDTO habito : habitos) {
+            try {
+                HistorialHabitosDTO historialHabitosDTO = buscarPorFechaYIdHabito(diaDate, habito.getId());
+                historialHabitos.add(historialHabitosDTO);
+            } catch (ControllerException e) {
+                historialHabitos.add(guardarHistorial(new HistorialHabitosDTO(diaDate, false, habito)));
+            }
+
+        }
+        return historialHabitos;
+    }
 }
