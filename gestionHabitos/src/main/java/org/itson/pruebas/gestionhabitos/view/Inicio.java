@@ -170,7 +170,7 @@ public class Inicio extends javax.swing.JPanel {
                 btnDia1ActionPerformed(evt);
             }
         });
-        add(btnDia1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 110, 50, 50));
+        add(btnDia1, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 106, 60, 60));
 
         btnDia2.setForeground(new java.awt.Color(245, 245, 245));
         btnDia2.setBorderPainted(false);

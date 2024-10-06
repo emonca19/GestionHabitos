@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.itson.pruebas.gestionhabitos.controller.IGestionarHabitosNegocio;
 import org.itson.pruebas.gestionhabitos.model.Conexion;
 import org.itson.pruebas.gestionhabitos.model.Cuenta;
 import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
@@ -292,37 +293,37 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         for (HabitoDTO habito : habitos) {
 
             switch (diaSemana) {
-                case "lunes":
+                case "lunes" -> {
                     if (habito.getDiasSemana().charAt(0) == '1') {
                         habitosPorDia.add(habito);
                     }
-                    break;
-                case "martes":
+                }
+                case "martes" -> {
                     if (habito.getDiasSemana().charAt(1) == '1') {
                         habitosPorDia.add(habito);
                     }
-                    break;
-                case "miercoles":
+                }
+                case "miercoles" -> {
                     if (habito.getDiasSemana().charAt(2) == '1') {
                         habitosPorDia.add(habito);
                     }
-                    break;
-                case "jueves":
+                }
+                case "jueves" -> {
                     if (habito.getDiasSemana().charAt(3) == '1') {
                         habitosPorDia.add(habito);
                     }
-                    break;
-                case "viernes":
+                }
+                case "viernes" -> {
                     if (habito.getDiasSemana().charAt(4) == '1') {
                         habitosPorDia.add(habito);
                     }
-                    break;
-                case "sabado":
+                }
+                case "sabado" -> {
                     if (habito.getDiasSemana().charAt(5) == '1') {
                         habitosPorDia.add(habito);
                     }
-                    break;
-                case "domingo":
+                }
+                case "domingo" -> {
                     if (habito.getDiasSemana().charAt(6) == '1') {
                         habitosPorDia.add(habito);
                     }
@@ -330,6 +331,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
                 default ->
                     throw new ControllerException("Día de la semana no válido.");
             }
+
         }
 
         if (habitosPorDia.isEmpty()) {
@@ -584,7 +586,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
                 throw new ControllerException("No se encontró el hábito con ID: " + id);
             }
         } catch (ModelException ex) {
-            throw  new ControllerException(ex);
+            throw new ControllerException(ex);
         }
     }
 

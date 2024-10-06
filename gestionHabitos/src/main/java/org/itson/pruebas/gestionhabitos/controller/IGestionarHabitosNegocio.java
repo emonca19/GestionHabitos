@@ -184,7 +184,7 @@ public interface IGestionarHabitosNegocio {
      */
     public List<ProgresoHabitoDTO> obtenerProgresoHabitos(CuentaDTO cuenta, Date fechaInicio, Date fechaFin) throws ControllerException;
 
-     * Método que devuelve los hábitos que concuerden con el usuario y el día de
+     /** Método que devuelve los hábitos que concuerden con el usuario y el día de
      * la semana.
      *
      * @param cuenta Cuenta a buscar los hábitos.

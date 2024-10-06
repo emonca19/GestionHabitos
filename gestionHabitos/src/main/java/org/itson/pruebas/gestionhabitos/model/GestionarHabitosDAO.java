@@ -516,6 +516,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
                         .when(cb.and(cb.between(hh.get("dia"), fechaInicio, fechaFin), cb.isTrue(hh.get("completado"))), 1)
                         .otherwise((Long) null)
         );
+        //TODO cuando sea mensual cambiar la lógica
         Expression<Integer> diasTotal = cb.length(cb.function("REPLACE", String.class, h.get("diasSemana"), cb.literal("0"), cb.literal("")));
 
         // Definir la consulta
