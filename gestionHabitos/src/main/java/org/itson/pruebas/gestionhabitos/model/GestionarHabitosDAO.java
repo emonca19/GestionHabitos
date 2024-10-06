@@ -54,6 +54,13 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     public Habito crearHabito(Habito nuevoHabito) throws ModelException {
         EntityTransaction transaction = null;
 
+        if (nuevoHabito == null
+                || nuevoHabito.getFrecuencia() == null || nuevoHabito.getFrecuencia().isEmpty()
+                || nuevoHabito.getNombre() == null || nuevoHabito.getNombre().isEmpty()
+                || nuevoHabito.getDiasSemana() == null || nuevoHabito.getDiasSemana().isEmpty()
+                || nuevoHabito.getFechaCreacion() == null) {
+            throw new ModelException("Todos los campos son obligatorios y deben estar llenos");
+        }
         try {
             transaction = entityManager.getTransaction();
             transaction.begin();
@@ -88,7 +95,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 
             Habito habitoExistente = entityManager.find(Habito.class, habito.getId());
             if (habitoExistente != null) {
-                habitoExistente.setId(habito.getId());
                 habitoExistente.setFrecuencia(habito.getFrecuencia());
                 habitoExistente.setFechaCreacion(habito.getFechaCreacion());
                 habitoExistente.setDiasSemana(habito.getDiasSemana());
@@ -302,7 +308,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      * @throws ModelException Si ocurre un error durante la operación.
      */
     @Override
-    public HistorialHabitos guardarHistorial(HistorialHabitos historial) throws ModelException {
+    public HistorialHabitos guardarYActualizarHistorial(HistorialHabitos historial) throws ModelException {
 
         EntityTransaction transaction = entityManager.getTransaction();
         try {
@@ -344,6 +350,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     @Override
     public boolean cuentaExiste(String usuario) throws ModelException {
         try {
+            
             TypedQuery<Cuenta> query = entityManager.createQuery(
                     "SELECT c FROM Cuenta c WHERE c.usuario = :usuario", Cuenta.class
             );
@@ -367,6 +374,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     @Override
     public Cuenta consultarCuentaPorUsuario(String usuario) throws ModelException {
         try {
+            
             return entityManager.createQuery("SELECT c FROM Cuenta c WHERE c.usuario = :usuario", Cuenta.class)
                     .setParameter("usuario", usuario)
                     .getSingleResult();

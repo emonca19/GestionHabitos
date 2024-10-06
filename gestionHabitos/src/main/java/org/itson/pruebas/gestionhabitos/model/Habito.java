@@ -29,30 +29,30 @@ public class Habito implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    // Identificador único de la actividad
+     // Identificador único de la actividad
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-// Frecuencia de la actividad (no nulo)
+    // Frecuencia de la actividad (no nulo)
     @Column(name = "frecuencia", nullable = false, length = 50)
     private String frecuencia;
 
-// Fecha de creación de la actividad (no nulo)
+    // Fecha de creación de la actividad (no nulo)
     @Column(name = "fecha_creacion", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP) // Cambiado a TIMESTAMP para incluir tiempo
     private Date fechaCreacion;
 
-// Días de la semana en bits
+    // Días de la semana en bits
     @Column(name = "dias_semana", nullable = false)
     private String diasSemana;
 
-// Nombre del hábito
+    // Nombre del hábito
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-// Relación con la entidad Cuenta (clave foránea)
+    // Relación con la entidad Cuenta (clave foránea)
     @ManyToOne
     @JoinColumn(name = "usuario", referencedColumnName = "usuario", nullable = false)
     private Cuenta cuenta;
@@ -123,6 +123,15 @@ public class Habito implements Serializable {
     }
 
     /**
+     * Establece el identificador de la actividad.
+     * @param id 
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    
+    /**
      * Obtiene el identificador de la actividad.
      *
      * @return el identificador de la actividad
@@ -131,14 +140,6 @@ public class Habito implements Serializable {
         return id;
     }
 
-    /**
-     * Establece el identificador de la actividad.
-     *
-     * @param id el identificador de la actividad
-     */
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     /**
      * Obtiene la frecuencia de la actividad.

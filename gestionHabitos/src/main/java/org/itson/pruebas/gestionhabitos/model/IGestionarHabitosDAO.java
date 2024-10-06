@@ -6,8 +6,6 @@ package org.itson.pruebas.gestionhabitos.model;
 
 import java.util.Date;
 import java.util.List;
-import org.itson.pruebas.gestionhabitos.controller.ControllerException;
-import org.itson.pruebas.gestionhabitos.controller.HabitoDTO;
 
 /**
  *
@@ -81,7 +79,7 @@ public interface IGestionarHabitosDAO {
      */
     public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException;
 
-    public HistorialHabitos guardarHistorial(HistorialHabitos historial) throws ModelException;
+    public HistorialHabitos guardarYActualizarHistorial(HistorialHabitos historial) throws ModelException;
 
     /**
      * Devuelve si un usuario ya existe

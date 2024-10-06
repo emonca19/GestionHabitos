@@ -61,10 +61,10 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @throws ControllerException si algo sale mal al crear la cuenta
      */
     @Override
-    public void crearCuenta(CuentaDTO cuentaDTO) throws ControllerException {
+    public CuentaDTO crearCuenta(CuentaDTO cuentaDTO) throws ControllerException {
         if (cuentaDTO.sonCamposValidos()) {
             try {
-                habitoDAO.crearCuenta(cuentaDTOAEntidad(cuentaDTO));
+                return entidadACuentaDTO(habitoDAO.crearCuenta(cuentaDTOAEntidad(cuentaDTO)));
             } catch (ModelException ex) {
                 throw new ControllerException(ex);
             }
@@ -92,7 +92,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     }
 
     @Override
-    public List<HistorialHabitosDTO> consultarHisorialHabitos(Date date, CuentaDTO cuentaDTO) throws ControllerException {
+    public List<HistorialHabitosDTO> consultarHistorialHabitos(Date date, CuentaDTO cuentaDTO) throws ControllerException {
         List<HistorialHabitos> habitos;
         List<HistorialHabitosDTO> habitosDTO = new ArrayList<>(); // Lista para almacenar los DTOs
 
@@ -118,6 +118,9 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     public boolean eliminarHabito(Long id) throws ControllerException {
         boolean eliminado = false;
         try {
+            if (id == null) {
+                throw new IllegalArgumentException("El identificador del hábito no puede ser null.");
+            }
             eliminado = habitoDAO.eliminarHabito(id);
         } catch (ModelException ex) {
             throw new ControllerException(ex);
@@ -159,6 +162,11 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
 
             // Si la cuenta existe, verifica la contraseña
             if (cuenta != null) {
+                // Validar que la contraseña almacenada no sea nula
+                if (cuenta.getContrasena() == null) {
+                    throw new ControllerException("Contraseña almacenada no válida.");
+                }
+
                 boolean passwordMatches = passwordEncryptor.checkPassword(contraseña, cuenta.getContrasena());
                 if (passwordMatches) {
                     return entidadACuentaDTO(cuenta); // Si la contraseña es correcta, retorna la cuenta convertida a DTO
@@ -199,8 +207,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      */
     public Habito HabitoDTOConvertirAEntidad(HabitoDTO habitoDTO) {
         Habito habito = new Habito();
-        habito.setId(habitoDTO.getId());
         habito.setDiasSemana(habitoDTO.getDiasSemana());
+        habito.setId(habitoDTO.getId());
         habito.setFechaCreacion(habitoDTO.getFechaCreacion());
         habito.setFrecuencia(habitoDTO.getFrecuencia());
         habito.setNombre(habitoDTO.getNombre());
@@ -276,47 +284,46 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @return Lista de HabitoDTO que concuerden con las especificaciones.
      * @throws ControllerException Si no se encuentra información.
      */
+    @Override
     public List<HabitoDTO> identificarDias(CuentaDTO cuenta, String diaSemana) throws ControllerException {
         List<HabitoDTO> habitos = obtenerHabitos(cuenta);
         List<HabitoDTO> habitosPorDia = new ArrayList<>();
 
         for (HabitoDTO habito : habitos) {
 
-            String dias = String.format("%07d", Long.valueOf(String.valueOf(habito.getDiasSemana()), 2));
-
-            switch (diaSemana.toLowerCase()) {
-                case "lunes" -> {
-                    if (dias.charAt(0) == '1') {
+            switch (diaSemana) {
+                case "lunes":
+                    if (habito.getDiasSemana().charAt(0) == '1') {
                         habitosPorDia.add(habito);
                     }
-                }
-                case "martes" -> {
-                    if (dias.charAt(1) == '1') {
+                    break;
+                case "martes":
+                    if (habito.getDiasSemana().charAt(1) == '1') {
                         habitosPorDia.add(habito);
                     }
-                }
-                case "miercoles" -> {
-                    if (dias.charAt(2) == '1') {
+                    break;
+                case "miercoles":
+                    if (habito.getDiasSemana().charAt(2) == '1') {
                         habitosPorDia.add(habito);
                     }
-                }
-                case "jueves" -> {
-                    if (dias.charAt(3) == '1') {
+                    break;
+                case "jueves":
+                    if (habito.getDiasSemana().charAt(3) == '1') {
                         habitosPorDia.add(habito);
                     }
-                }
-                case "viernes" -> {
-                    if (dias.charAt(4) == '1') {
+                    break;
+                case "viernes":
+                    if (habito.getDiasSemana().charAt(4) == '1') {
                         habitosPorDia.add(habito);
                     }
-                }
-                case "sabado" -> {
-                    if (dias.charAt(5) == '1') {
+                    break;
+                case "sabado":
+                    if (habito.getDiasSemana().charAt(5) == '1') {
                         habitosPorDia.add(habito);
                     }
-                }
-                case "domingo" -> {
-                    if (dias.charAt(6) == '1') {
+                    break;
+                case "domingo":
+                    if (habito.getDiasSemana().charAt(6) == '1') {
                         habitosPorDia.add(habito);
                     }
                 }
@@ -360,7 +367,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
     @Override
     public HistorialHabitosDTO guardarHistorial(HistorialHabitosDTO historial) throws ControllerException {
         try {
-            HistorialHabitosDTO habito = historialConvertirADTO(habitoDAO.guardarHistorial(historialDTOConvertirAEntidad(historial)));
+            HistorialHabitosDTO habito = historialConvertirADTO(habitoDAO.guardarYActualizarHistorial(historialDTOConvertirAEntidad(historial)));
             return habito;
         } catch (ModelException ex) {
             throw new ControllerException(ex);
@@ -560,12 +567,12 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @param id el ID del hábito a buscar.
      * @return HabitoDTO correspondiente al hábito encontrado o null si no se
      * encuentra.
-     * @throws ModelException si hay un error al buscar el hábito.
+     * @throws ControllerException si hay un error al buscar el hábito.
      */
     @Override
-    public HabitoDTO buscarHabitoPorId(Long id) throws ModelException {
+    public HabitoDTO buscarHabitoPorId(Long id) throws ControllerException {
         if (id == null) {
-            throw new ModelException("El ID no puede ser nulo");
+            throw new ControllerException("El ID no puede ser nulo");
         }
 
         try {
@@ -574,10 +581,10 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
             if (habito != null) {
                 return HabitoConvertirADTO(habito);
             } else {
-                throw new ModelException("No se encontró el hábito con ID: " + id);
+                throw new ControllerException("No se encontró el hábito con ID: " + id);
             }
         } catch (ModelException ex) {
-            throw ex;
+            throw  new ControllerException(ex);
         }
     }
 

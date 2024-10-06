@@ -27,9 +27,10 @@ public interface IGestionarHabitosNegocio {
      * Crea una cuenta
      *
      * @param cuentaDTO Cuenta a crear
+     * @return CuentaDTO creada
      * @throws ControllerException si algo sale mal al crear la cuenta
      */
-    public void crearCuenta(CuentaDTO cuentaDTO) throws ControllerException;
+    public CuentaDTO crearCuenta(CuentaDTO cuentaDTO) throws ControllerException;
 
     /**
      * Actualiza un hábito a partir de un DTO.
@@ -162,9 +163,9 @@ public interface IGestionarHabitosNegocio {
      * @return el hábito encontrado o null si no se encuentra.
      * @throws ModelException Si hay un error al buscar el hábito.
      */
-    public HabitoDTO buscarHabitoPorId(Long id) throws ModelException;
+    public HabitoDTO buscarHabitoPorId(Long id) throws ControllerException;
 
-    public List<HistorialHabitosDTO> consultarHisorialHabitos(Date date, CuentaDTO cuentaDTO) throws ControllerException;
+    public List<HistorialHabitosDTO> consultarHistorialHabitos(Date date, CuentaDTO cuentaDTO) throws ControllerException;
 
     public boolean habitoCompletado(HabitoDTO habitoDTO) throws ControllerException;
 
@@ -183,4 +184,13 @@ public interface IGestionarHabitosNegocio {
      */
     public List<ProgresoHabitoDTO> obtenerProgresoHabitos(CuentaDTO cuenta, Date fechaInicio, Date fechaFin) throws ControllerException;
 
+     * Método que devuelve los hábitos que concuerden con el usuario y el día de
+     * la semana.
+     *
+     * @param cuenta Cuenta a buscar los hábitos.
+     * @param diaSemana Día de la semana que concuerde con los hábitos.
+     * @return Lista de HabitoDTO que concuerden con las especificaciones.
+     * @throws ControllerException Si no se encuentra información.
+     */
+    public List<HabitoDTO> identificarDias(CuentaDTO cuenta, String diaSemana) throws ControllerException;
 }

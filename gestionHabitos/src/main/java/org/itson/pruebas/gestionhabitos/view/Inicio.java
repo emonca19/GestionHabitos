@@ -831,7 +831,7 @@ public class Inicio extends javax.swing.JPanel {
     }
 
     private List<HistorialHabitosDTO> obtenerHistorial(Date fecha) throws ControllerException {
-        return gestionar.consultarHisorialHabitos(fecha, Sesion.getCuenta());
+        return gestionar.consultarHistorialHabitos(fecha, Sesion.getCuenta());
     }
 
     private void setFonts() throws FontFormatException, IOException {
