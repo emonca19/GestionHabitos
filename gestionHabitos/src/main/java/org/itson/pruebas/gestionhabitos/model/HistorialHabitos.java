@@ -7,7 +7,6 @@ package org.itson.pruebas.gestionhabitos.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,9 +18,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- * Clase que representa el historial de hábitos en la base de datos. Esta
- * entidad se utiliza para almacenar información sobre la realización de hábitos
- * en fechas específicas.
+ * Clase que representa el historial de hábitos en la base de datos. Esta entidad se utiliza para almacenar información sobre la realización de hábitos en fechas específicas.
  *
  * @author Eliana Monge
  * @author Cristina Castro
@@ -48,13 +45,12 @@ public class HistorialHabitos implements Serializable {
     private boolean completado;
 
     // Relación con la entidad Habito
-    @ManyToOne(cascade = {CascadeType.REMOVE})
-    @JoinColumn(name = "id_habito", nullable = false)
+    @ManyToOne(optional = true)  // Permite que la relación sea nula
+    @JoinColumn(name = "id_habito", nullable = true)  // Permite valores null en la columna
     private Habito habito;
 
     /**
-     * Constructor vacío para la clase HistorialHabitos. Se utiliza para la
-     * creación de instancias sin inicializar atributos.
+     * Constructor vacío para la clase HistorialHabitos. Se utiliza para la creación de instancias sin inicializar atributos.
      */
     public HistorialHabitos() {
     }

@@ -19,8 +19,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 /**
- * Clase que gestiona los hábitos y cuentas. Esta clase implementa las
- * operaciones CRUD para la gestión de hábitos y cuentas en la base de datos.
+ * Clase que gestiona los hábitos y cuentas. Esta clase implementa las operaciones CRUD para la gestión de hábitos y cuentas en la base de datos.
  *
  * @author Eliana Monge
  * @author Cristina Castro
@@ -35,8 +34,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     /**
      * Constructor para inicializar la clase `GestionarHabitosDAO`.
      *
-     * @param conexion La conexión a la base de datos utilizada para inicializar
-     * el `EntityManager`.
+     * @param conexion La conexión a la base de datos utilizada para inicializar el `EntityManager`.
      */
     public GestionarHabitosDAO(IConexion conexion) {
         this.entityManager = conexion.crearConexion();
@@ -47,8 +45,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      *
      * @param cuenta La cuenta a crear.
      * @return La cuenta creada.
-     * @throws ModelException Si ocurre algún error durante la creación de la
-     * cuenta.
+     * @throws ModelException Si ocurre algún error durante la creación de la cuenta.
      */
     @Override
     public Cuenta crearCuenta(Cuenta cuenta) throws ModelException {
@@ -71,14 +68,12 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     }
 
     /**
-     * Consulta una cuenta en la base de datos basada en el nombre de usuario y
-     * la contraseña.
+     * Consulta una cuenta en la base de datos basada en el nombre de usuario y la contraseña.
      *
      * @param usuario El nombre de usuario de la cuenta.
      * @param contraseña La contraseña de la cuenta.
      * @return La cuenta consultada.
-     * @throws ModelException Si la cuenta no existe o si ocurre algún error
-     * durante la consulta.
+     * @throws ModelException Si la cuenta no existe o si ocurre algún error durante la consulta.
      */
     @Override
     public Cuenta consultarCuenta(String usuario, String contraseña) throws ModelException {
@@ -158,8 +153,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      *
      * @param nuevoHabito El hábito a crear.
      * @return El hábito creado.
-     * @throws ModelException Si ocurre algún error al intentar crear el hábito
-     * o si los datos del hábito no son válidos.
+     * @throws ModelException Si ocurre algún error al intentar crear el hábito o si los datos del hábito no son válidos.
      */
     @Override
     public Habito crearHabito(Habito nuevoHabito) throws ModelException {
@@ -194,8 +188,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      *
      * @param habito El hábito con los datos actualizados.
      * @return El hábito actualizado.
-     * @throws ModelException Si el hábito no existe o si ocurre un error
-     * durante la actualización.
+     * @throws ModelException Si el hábito no existe o si ocurre un error durante la actualización.
      */
     @Override
     public Habito actualizarHabito(Habito habito) throws ModelException {
@@ -231,10 +224,8 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      * Elimina un hábito de la base de datos.
      *
      * @param id El ID del hábito a eliminar.
-     * @return `true` si el hábito se eliminó correctamente, `false` en caso
-     * contrario.
-     * @throws ModelException Si ocurre algún error al intentar eliminar el
-     * hábito o si el hábito no se encuentra.
+     * @return `true` si el hábito se eliminó correctamente, `false` en caso contrario.
+     * @throws ModelException Si ocurre algún error al intentar eliminar el hábito o si el hábito no se encuentra.
      */
     @Override
     public boolean eliminarHabito(Long id) throws ModelException {
@@ -244,22 +235,28 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
             transaction = entityManager.getTransaction();
             transaction.begin();
 
+            // Deleting records from HistorialHabitos associated with the habit
+            entityManager.createQuery("DELETE FROM HistorialHabitos h WHERE h.habito.id = :idHabito")
+                    .setParameter("idHabito", id)
+                    .executeUpdate();
+
+            // Now find the Habito to delete it
             Habito habitoEncontrado = entityManager.find(Habito.class, id);
             if (habitoEncontrado != null) {
-                entityManager.remove(habitoEncontrado); // Elimina el hábito
-                transaction.commit();
+                entityManager.remove(habitoEncontrado); // Remove the habit
+                transaction.commit(); // Commit the transaction
                 return true;
             } else {
-                transaction.rollback();
-                throw new ModelException("Habito no encontrado con ID: " + id);
+                transaction.rollback(); // Rollback if the habit isn't found
+                throw new ModelException("Hábito no encontrado con ID: " + id);
             }
 
         } catch (ModelException e) {
             if (transaction != null && transaction.isActive()) {
-                transaction.rollback();
-                throw new ModelException("Transaccion revertida debido a un error al eliminar el habito", e);
+                transaction.rollback(); // Rollback on any error
+                throw new ModelException("Transacción revertida debido a un error al eliminar el hábito", e);
             }
-            throw new ModelException("Error al eliminar habito con id: " + id, e);
+            throw new ModelException("Error al eliminar hábito con ID: " + id, e);
         }
     }
 
@@ -268,10 +265,8 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      *
      * @param cuenta La cuenta para la cual se quieren obtener los hábitos.
      * @return Una lista de hábitos pertenecientes a la cuenta.
-     * @throws NoSuchElementException Si no se encuentran hábitos asociados a la
-     * cuenta.
-     * @throws ModelException Si ocurre algún error al intentar obtener los
-     * hábitos.
+     * @throws NoSuchElementException Si no se encuentran hábitos asociados a la cuenta.
+     * @throws ModelException Si ocurre algún error al intentar obtener los hábitos.
      */
     @Override
     public List<Habito> obtenerHabitos(Cuenta cuenta) throws NoSuchElementException, ModelException {
@@ -368,10 +363,8 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      *
      * @param dia La fecha a buscar.
      * @param idHabito El identificador del hábito.
-     * @return Registro de historial de hábitos que coincide con la fecha y el
-     * ID de hábito.
-     * @throws ModelException Si ocurre un error al buscar o si no se encuentra
-     * el registro.
+     * @return Registro de historial de hábitos que coincide con la fecha y el ID de hábito.
+     * @throws ModelException Si ocurre un error al buscar o si no se encuentra el registro.
      */
     @Override
     public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException {
@@ -409,8 +402,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     }
 
     /**
-     * Crear o actualizar un historial de hábitos. Si el historial ya existe, se
-     * actualiza; si no, se crea.
+     * Crear o actualizar un historial de hábitos. Si el historial ya existe, se actualiza; si no, se crea.
      *
      * @param historial El objeto HistorialHabitos a persistir.
      * @return El objeto HistorialHabitos persistido (creado o actualizado).
@@ -460,13 +452,11 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     }
 
     /**
-     * Consultar historial de hábitos para una cuenta en una fecha específica
-     * utilizando Criteria API.
+     * Consultar historial de hábitos para una cuenta en una fecha específica utilizando Criteria API.
      *
      * @param date La fecha en la que se desea consultar el historial.
      * @param cuenta La cuenta asociada al historial a través del hábito.
-     * @return Una lista de objetos HistorialHabitos que coinciden con los
-     * criterios de búsqueda.
+     * @return Una lista de objetos HistorialHabitos que coinciden con los criterios de búsqueda.
      * @throws ModelException Si ocurre un error durante la consulta.
      */
     @Override
@@ -498,17 +488,13 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     }
 
     /**
-     * Obtiene el progreso de los hábitos de una cuenta en un rango de fechas
-     * determinado.
+     * Obtiene el progreso de los hábitos de una cuenta en un rango de fechas determinado.
      *
-     * @param cuenta La cuenta para la cual se desea obtener el progreso de los
-     * hábitos.
+     * @param cuenta La cuenta para la cual se desea obtener el progreso de los hábitos.
      * @param fechaInicio La fecha de inicio del rango de fechas.
      * @param fechaFin La fecha de fin del rango de fechas.
-     * @return Una lista de objetos {@link ProgresoHabito} que representan el
-     * progreso de los hábitos de la cuenta en el rango de fechas especificado.
-     * @throws ModelException Si ocurre un error al obtener el progreso de los
-     * hábitos.
+     * @return Una lista de objetos {@link ProgresoHabito} que representan el progreso de los hábitos de la cuenta en el rango de fechas especificado.
+     * @throws ModelException Si ocurre un error al obtener el progreso de los hábitos.
      */
     @Override
     public List<ProgresoHabito> obtenerProgresoHabitos(Cuenta cuenta, Date fechaInicio, Date fechaFin) throws ModelException {

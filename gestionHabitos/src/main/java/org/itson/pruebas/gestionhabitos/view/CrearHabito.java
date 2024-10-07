@@ -27,6 +27,8 @@ public class CrearHabito extends javax.swing.JPanel {
     private ImageIcon[] uncheckedIcons;
     private ImageIcon[] checkedIcons;
     private int diasSemana;
+    private HabitoDTO habitoDTO;
+    private boolean actualizar;
 
     /**
      * Creates new form CrearHabito
@@ -39,10 +41,35 @@ public class CrearHabito extends javax.swing.JPanel {
         this.parentDialog = parentDialog;
         this.frame = frame;
         this.parentPanel = parentPanel;
+        actualizar = false;
         initComponents();
         cargarIconos();
         asignarIconosIniciales();
         setFonts();
+    }
+
+    public CrearHabito(FrameContenedor frame, JDialog parentDialog, JPanel parentPanel, HabitoDTO habitoDTO) {
+        this.parentDialog = parentDialog;
+        this.frame = frame;
+        this.parentPanel = parentPanel;
+        this.habitoDTO = habitoDTO;
+        actualizar = true;
+        initComponents();
+        cargarIconos();
+        asignarIconosIniciales();
+        setFonts();
+        setearDatos();
+    }
+
+    private void setearDatos() {
+        txtHabito.setText(habitoDTO.getNombre());
+        cbxLunes.setEnabled(false);
+        cbxMartes.setEnabled(false);
+        cbxMiercoles.setEnabled(false);
+        cbxJueves.setEnabled(false);
+        cbxViernes.setEnabled(false);
+        cbxSabado.setEnabled(false);
+        cbxDomingo.setEnabled(false);
     }
 
     public boolean validar() {
@@ -92,13 +119,23 @@ public class CrearHabito extends javax.swing.JPanel {
         };
 
         try {
-            HabitoDTO habito = gestion.crearHabito(new HabitoDTO(
-                    frecuencia, 
-                    fechaCreacion, 
-                    diasBits,
-                    nombre, 
-                    Sesion.getCuenta()));
-//            gestion.guardarHistorial(new HistorialHabitosDTO(fechaCreacion, false, habito));
+            if (!actualizar) {
+                HabitoDTO habito = gestion.crearHabito(new HabitoDTO(
+                        frecuencia,
+                        fechaCreacion,
+                        diasBits,
+                        nombre,
+                        Sesion.getCuenta()));
+            } else {
+                gestion.eliminarHabito(habitoDTO.getId());
+                HabitoDTO habito = gestion.crearHabito(new HabitoDTO(
+                        frecuencia,
+                        fechaCreacion,
+                        habitoDTO.getDiasSemana(),
+                        nombre,
+                        Sesion.getCuenta()));
+//                gestion.guardarHistorial(new HistorialHabitosDTO(fechaCreacion, false, habito));
+            }
             frame.mostrarInformacion("El hábito se ha creado con éxito.", "Éxito");
             parentDialog.dispose();
             frame.refrescarPanelActual();
@@ -233,8 +270,10 @@ public class CrearHabito extends javax.swing.JPanel {
     }//GEN-LAST:event_cbxLunesItemStateChanged
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        if (!validar()) {
-            return;
+        if (!actualizar) {
+            if (!validar()) {
+                return;
+            }
         }
 
         crearHabito();
