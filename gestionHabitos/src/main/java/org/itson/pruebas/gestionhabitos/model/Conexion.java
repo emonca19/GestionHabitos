@@ -12,14 +12,15 @@ import javax.persistence.Persistence;
  * establecer la conexión con la base de datos.
  *
  * @author Eliana Monge
+ * @author Cristina Castro
+ * @author Eduardo Talavera
  * @author Roberto García
- * @version 1.1
+ * @version 1.0
  */
 public class Conexion implements IConexion {
 
     private static EntityManagerFactory emFactory;
 
-    
     static {
         try {
             emFactory = Persistence.createEntityManagerFactory("gestionHabitos");
@@ -40,12 +41,13 @@ public class Conexion implements IConexion {
     }
 
     /**
-     * Método para cerrar el EntityManagerFactory al finalizar la aplicación
+     * Cierra el EntityManagerFactory si está abierto, lo que permite finalizar
+     * la conexión a la base de datos.
      */
     @Override
-    public  void cerrarConexion() {
-//        if (emFactory != null && emFactory.isOpen()) {
-//            emFactory.close();
-//        }
+    public void cerrarConexion() {
+        if (emFactory != null && emFactory.isOpen()) {
+            emFactory.close();
+        }
     }
 }

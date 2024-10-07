@@ -19,37 +19,147 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 /**
- * Clase que gestiona habitos y cuentas
+ * Clase que gestiona los hábitos y cuentas. Esta clase implementa las
+ * operaciones CRUD para la gestión de hábitos y cuentas en la base de datos.
  *
- * @author
+ * @author Eliana Monge
+ * @author Cristina Castro
+ * @author Eduardo Talavera
+ * @author Roberto García
+ * @version 1.0
  */
 public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 
     EntityManager entityManager;
 
-    // Constructor
     /**
+     * Constructor para inicializar la clase `GestionarHabitosDAO`.
      *
-     * @param conexion
+     * @param conexion La conexión a la base de datos utilizada para inicializar
+     * el `EntityManager`.
      */
     public GestionarHabitosDAO(IConexion conexion) {
         this.entityManager = conexion.crearConexion();
     }
 
-//    /**
-//     * Cierra el `EntityManager` cuando el DAO ya no se necesite.
-//     */
-//    public void cerrar() {
-//        if (entityManager != null && entityManager.isOpen()) {
-//            entityManager.close();
-//        }
-//    }
     /**
-     * Crea un habito
+     * Crea una nueva cuenta en la base de datos.
      *
-     * @param nuevoHabito Habito a crear
-     * @return Habito creado
-     * @throws ModelException Si no se puede crear el habito
+     * @param cuenta La cuenta a crear.
+     * @return La cuenta creada.
+     * @throws ModelException Si ocurre algún error durante la creación de la
+     * cuenta.
+     */
+    @Override
+    public Cuenta crearCuenta(Cuenta cuenta) throws ModelException {
+        try {
+
+            entityManager.getTransaction().begin();
+            entityManager.persist(cuenta);
+            entityManager.getTransaction().commit();
+
+            return cuenta;
+        } catch (Exception ex) {
+            if (entityManager != null) {
+                entityManager.getTransaction().rollback();
+                throw new ModelException("Transaccion revertida debido a un error al crear la cuenta", ex);
+            }
+
+            throw new ModelException("Error al crear la cuenta", ex);
+
+        }
+    }
+
+    /**
+     * Consulta una cuenta en la base de datos basada en el nombre de usuario y
+     * la contraseña.
+     *
+     * @param usuario El nombre de usuario de la cuenta.
+     * @param contraseña La contraseña de la cuenta.
+     * @return La cuenta consultada.
+     * @throws ModelException Si la cuenta no existe o si ocurre algún error
+     * durante la consulta.
+     */
+    @Override
+    public Cuenta consultarCuenta(String usuario, String contraseña) throws ModelException {
+
+        try {
+
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Cuenta> criteriaQuery = cb.createQuery(Cuenta.class);
+
+            Root<Cuenta> cuentaRoot = criteriaQuery.from(Cuenta.class);
+
+            Predicate usuarioPredicate = cb.equal(cuentaRoot.get("usuario"), usuario);
+            Predicate contrasenaPredicate = cb.equal(cuentaRoot.get("contrasena"), contraseña);
+
+            criteriaQuery.select(cuentaRoot).where(cb.and(usuarioPredicate, contrasenaPredicate));
+
+            List<Cuenta> cuentas = entityManager.createQuery(criteriaQuery).getResultList();
+
+            if (!cuentas.isEmpty()) {
+                return cuentas.get(0);
+            } else {
+                throw new ModelException("La cuenta no existe.");
+            }
+
+        } catch (ModelException e) {
+            throw new ModelException("Error al consultar la cuenta: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Devuelve la cuenta del usuario si el usuario ya existe
+     *
+     * @param usuario Cadena del nombre del usuario para verificar su existencia
+     * @return True si existe, false en caso contrario
+     * @throws ModelException Si ocurre un error al consultar la cuenta
+     */
+    @Override
+    public Cuenta consultarCuentaPorUsuario(String usuario) throws ModelException {
+        try {
+
+            return entityManager.createQuery("SELECT c FROM Cuenta c WHERE c.usuario = :usuario", Cuenta.class)
+                    .setParameter("usuario", usuario)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null; // Si no encuentra la cuenta, retorna null
+        } catch (Exception e) {
+            throw new ModelException("Error al consultar la cuenta por usuario", e);
+        }
+    }
+
+    /**
+     * Devuelve si un usuario ya existe
+     *
+     * @param usuario Cadena del nombre del usuario para verificar su existencia
+     * @return True si existe, false en caso contrario
+     * @throws ModelException Si ocurre un error al consultar la cuenta
+     */
+    @Override
+    public boolean cuentaExiste(String usuario) throws ModelException {
+        try {
+
+            TypedQuery<Cuenta> query = entityManager.createQuery(
+                    "SELECT c FROM Cuenta c WHERE c.usuario = :usuario", Cuenta.class
+            );
+            query.setParameter("usuario", usuario);
+
+            List<Cuenta> cuentas = query.getResultList();
+
+            return !cuentas.isEmpty();
+        } catch (Exception e) {
+            throw new ModelException("Error al consultar si la cuenta existe: " + e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Crea un nuevo hábito en la base de datos.
+     *
+     * @param nuevoHabito El hábito a crear.
+     * @return El hábito creado.
+     * @throws ModelException Si ocurre algún error al intentar crear el hábito
+     * o si los datos del hábito no son válidos.
      */
     @Override
     public Habito crearHabito(Habito nuevoHabito) throws ModelException {
@@ -80,11 +190,12 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     }
 
     /**
-     * Actualizar un habito
+     * Actualiza un hábito existente en la base de datos.
      *
-     * @param habito Habito a actualizar
-     * @return Habito actualizado
-     * @throws ModelException Si no se puede actualizar
+     * @param habito El hábito con los datos actualizados.
+     * @return El hábito actualizado.
+     * @throws ModelException Si el hábito no existe o si ocurre un error
+     * durante la actualización.
      */
     @Override
     public Habito actualizarHabito(Habito habito) throws ModelException {
@@ -117,11 +228,13 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     }
 
     /**
-     * Habito a eliminar
+     * Elimina un hábito de la base de datos.
      *
-     * @param id id del habito a eliminar
-     * @return true si se elimino false en caso contrario
-     * @throws ModelException
+     * @param id El ID del hábito a eliminar.
+     * @return `true` si el hábito se eliminó correctamente, `false` en caso
+     * contrario.
+     * @throws ModelException Si ocurre algún error al intentar eliminar el
+     * hábito o si el hábito no se encuentra.
      */
     @Override
     public boolean eliminarHabito(Long id) throws ModelException {
@@ -151,11 +264,14 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     }
 
     /**
-     * Obtener los habitos de una cuenta
+     * Obtiene una lista de hábitos asociados a una cuenta.
      *
-     * @param cuenta Cuenta a aobtener los habitos
-     * @return Lista de habitos de la cuenta
-     * @throws ModelException Si hubo un error al obtener los habitos
+     * @param cuenta La cuenta para la cual se quieren obtener los hábitos.
+     * @return Una lista de hábitos pertenecientes a la cuenta.
+     * @throws NoSuchElementException Si no se encuentran hábitos asociados a la
+     * cuenta.
+     * @throws ModelException Si ocurre algún error al intentar obtener los
+     * hábitos.
      */
     @Override
     public List<Habito> obtenerHabitos(Cuenta cuenta) throws NoSuchElementException, ModelException {
@@ -176,73 +292,74 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     }
 
     /**
-     * Crea una cuenta
+     * Verifica si un hábito está completado.
      *
-     * @param cuenta Cuenta a crear
-     * @return Cuenta creada
-     * @throws ModelException Si no se puede crear la cuenta
+     * @param habito El hábito a verificar.
+     * @return True si el hábito está completado, false en caso contrario.
+     * @throws ModelException Si hay un error al verificar el estado del hábito.
      */
     @Override
-    public Cuenta crearCuenta(Cuenta cuenta) throws ModelException {
+    public boolean habitoCompletado(Habito habito) throws ModelException {
+        // Validación inicial del hábito
+        if (habito == null || habito.getId() == null) {
+            throw new ModelException("El hábito no puede ser nulo y debe tener un ID válido.");
+        }
+
         try {
+            // Consultar el historial de hábitos para este hábito y verificar si alguno está completado
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Long> criteriaQuery = cb.createQuery(Long.class);
+            Root<HistorialHabitos> historialRoot = criteriaQuery.from(HistorialHabitos.class);
 
-            entityManager.getTransaction().begin();
-            entityManager.persist(cuenta);
-            entityManager.getTransaction().commit();
+            // Filtrar por el ID del hábito y completado = 1
+            Predicate habitoPredicate = cb.equal(historialRoot.get("habito").get("id"), habito.getId());
+            Predicate completadoPredicate = cb.equal(historialRoot.get("completado"), 1); // 1 representa completado
 
-            return cuenta;
-        } catch (Exception ex) {
-            if (entityManager != null) {
-                entityManager.getTransaction().rollback();
-                throw new ModelException("Transaccion revertida debido a un error al crear la cuenta", ex);
-            }
+            // Contar cuántos registros hay con el hábito completado
+            criteriaQuery.select(cb.count(historialRoot)).where(cb.and(habitoPredicate, completadoPredicate));
 
-            throw new ModelException("Error al crear la cuenta", ex);
+            // Ejecutar la consulta
+            Long count = entityManager.createQuery(criteriaQuery).getSingleResult();
 
+            // Si hay al menos un registro, el hábito está completado
+            return count > 0;
+
+        } catch (NoResultException e) {
+            // No hay resultados, el hábito no está completado
+            return false; // O lanzar una excepción dependiendo de tu lógica
+        } catch (Exception e) {
+            // Manejo de excepción
+            throw new ModelException("Error al verificar si el hábito está completado: " + e.getMessage(), e);
         }
     }
 
     /**
-     * Consulta la existencia de una cuenta
+     * Busca un hábito por su ID.
      *
-     * @param usuario Usuario a encontrar
-     * @param contraseña Contraseña que coincida con la cuenta
-     * @return Cuenta consultada
-     * @throws ModelException Si no se puede consultar la cuenta
-     */
-    /**
-     * Consulta la existencia de una cuenta utilizando Criteria API
-     *
-     * @param usuario Usuario a encontrar
-     * @param contraseña Contraseña que coincida con la cuenta
-     * @return Cuenta consultada
-     * @throws ModelException Si no se puede consultar la cuenta
+     * @param id el ID del hábito a buscar.
+     * @return el hábito encontrado o null si no se encuentra.
+     * @throws ModelException Si hay un error al buscar el hábito.
      */
     @Override
-    public Cuenta consultarCuenta(String usuario, String contraseña) throws ModelException {
+    public Habito buscarHabitoPorId(Long id) throws ModelException {
+        Habito habito;
+
+        if (id == null) {
+            throw new ModelException("El ID no puede ser nulo");
+        }
 
         try {
 
-            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Cuenta> criteriaQuery = cb.createQuery(Cuenta.class);
+            habito = entityManager.find(Habito.class, id);
 
-            Root<Cuenta> cuentaRoot = criteriaQuery.from(Cuenta.class);
-
-            Predicate usuarioPredicate = cb.equal(cuentaRoot.get("usuario"), usuario);
-            Predicate contrasenaPredicate = cb.equal(cuentaRoot.get("contrasena"), contraseña);
-
-            criteriaQuery.select(cuentaRoot).where(cb.and(usuarioPredicate, contrasenaPredicate));
-
-            List<Cuenta> cuentas = entityManager.createQuery(criteriaQuery).getResultList();
-
-            if (!cuentas.isEmpty()) {
-                return cuentas.get(0);
-            } else {
-                throw new ModelException("La cuenta no existe.");
+            if (habito == null) {
+                throw new ModelException("No se encontró el hábito con ID: " + id);
             }
 
+            return habito;
+
         } catch (ModelException e) {
-            throw new ModelException("Error al consultar la cuenta: " + e.getMessage(), e);
+            throw new ModelException("Error al buscar el hábito: " + e.getMessage());
         }
     }
 
@@ -254,7 +371,7 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
      * @return Registro de historial de hábitos que coincide con la fecha y el
      * ID de hábito.
      * @throws ModelException Si ocurre un error al buscar o si no se encuentra
-     * el registro
+     * el registro.
      */
     @Override
     public HistorialHabitos buscarPorFechaYIdHabito(Date dia, Long idHabito) throws ModelException {
@@ -343,81 +460,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
     }
 
     /**
-     * Devuelve si un usuario ya existe
-     *
-     * @param usuario Cadena del nombre del usuario para verificar su existencia
-     * @return True si existe, false en caso contrario
-     * @throws ModelException Si ocurre un error al consultar la cuenta
-     */
-    @Override
-    public boolean cuentaExiste(String usuario) throws ModelException {
-        try {
-
-            TypedQuery<Cuenta> query = entityManager.createQuery(
-                    "SELECT c FROM Cuenta c WHERE c.usuario = :usuario", Cuenta.class
-            );
-            query.setParameter("usuario", usuario);
-
-            List<Cuenta> cuentas = query.getResultList();
-
-            return !cuentas.isEmpty();
-        } catch (Exception e) {
-            throw new ModelException("Error al consultar si la cuenta existe: " + e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Devuelve la cuenta del usuario si el usuario ya existe
-     *
-     * @param usuario Cadena del nombre del usuario para verificar su existencia
-     * @return True si existe, false en caso contrario
-     * @throws ModelException Si ocurre un error al consultar la cuenta
-     */
-    @Override
-    public Cuenta consultarCuentaPorUsuario(String usuario) throws ModelException {
-        try {
-
-            return entityManager.createQuery("SELECT c FROM Cuenta c WHERE c.usuario = :usuario", Cuenta.class)
-                    .setParameter("usuario", usuario)
-                    .getSingleResult();
-        } catch (NoResultException e) {
-            return null; // Si no encuentra la cuenta, retorna null
-        } catch (Exception e) {
-            throw new ModelException("Error al consultar la cuenta por usuario", e);
-        }
-    }
-
-    /**
-     * Busca un hábito por su ID.
-     *
-     * @param id el ID del hábito a buscar.
-     * @return el hábito encontrado o null si no se encuentra.
-     * @throws ModelException Si hay un error al buscar el hábito.
-     */
-    @Override
-    public Habito buscarHabitoPorId(Long id) throws ModelException {
-        Habito habito;
-
-        if (id == null) {
-            throw new ModelException("El ID no puede ser nulo");
-        }
-
-        try {
-
-            habito = entityManager.find(Habito.class, id);
-
-            if (habito == null) {
-                throw new ModelException("No se encontró el hábito con ID: " + id);
-            }
-
-            return habito;
-
-        } catch (ModelException e) {
-            throw new ModelException("Error al buscar el hábito: " + e.getMessage());
-        }
-    }
-
-    /**
      * Consultar historial de hábitos para una cuenta en una fecha específica
      * utilizando Criteria API.
      *
@@ -452,41 +494,6 @@ public class GestionarHabitosDAO implements IGestionarHabitosDAO {
 
         } catch (Exception e) {
             throw new ModelException("Error al consultar el historial de hábitos: " + e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public boolean habitoCompletado(Habito habito) throws ModelException {
-        // Validación inicial del hábito
-        if (habito == null || habito.getId() == null) {
-            throw new ModelException("El hábito no puede ser nulo y debe tener un ID válido.");
-        }
-
-        try {
-            // Consultar el historial de hábitos para este hábito y verificar si alguno está completado
-            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Long> criteriaQuery = cb.createQuery(Long.class);
-            Root<HistorialHabitos> historialRoot = criteriaQuery.from(HistorialHabitos.class);
-
-            // Filtrar por el ID del hábito y completado = 1
-            Predicate habitoPredicate = cb.equal(historialRoot.get("habito").get("id"), habito.getId());
-            Predicate completadoPredicate = cb.equal(historialRoot.get("completado"), 1); // 1 representa completado
-
-            // Contar cuántos registros hay con el hábito completado
-            criteriaQuery.select(cb.count(historialRoot)).where(cb.and(habitoPredicate, completadoPredicate));
-
-            // Ejecutar la consulta
-            Long count = entityManager.createQuery(criteriaQuery).getSingleResult();
-
-            // Si hay al menos un registro, el hábito está completado
-            return count > 0;
-
-        } catch (NoResultException e) {
-            // No hay resultados, el hábito no está completado
-            return false; // O lanzar una excepción dependiendo de tu lógica
-        } catch (Exception e) {
-            // Manejo de excepción
-            throw new ModelException("Error al verificar si el hábito está completado: " + e.getMessage(), e);
         }
     }
 

@@ -396,7 +396,7 @@ public class ProgresoSemanal extends javax.swing.JPanel {
     }//GEN-LAST:event_btnHabitosActionPerformed
 
     private void btnProgresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProgresoActionPerformed
-        // TODO add your handling code here:
+            // TODO add your handling code here:
     }//GEN-LAST:event_btnProgresoActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed

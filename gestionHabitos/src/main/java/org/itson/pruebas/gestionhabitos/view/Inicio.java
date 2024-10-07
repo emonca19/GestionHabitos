@@ -404,7 +404,9 @@ public class Inicio extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnHoyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoyActionPerformed
-        // TODO add your handling code here:
+        frame.obtenerHabitosHoy();
+        FechaUtil.establecerFechaHoy();
+        frame.mostrarInicio();
     }//GEN-LAST:event_btnHoyActionPerformed
 
     private void btnProgresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProgresoActionPerformed

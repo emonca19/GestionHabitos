@@ -4,7 +4,11 @@ package org.itson.pruebas.gestionhabitos.model;
  * Clase que representa el progreso de un hábito, incluyendo su nombre y la
  * cantidad de días realizados y totales.
  *
+ * @author Eliana Monge
+ * @author Cristina Castro
+ * @author Eduardo Talavera
  * @author Roberto García
+ * @version 1.0
  */
 public class ProgresoHabito {
 

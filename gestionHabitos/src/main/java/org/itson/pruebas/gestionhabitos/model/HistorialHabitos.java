@@ -6,6 +6,7 @@ package org.itson.pruebas.gestionhabitos.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,9 +19,15 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
- * Clase que representa el historial de hábitos en la base de datos.
- * Esta entidad se utiliza para almacenar información sobre 
- * la realización de hábitos en fechas específicas.
+ * Clase que representa el historial de hábitos en la base de datos. Esta
+ * entidad se utiliza para almacenar información sobre la realización de hábitos
+ * en fechas específicas.
+ *
+ * @author Eliana Monge
+ * @author Cristina Castro
+ * @author Eduardo Talavera
+ * @author Roberto García
+ * @version 1.0
  */
 @Entity
 public class HistorialHabitos implements Serializable {
@@ -46,8 +53,8 @@ public class HistorialHabitos implements Serializable {
     private Habito habito;
 
     /**
-     * Constructor vacío para la clase HistorialHabitos.
-     * Se utiliza para la creación de instancias sin inicializar atributos.
+     * Constructor vacío para la clase HistorialHabitos. Se utiliza para la
+     * creación de instancias sin inicializar atributos.
      */
     public HistorialHabitos() {
     }
@@ -55,9 +62,9 @@ public class HistorialHabitos implements Serializable {
     /**
      * Constructor para crear una nueva instancia de HistorialHabitos.
      *
-     * @param dia       La fecha en que se registró el hábito.
+     * @param dia La fecha en que se registró el hábito.
      * @param completado Indica si el hábito fue completado.
-     * @param habito    La instancia de Habito asociada a este historial.
+     * @param habito La instancia de Habito asociada a este historial.
      */
     public HistorialHabitos(Date dia, boolean completado, Habito habito) {
         this.dia = dia;
@@ -136,5 +143,38 @@ public class HistorialHabitos implements Serializable {
     public void setHabito(Habito habito) {
         this.habito = habito;
     }
-    
+
+    /**
+     * Calcula el código hash para la instancia de HistorialHabitos.
+     *
+     * @return El código hash calculado para esta instancia.
+     */
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 67 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    /**
+     * Compara esta instancia de HistorialHabitos con otra.
+     *
+     * @param obj El objeto con el que se va a comparar.
+     * @return true si ambos objetos son iguales, false en caso contrario.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final HistorialHabitos other = (HistorialHabitos) obj;
+        return Objects.equals(this.id, other.id);
+    }
+
 }

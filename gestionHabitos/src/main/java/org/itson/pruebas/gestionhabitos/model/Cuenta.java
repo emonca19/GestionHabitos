@@ -10,8 +10,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
+ * Representa una cuenta de usuario en el sistema de gestión de hábitos. Cada
+ * cuenta tiene un nombre de usuario único, una contraseña y un nombre asociado.
  *
- * @author elimo
+ * Esta clase es serializable para permitir su persistencia y transmisión.
+ *
+ * @author Eliana Monge
+ * @author Cristina Castro
+ * @author Eduardo Talavera
+ * @author Roberto García
+ * @version 1.0
  */
 @Entity
 public class Cuenta implements Serializable {
@@ -24,17 +32,17 @@ public class Cuenta implements Serializable {
     @Column(name = "usuario", nullable = false, length = 50)
     private String usuario;
 
-// Contraseña de la cuenta (no nulo)
+    // Contraseña de la cuenta (no nulo)
     @Column(name = "contrasena", nullable = false, length = 100)
     private String contrasena;
 
-// Nombre del usuario (no nulo)
+    // Nombre del usuario (no nulo)
     @Column(name = "nombre_usuario", nullable = false, length = 100)
     private String nombre;
 
     /**
-     * Constructor por defecto para la clase Cuenta.
-     * Este constructor no inicializa los atributos de la cuenta.
+     * Constructor por defecto para la clase Cuenta. Este constructor no
+     * inicializa los atributos de la cuenta.
      */
     public Cuenta() {
     }
@@ -42,9 +50,10 @@ public class Cuenta implements Serializable {
     /**
      * Constructor para crear una cuenta con los atributos especificados.
      *
-     * @param usuario   El nombre de usuario de la cuenta (debe ser único).
+     * @param usuario El nombre de usuario de la cuenta (debe ser único).
      * @param contrasena La contraseña de la cuenta (no debe ser nula).
-     * @param nombre     El nombre del usuario asociado a la cuenta (no debe ser nulo).
+     * @param nombre El nombre del usuario asociado a la cuenta (no debe ser
+     * nulo).
      */
     public Cuenta(String usuario, String contrasena, String nombre) {
         this.usuario = usuario;

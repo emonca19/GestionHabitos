@@ -391,7 +391,7 @@ public class ListaHabitos extends javax.swing.JPanel {
     }//GEN-LAST:event_btnHoyActionPerformed
 
     private void btnHabitosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHabitosActionPerformed
-
+        frame.mostrarListaHabitos();
     }//GEN-LAST:event_btnHabitosActionPerformed
 
     private void btnProgresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProgresoActionPerformed

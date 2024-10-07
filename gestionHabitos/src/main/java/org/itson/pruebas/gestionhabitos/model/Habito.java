@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package org.itson.pruebas.gestionhabitos.model;
 
 import javax.persistence.Column;
@@ -11,25 +7,26 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
+ * Clase que representa un hábito asociado a una cuenta.
  *
- * @author elimo
+ * @author Eliana Monge
+ * @author Cristina Castro
+ * @author Eduardo Talavera
+ * @author Roberto García
+ * @version 1.0
  */
 @Entity
 public class Habito implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-     // Identificador único de la actividad
+    // Identificador único de la actividad
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -124,13 +121,13 @@ public class Habito implements Serializable {
 
     /**
      * Establece el identificador de la actividad.
-     * @param id 
+     *
+     * @param id
      */
     public void setId(Long id) {
         this.id = id;
     }
 
-    
     /**
      * Obtiene el identificador de la actividad.
      *
@@ -139,7 +136,6 @@ public class Habito implements Serializable {
     public Long getId() {
         return id;
     }
-
 
     /**
      * Obtiene la frecuencia de la actividad.
