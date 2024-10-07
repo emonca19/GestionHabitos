@@ -227,6 +227,7 @@ public class InicioSesion extends javax.swing.JPanel {
             Sesion.iniciarSesion(cuenta);
             frame.obtenerHabitosHoy();
             FechaUtil.establecerFechaHoy();
+            FechaUtil.setFechaActual(LocalDate.now());
             frame.mostrarInicio();
         }
 

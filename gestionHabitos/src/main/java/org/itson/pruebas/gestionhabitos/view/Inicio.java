@@ -758,12 +758,8 @@ public class Inicio extends javax.swing.JPanel {
         GestionarHabitosNegocio gestion = new GestionarHabitosNegocio();
         if (!historialHabitos.isEmpty()) {
             for (HistorialHabitosDTO habito : historialHabitos) {
-//                    if (!gestion.habitoCompletado(habito.getHabito())) {
-//                        System.out.println(habito.getHabito().getNombre());
-//                        addHabit(habito, false);
-//                    }
+
                 if (!habito.isCompletado()) {
-//                    System.out.println(habito.getHabito().getNombre());
                     addHabit(habito, false);
                 }
 
@@ -811,8 +807,6 @@ public class Inicio extends javax.swing.JPanel {
             pnlHabitosRealizados.removeAll();
         }
 
-        GestionarHabitosNegocio gestion = new GestionarHabitosNegocio();
-
         if (!historialHabitos.isEmpty()) {
             for (HistorialHabitosDTO habito : historialHabitos) {
                 if (habito.isCompletado()) {
@@ -844,18 +838,18 @@ public class Inicio extends javax.swing.JPanel {
                         if (pnlHabitosRealizados == null) {
                             pnlHabitosRealizados = new JPanel();
                         }
-                        System.out.println("agrega un habito a habitos realizados");
+//                        System.out.println("agrega un habito a habitos realizados");
                         pnlHabitosRealizados.add(habit);
                         habit.setCompleted(true);
-                        System.out.println("aqui si entra, esta es si se pasa de pendiente a realizado");
+//                        System.out.println("aqui si entra, esta es si se pasa de pendiente a realizado");
                         registrarHabito(habitoDTO.getHabito(), true);
                         actualizarHistorialHabitos();
                     } else {
                         pnlHabitosRealizados.remove(habit);
-                        System.out.println("agrega un habito a habitos pendientes");
+//                        System.out.println("agrega un habito a habitos pendientes");
                         pnlHabitosPendientes.add(habit);
                         habit.setCompleted(false);
-                        System.out.println("es de realizado a pendiente");
+//                        System.out.println("es de realizado a pendiente");
                         registrarHabito(habitoDTO.getHabito(), false);
                         actualizarHistorialHabitos();
                     }
