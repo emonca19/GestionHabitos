@@ -71,6 +71,9 @@ public class GestionarHabitosTestMockito {
 
     @BeforeEach
     void setUp() {
+
+         MockitoAnnotations.initMocks(this);
+
         MockitoAnnotations.openMocks(this);
         when(mockConexion.crearConexion()).thenReturn(mockEntityManager);
         when(mockEntityManager.getTransaction()).thenReturn(mockTransaction);
@@ -599,96 +602,77 @@ public class GestionarHabitosTestMockito {
         assertEquals(historialSimulado, resultado.get(0)); // Asegúrate de que el resultado es el esperado
         verify(mockEntityManager).createQuery(mockCriteriaQuery); // Verifica que se llamó a createQuery
     }
+@Test
+void testObtenerProgresoHabitos_ProgresoEncontrado() throws ModelException {
+    // Arrange
+    Cuenta cuenta = new Cuenta();
+    cuenta.setUsuario("rob");
 
-    @Test
-    void testObtenerProgresoHabitos_ProgresoEncontrado() throws ModelException {
-        // Arrange
-        Cuenta cuenta = new Cuenta();
-        cuenta.setUsuario("rob");// Asigna un usuario a la cuenta
+    Date fechaInicio = new Date();
+    Date fechaFin = new Date();
 
-        Date fechaInicio = new Date(); // Simula la fecha de inicio
-        Date fechaFin = new Date(); // Simula la fecha de fin (puedes ajustar esto)
+    HistorialHabitos historialSimulado = new HistorialHabitos();
+    historialSimulado.setDia(fechaInicio);
+    historialSimulado.setCompletado(true);
 
-        // Crear un mock de HistorialHabitos
-        HistorialHabitos historialSimulado = new HistorialHabitos();
-        historialSimulado.setDia(fechaInicio);
-        historialSimulado.setCompletado(true); // Simula que el hábito fue completado
+    Habito habitoSimulado = new Habito();
+    habitoSimulado.setId(1L);
+    habitoSimulado.setNombre("Hábito 1");
+    habitoSimulado.setDiasSemana("1111111");
 
-        // Crear un mock de Habito
-        Habito habitoSimulado = new Habito();
-        habitoSimulado.setId(1L);
-        habitoSimulado.setNombre("Hábito 1");
-        habitoSimulado.setDiasSemana("1111111"); // Simula días completados
+    historialSimulado.setHabito(habitoSimulado);
 
-        // Establecer la relación entre HistorialHabitos y Habito
-        historialSimulado.setHabito(habitoSimulado);
+    List<Object[]> resultadoSimulado = new ArrayList<>();
+    resultadoSimulado.add(new Object[]{"Hábito 1", 1L, 7});
 
-        // Crear una lista simulada de resultados
-        List<Object[]> resultadoSimulado = new ArrayList<>();
-        resultadoSimulado.add(new Object[]{"Hábito 1", 1L, 7});
+    when(mockEntityManager.getCriteriaBuilder()).thenReturn(mockCriteriaBuilder);
 
-        // Mockear el comportamiento del EntityManager y Criteria API
-        when(mockEntityManager.getCriteriaBuilder()).thenReturn(mockCriteriaBuilder);
+    CriteriaQuery<Object[]> mockQuery = mock(CriteriaQuery.class);
+    when(mockCriteriaBuilder.createQuery(Object[].class)).thenReturn(mockQuery);
+    Root<HistorialHabitos> mockRootHistorial = mock(Root.class);
+    when(mockQuery.from(HistorialHabitos.class)).thenReturn(mockRootHistorial);
 
-        // Mockear la consulta
-        CriteriaQuery<Object[]> mockQuery = mock(CriteriaQuery.class);
-        when(mockCriteriaBuilder.createQuery(Object[].class)).thenReturn(mockQuery);
-        Root<HistorialHabitos> mockRootHistorial = mock(Root.class);
-        when(mockQuery.from(HistorialHabitos.class)).thenReturn(mockRootHistorial);
+    Join<Object, Object> mockJoinHabito = mock(Join.class);
+    when(mockRootHistorial.join("habito", JoinType.LEFT)).thenReturn(mockJoinHabito);
 
-        // Mockear el Join
-        Join<Object, Object> mockJoinHabito = mock(Join.class);
-        when(mockRootHistorial.join("habito", JoinType.LEFT)).thenReturn(mockJoinHabito);
+    // Crear un mock para selectCase
+    CriteriaBuilder.Case<Object> mockSelectCase = mock(CriteriaBuilder.Case.class);
+    when(mockCriteriaBuilder.selectCase()).thenReturn(mockSelectCase);
 
-        // Mockear las expresiones
-        Expression<Object> mockDiasRealizados = mock(Expression.class);
-        Expression<Object> mockDiasTotal = mock(Expression.class);
+    // Crear y configurar mockDiasRealizados como Expression<Object>
+    Expression<Object> mockDiasRealizados = mock(Expression.class);
+    when(mockSelectCase.when(any(), any())).thenReturn(mockSelectCase); // Esto es crucial
+    when(mockSelectCase.otherwise(mockDiasRealizados)).thenReturn(mockDiasRealizados);
 
-        // Mockear el selectCase
-        CriteriaBuilder.Case<Object> mockSelectCase = mock(CriteriaBuilder.Case.class);
-        when(mockCriteriaBuilder.selectCase()).thenReturn(mockSelectCase);
+    Expression<Long> mockDiasRealizadosL = mock(Expression.class);
+    when(mockCriteriaBuilder.count(mockSelectCase)).thenReturn(mockDiasRealizadosL);
 
-        // Mockear el comportamiento de when y otherwise
-        when(mockSelectCase.when(any(), any())).thenReturn(mockSelectCase);
-        when(mockSelectCase.otherwise(any())).thenReturn(mockDiasRealizados);
+    Expression<Integer> mockDiasTotalI = mock(Expression.class);
+    when(mockCriteriaBuilder.length(any())).thenReturn(mockDiasTotalI);
 
-        Expression<Long> mockDiasRealizadosL = mock(Expression.class);
-        // Mockear el conteo
-        when(mockCriteriaBuilder.count(mockSelectCase)).thenReturn(mockDiasRealizadosL);
+    when(mockQuery.multiselect(any(), any(), any())).thenReturn(mockQuery);
+    when(mockQuery.groupBy(any(Expression[].class))).thenReturn(mockQuery);
+    Predicate mockPredicate = mock(Predicate.class);
+    when(mockQuery.where(any(Predicate[].class))).thenReturn(mockQuery);
 
-        Expression<Integer> mockDiasTotalI = mock(Expression.class);
+    TypedQuery<Object[]> mockTypedQuery = mock(TypedQuery.class);
+    when(mockEntityManager.createQuery(mockQuery)).thenReturn(mockTypedQuery);
+    when(mockTypedQuery.getResultList()).thenReturn(resultadoSimulado);
 
-        // Mockear la longitud
-        when(mockCriteriaBuilder.length(any())).thenReturn(mockDiasTotalI);
+    // Act
+    List<ProgresoHabito> resultado = gestionarHabitosDAO.obtenerProgresoHabitos(cuenta, fechaInicio, fechaFin);
 
-        // Mockear la construcción de la consulta
-        when(mockQuery.multiselect(any(), any(), any())).thenReturn(mockQuery);
+    // Assert
+    assertNotNull(resultado);
+    assertEquals(1, resultado.size());
+    assertEquals("Hábito 1", resultado.get(0).getNombre());
+    assertEquals(1, resultado.get(0).getDiasRealizados());
+    assertEquals(7, resultado.get(0).getTotalDias());
 
-        // Cambia la llamada a groupBy para evitar la ambigüedad
-        when(mockQuery.groupBy(any(Expression[].class))).thenReturn(mockQuery);
+    verify(mockEntityManager).getCriteriaBuilder();
+    verify(mockEntityManager).createQuery(mockQuery);
+}
 
-        // Mockear la cláusula where
-        Predicate mockPredicate = mock(Predicate.class);
-        when(mockQuery.where(any(Predicate[].class))).thenReturn(mockQuery);
 
-        // Mockear la ejecución de la consulta
-        TypedQuery<Object[]> mockTypedQuery = mock(TypedQuery.class);
-        when(mockEntityManager.createQuery(mockQuery)).thenReturn(mockTypedQuery);
-        when(mockTypedQuery.getResultList()).thenReturn(resultadoSimulado);
-
-        // Act
-        List<ProgresoHabito> resultado = gestionarHabitosDAO.obtenerProgresoHabitos(cuenta, fechaInicio, fechaFin);
-
-        // Assert
-        assertNotNull(resultado);
-        assertEquals(1, resultado.size());
-        assertEquals("Hábito 1", resultado.get(0).getNombre());
-        assertEquals(1, resultado.get(0).getDiasRealizados());
-        assertEquals(7, resultado.get(0).getTotalDias());
-
-        // Verificaciones adicionales
-        verify(mockEntityManager).getCriteriaBuilder();
-        verify(mockEntityManager).createQuery(mockQuery);
-    }
 
 }

@@ -480,7 +480,7 @@ public class GestionarHabitosNegocioTest {
         assertNotNull(habito);
         assertEquals(habitoDTO.getId(), habito.getId());
     }
-    
+
     @Test
     public void testHabitoCompletado() throws ControllerException {
         // Crear cuenta y hábito
@@ -502,6 +502,7 @@ public class GestionarHabitosNegocioTest {
 
         assertFalse(completado); // O true dependiendo del estado del hábito
     }
+
     @Test
     public void testObtenerProgresoHabitos() throws ControllerException {
         // Crear cuenta para la prueba
@@ -527,16 +528,22 @@ public class GestionarHabitosNegocioTest {
         habitoDTO2.setCuentaId(cuentaDTO);
         habitoDTO2 = gestionarHabitosNegocio.crearHabito(habitoDTO2);
 
+        // Definir la fecha del historial manualmente para que caiga dentro del rango
+        Calendar cal = Calendar.getInstance();
+        cal.set(2024, Calendar.OCTOBER, 2); // Ajustar según el rango que especificaste
+        Date fechaHistorial = cal.getTime();
+
+        // Crear y guardar el historial de hábitos
         HistorialHabitosDTO historial1 = new HistorialHabitosDTO();
         historial1.setHabito(habitoDTO1);
         historial1.setCompletado(true);
-        historial1.setDia(new Date());
+        historial1.setDia(fechaHistorial);  // Fecha ajustada
         gestionarHabitosNegocio.guardarHistorial(historial1);
+
         HistorialHabitosDTO historial2 = new HistorialHabitosDTO();
         historial2.setHabito(habitoDTO2);
         historial2.setCompletado(true);
-        historial2.setDia(new Date());
-
+        historial2.setDia(fechaHistorial);  // Fecha ajustada
         gestionarHabitosNegocio.guardarHistorial(historial2);
 
         // Definir rango de fechas (ejemplo: última semana)
@@ -565,6 +572,7 @@ public class GestionarHabitosNegocioTest {
             }
         }
     }
+
 
      @Test
     public void testObtenerDia() {
