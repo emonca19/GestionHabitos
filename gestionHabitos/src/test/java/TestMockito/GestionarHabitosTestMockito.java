@@ -4,8 +4,6 @@
  */
 package TestMockito;
 
-import Test.GestionarHabitosTest;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import static org.mockito.Mockito.*;
@@ -31,10 +29,7 @@ import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
 import org.itson.pruebas.gestionhabitos.model.Habito;
 import org.itson.pruebas.gestionhabitos.model.HistorialHabitos;
 import org.itson.pruebas.gestionhabitos.model.IConexion;
-import org.itson.pruebas.gestionhabitos.model.IGestionarHabitosDAO;
 import org.itson.pruebas.gestionhabitos.model.ModelException;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 public class GestionarHabitosTestMockito {
 
@@ -47,6 +42,21 @@ public class GestionarHabitosTestMockito {
     @Mock
     private EntityTransaction mockTransaction;
 
+    @Mock
+    private CriteriaBuilder mockCriteriaBuilder;
+
+    @Mock
+    private CriteriaQuery<Habito> mockCriteriaQueryHabito;
+
+    @Mock
+    private Root<Habito> mockRootHabito;
+
+    @Mock
+    private TypedQuery<Habito> mockTypedQueryHabito;
+
+    @Mock
+    private Query mockQuery; // Agrega esto
+
     @InjectMocks
     private GestionarHabitosDAO gestionarHabitosDAO;
 
@@ -55,6 +65,9 @@ public class GestionarHabitosTestMockito {
         MockitoAnnotations.openMocks(this);
         when(mockConexion.crearConexion()).thenReturn(mockEntityManager);
         when(mockEntityManager.getTransaction()).thenReturn(mockTransaction);
+
+        when(mockEntityManager.createQuery(anyString())).thenReturn(mockQuery); // Agrega esto
+        when(mockQuery.setParameter(anyString(), any())).thenReturn(mockQuery); // Asegúrate de que setParameter también funcione
         gestionarHabitosDAO = new GestionarHabitosDAO(mockConexion);
     }
 
@@ -227,10 +240,7 @@ public class GestionarHabitosTestMockito {
         Habito habitoEncontrado = new Habito();
         habitoEncontrado.setId(idHabito);
 
-        // Crea un mock para Query
-        Query mockQuery = mock(Query.class);
-
-        // Simula el comportamiento del EntityManager y Transaction
+        // Simulación del comportamiento del EntityManager y la transacción
         when(mockEntityManager.getTransaction()).thenReturn(mockTransaction);
         when(mockTransaction.isActive()).thenReturn(false);
         when(mockEntityManager.find(Habito.class, idHabito)).thenReturn(habitoEncontrado);
@@ -239,12 +249,16 @@ public class GestionarHabitosTestMockito {
         // Simula el comportamiento de setParameter y su retorno
         when(mockQuery.setParameter("idHabito", idHabito)).thenReturn(mockQuery);
 
+        when(mockEntityManager.createQuery(anyString())).thenReturn(mockQuery);
+        when(mockQuery.setParameter(anyString(), any())).thenReturn(mockQuery); // Para setParameter
+        when(mockQuery.executeUpdate()).thenReturn(1); // Simula una ejecución exitosa de la consulta
+
         // Act
         boolean resultado = gestionarHabitosDAO.eliminarHabito(idHabito);
 
         // Assert
         assertTrue(resultado);
-        verify(mockQuery).setParameter("idHabito", idHabito);
+        verify(mockQuery).setParameter("idHabito", idHabito); // Verificar que se estableció el parámetro
         verify(mockEntityManager).remove(habitoEncontrado);
         verify(mockTransaction).commit();
     }
