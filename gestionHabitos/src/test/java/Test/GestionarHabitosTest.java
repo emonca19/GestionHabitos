@@ -4,21 +4,22 @@
  */
 package Test;
 
+import com.mycompany.subsistemamodelo.Conexion;
+import com.mycompany.subsistemamodelo.Cuenta;
+import com.mycompany.subsistemamodelo.GestionarHabitosDAO;
+import com.mycompany.subsistemamodelo.Habito;
+import com.mycompany.subsistemamodelo.HistorialHabitos;
+import com.mycompany.subsistemamodelo.IConexion;
+import com.mycompany.subsistemamodelo.IGestionarHabitosDAO;
+import com.mycompany.subsistemamodelo.ProgresoHabito;
+import com.mycompany.subsistemamodelo.ModelException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import org.itson.pruebas.gestionhabitos.model.Conexion;
-import org.itson.pruebas.gestionhabitos.model.Cuenta;
-import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
-import org.itson.pruebas.gestionhabitos.model.Habito;
-import org.itson.pruebas.gestionhabitos.model.HistorialHabitos;
-import org.itson.pruebas.gestionhabitos.model.IConexion;
-import org.itson.pruebas.gestionhabitos.model.IGestionarHabitosDAO;
-import org.itson.pruebas.gestionhabitos.model.ModelException;
-import org.itson.pruebas.gestionhabitos.model.ProgresoHabito;
+
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

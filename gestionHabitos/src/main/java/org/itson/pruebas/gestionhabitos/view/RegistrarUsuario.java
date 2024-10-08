@@ -1,12 +1,12 @@
 package org.itson.pruebas.gestionhabitos.view;
 
+import com.mycompany.subsistemacontroller.ControllerException;
+import com.mycompany.subsistemacontroller.CuentaDTO;
+import com.mycompany.subsistemacontroller.GestionarHabitosNegocio;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import javax.swing.JDialog;
-import org.itson.pruebas.gestionhabitos.controller.ControllerException;
-import org.itson.pruebas.gestionhabitos.controller.CuentaDTO;
-import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
 
 /**
  *

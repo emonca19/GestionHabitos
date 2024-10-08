@@ -1,4 +1,9 @@
-package org.itson.pruebas.gestionhabitos.model;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
+
+package com.mycompany.subsistemamodelo;
+
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

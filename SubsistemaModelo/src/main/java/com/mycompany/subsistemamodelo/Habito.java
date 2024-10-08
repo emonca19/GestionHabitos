@@ -1,4 +1,8 @@
-package org.itson.pruebas.gestionhabitos.model;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.subsistemamodelo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -219,3 +223,4 @@ public class Habito implements Serializable {
         return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 }
+

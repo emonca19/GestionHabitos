@@ -1,5 +1,10 @@
 package org.itson.pruebas.gestionhabitos.view;
 
+import com.mycompany.subsistemacontroller.ControllerException;
+import com.mycompany.subsistemacontroller.CuentaDTO;
+import com.mycompany.subsistemacontroller.FechaUtil;
+import com.mycompany.subsistemacontroller.GestionarHabitosNegocio;
+import com.mycompany.subsistemacontroller.Sesion;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
@@ -11,12 +16,6 @@ import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
-import org.itson.pruebas.gestionhabitos.controller.ControllerException;
-import org.itson.pruebas.gestionhabitos.controller.CuentaDTO;
-import org.itson.pruebas.gestionhabitos.controller.FechaUtil;
-import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
-import org.itson.pruebas.gestionhabitos.controller.HistorialHabitosDTO;
-import org.itson.pruebas.gestionhabitos.controller.Sesion;
 
 /**
  *

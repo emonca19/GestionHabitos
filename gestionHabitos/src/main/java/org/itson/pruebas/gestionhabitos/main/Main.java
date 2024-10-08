@@ -1,7 +1,8 @@
 package org.itson.pruebas.gestionhabitos.main;
 
-import org.itson.pruebas.gestionhabitos.controller.InitialConfig;
-import org.itson.pruebas.gestionhabitos.model.ModelException;
+import com.mycompany.subsistemacontroller.InitialConfig;
+import com.mycompany.subsistemamodelo.ModelException;
+
 import org.itson.pruebas.gestionhabitos.view.FrameContenedor;
 
 /**

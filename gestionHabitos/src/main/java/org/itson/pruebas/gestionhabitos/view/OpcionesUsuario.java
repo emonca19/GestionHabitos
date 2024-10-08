@@ -4,11 +4,11 @@
  */
 package org.itson.pruebas.gestionhabitos.view;
 
+import com.mycompany.subsistemacontroller.Sesion;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import javax.swing.JDialog;
-import org.itson.pruebas.gestionhabitos.controller.Sesion;
 
 /**
  *

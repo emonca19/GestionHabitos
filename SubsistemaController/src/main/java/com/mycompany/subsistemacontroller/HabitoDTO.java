@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package org.itson.pruebas.gestionhabitos.controller;
+package com.mycompany.subsistemacontroller;
 
 import java.io.Serializable;
 import java.util.Date;
+
 
 /**
  * Clase DTO que representa un hábito. Se utiliza para transferir datos sobre un hábito entre capas de la aplicación.
@@ -183,3 +184,4 @@ public class HabitoDTO implements Serializable {
                 && cuentaId != null; // Asegúrate de que la cuenta no sea nula.
     }
 }
+

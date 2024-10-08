@@ -1,3 +1,6 @@
 /gestionHabitos/target/
 /gestionHabitos/nbproject/
 gestionHabitos/src/main/resources/META-INF/persistence.xml
+/SubsistemaModelo/target/
+/SubsistemaController/target/
+/main/target/

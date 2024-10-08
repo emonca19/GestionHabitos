@@ -1,17 +1,17 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package org.itson.pruebas.gestionhabitos.controller;
+package com.mycompany.subsistemacontroller;
 
+import com.mycompany.subsistemamodelo.Cuenta;
+import com.mycompany.subsistemamodelo.Habito;
+import com.mycompany.subsistemamodelo.HistorialHabitos;
+import com.mycompany.subsistemamodelo.ModelException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
-import org.itson.pruebas.gestionhabitos.model.Cuenta;
-import org.itson.pruebas.gestionhabitos.model.Habito;
-import org.itson.pruebas.gestionhabitos.model.HistorialHabitos;
-import org.itson.pruebas.gestionhabitos.model.ModelException;
 
 /**
  *

@@ -4,6 +4,13 @@
  */
 package org.itson.pruebas.gestionhabitos.view;
 
+import com.mycompany.subsistemacontroller.ControllerException;
+import com.mycompany.subsistemacontroller.FechaUtil;
+import com.mycompany.subsistemacontroller.GestionarHabitosNegocio;
+import com.mycompany.subsistemacontroller.HabitoDTO;
+import com.mycompany.subsistemacontroller.HistorialHabitosDTO;
+import com.mycompany.subsistemacontroller.IGestionarHabitosNegocio;
+import com.mycompany.subsistemacontroller.Sesion;
 import static com.mysql.cj.conf.PropertyKey.logger;
 import java.awt.BorderLayout;
 import java.awt.Cursor;
@@ -34,13 +41,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import org.itson.pruebas.gestionhabitos.controller.ControllerException;
-import org.itson.pruebas.gestionhabitos.controller.FechaUtil;
-import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
-import org.itson.pruebas.gestionhabitos.controller.HabitoDTO;
-import org.itson.pruebas.gestionhabitos.controller.HistorialHabitosDTO;
-import org.itson.pruebas.gestionhabitos.controller.IGestionarHabitosNegocio;
-import org.itson.pruebas.gestionhabitos.controller.Sesion;
 
 /**
  *
