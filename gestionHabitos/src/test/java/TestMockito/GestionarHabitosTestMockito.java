@@ -19,6 +19,7 @@ import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -28,6 +29,7 @@ import javax.persistence.criteria.Root;
 import org.itson.pruebas.gestionhabitos.model.Cuenta;
 import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
 import org.itson.pruebas.gestionhabitos.model.Habito;
+import org.itson.pruebas.gestionhabitos.model.HistorialHabitos;
 import org.itson.pruebas.gestionhabitos.model.IConexion;
 import org.itson.pruebas.gestionhabitos.model.IGestionarHabitosDAO;
 import org.itson.pruebas.gestionhabitos.model.ModelException;
@@ -224,18 +226,25 @@ public class GestionarHabitosTestMockito {
         Long idHabito = 1L;
         Habito habitoEncontrado = new Habito();
         habitoEncontrado.setId(idHabito);
+
+        // Crea un mock para Query
+        Query mockQuery = mock(Query.class);
+
+        // Simula el comportamiento del EntityManager y Transaction
         when(mockEntityManager.getTransaction()).thenReturn(mockTransaction);
         when(mockTransaction.isActive()).thenReturn(false);
-
-        when(mockEntityManager.getTransaction()).thenReturn(mockTransaction);
         when(mockEntityManager.find(Habito.class, idHabito)).thenReturn(habitoEncontrado);
+        when(mockEntityManager.createQuery("DELETE FROM HistorialHabitos h WHERE h.habito.id = :idHabito")).thenReturn(mockQuery);
+
+        // Simula el comportamiento de setParameter y su retorno
+        when(mockQuery.setParameter("idHabito", idHabito)).thenReturn(mockQuery);
 
         // Act
         boolean resultado = gestionarHabitosDAO.eliminarHabito(idHabito);
 
         // Assert
         assertTrue(resultado);
-        verify(mockEntityManager).createQuery("DELETE FROM HistorialHabitos h WHERE h.habito.id = :idHabito");
+        verify(mockQuery).setParameter("idHabito", idHabito);
         verify(mockEntityManager).remove(habitoEncontrado);
         verify(mockTransaction).commit();
     }
@@ -254,19 +263,17 @@ public class GestionarHabitosTestMockito {
 
         List<Habito> listaHabitos = Arrays.asList(habito1, habito2);
 
+        // Mock para TypedQuery
+        TypedQuery<Habito> mockTypedQuery = mock(TypedQuery.class);
+
+        // Configura el comportamiento de createQuery para devolver el TypedQuery mock
         when(mockEntityManager.createQuery(
                 "SELECT h FROM Habito h WHERE h.cuenta.usuario = :usuario", Habito.class))
-                .thenReturn(mock(TypedQuery.class));
+                .thenReturn(mockTypedQuery);
 
-        when(mockEntityManager.createQuery(
-                "SELECT h FROM Habito h WHERE h.cuenta.usuario = :usuario", Habito.class)
-                .setParameter("usuario", cuenta.getUsuario()))
-                .thenReturn(mock(TypedQuery.class));
-
-        when(mockEntityManager.createQuery(
-                "SELECT h FROM Habito h WHERE h.cuenta.usuario = :usuario", Habito.class)
-                .setParameter("usuario", cuenta.getUsuario()).getResultList())
-                .thenReturn(listaHabitos);
+        // Simula el comportamiento de setParameter y getResultList
+        when(mockTypedQuery.setParameter("usuario", cuenta.getUsuario())).thenReturn(mockTypedQuery);
+        when(mockTypedQuery.getResultList()).thenReturn(listaHabitos);
 
         // Act
         List<Habito> resultado = gestionarHabitosDAO.obtenerHabitos(cuenta);
@@ -277,5 +284,90 @@ public class GestionarHabitosTestMockito {
         assertEquals("Ejercicio", resultado.get(0).getNombre());
         assertEquals("Leer", resultado.get(1).getNombre());
     }
+
+    @Test
+    void testObtenerHabitos_Exito() throws ModelException {
+        // Arrange
+        Cuenta cuenta = new Cuenta();
+        cuenta.setUsuario("usuario1");
+
+        Habito habito1 = new Habito();
+        habito1.setNombre("Ejercicio");
+
+        Habito habito2 = new Habito();
+        habito2.setNombre("Leer");
+
+        List<Habito> listaHabitos = Arrays.asList(habito1, habito2);
+        TypedQuery<Habito> mockQuery = mock(TypedQuery.class);
+
+        when(mockEntityManager.createQuery(
+                "SELECT h FROM Habito h WHERE h.cuenta.usuario = :usuario", Habito.class))
+                .thenReturn(mockQuery);
+        when(mockQuery.setParameter("usuario", cuenta.getUsuario())).thenReturn(mockQuery);
+        when(mockQuery.getResultList()).thenReturn(listaHabitos);
+
+        // Act
+        List<Habito> resultado = gestionarHabitosDAO.obtenerHabitos(cuenta);
+
+        // Assert
+        assertNotNull(resultado);
+        assertEquals(2, resultado.size());
+        assertEquals("Ejercicio", resultado.get(0).getNombre());
+        assertEquals("Leer", resultado.get(1).getNombre());
+    }
+
+    @Test
+    void testBuscarHabitoPorId_Exito() throws ModelException {
+        // Arrange
+        Long idHabito = 1L;
+        Habito habitoEsperado = new Habito();
+        habitoEsperado.setId(idHabito);
+
+        when(mockEntityManager.find(Habito.class, idHabito)).thenReturn(habitoEsperado);
+
+        // Act
+        Habito resultado = gestionarHabitosDAO.buscarHabitoPorId(idHabito);
+
+        // Assert
+        assertNotNull(resultado);
+        assertEquals(habitoEsperado.getId(), resultado.getId());
+    }
+
+    @Test
+void testGuardarYActualizarHistorial_ActualizarExistente() throws ModelException {
+    // Arrange
+    Date dia = new Date(); // Simula una fecha
+    Long idHabito = 1L;
+
+    // Crea un historial existente
+    HistorialHabitos historialExistente = new HistorialHabitos();
+    historialExistente.setDia(dia);
+    historialExistente.setCompletado(false);
+    historialExistente.setHabito(new Habito());
+    historialExistente.getHabito().setId(idHabito);
+
+    // Crea un nuevo historial que debería actualizar el existente
+    HistorialHabitos historialNuevo = new HistorialHabitos();
+    historialNuevo.setDia(dia);
+    historialNuevo.setCompletado(true);
+    historialNuevo.setHabito(historialExistente.getHabito());
+
+    // Mockear el comportamiento para que la búsqueda devuelva un historial existente
+    when(gestionarHabitosDAO.buscarPorFechaYIdHabito(historialNuevo.getDia(), idHabito))
+            .thenReturn(historialExistente);
+
+    // Mockear el comportamiento del EntityManager para el merge
+    when(mockEntityManager.merge(any(HistorialHabitos.class))).thenReturn(historialExistente);
+    when(mockEntityManager.isOpen()).thenReturn(true); // Asegúrate de que el EntityManager esté abierto
+
+    // Act
+    HistorialHabitos resultado = gestionarHabitosDAO.guardarYActualizarHistorial(historialNuevo);
+
+    // Assert
+    assertNotNull(resultado);
+    assertTrue(resultado.isCompletado());
+    verify(mockEntityManager).merge(historialExistente); // Verificar que se llamó a merge
+}
+
 
 }
