@@ -3,28 +3,40 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package TestMockito;
-import java.util.Date;
-import java.util.List;
+
 import org.itson.pruebas.gestionhabitos.controller.CuentaDTO;
 import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
 import org.itson.pruebas.gestionhabitos.controller.HabitoDTO;
-import org.itson.pruebas.gestionhabitos.controller.HistorialHabitosDTO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.itson.pruebas.gestionhabitos.controller.ControllerException;
+import org.itson.pruebas.gestionhabitos.model.Cuenta;
+import org.itson.pruebas.gestionhabitos.model.Habito;
 import org.itson.pruebas.gestionhabitos.model.ModelException;
 
+import static org.mockito.ArgumentMatchers.any;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+import java.util.stream.Stream;
+import org.itson.pruebas.gestionhabitos.model.IGestionarHabitosDAO;
+
+@ExtendWith(MockitoExtension.class)
 public class GestionarHabitosNegocioTestMockito {
 
-   
     @Mock
-    private GestionarHabitosNegocio gestionarHabitosNegocio;
-    
+    private IGestionarHabitosDAO habitoDAO; // Mock del DAO
+
+    @InjectMocks
+    private GestionarHabitosNegocio gestionarHabitosNegocio; // Clase a probar
+
     @Mock
     private CuentaDTO cuentaDTO;
 
@@ -32,77 +44,60 @@ public class GestionarHabitosNegocioTestMockito {
     private HabitoDTO habitoDTO;
 
     @Mock
-    private List<HabitoDTO> habitoDTOMockList;
-
+    private List<Habito> habitosMockList; // Mock de la lista de hábitos
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+        MockitoAnnotations.openMocks(this); // Inicializa los mocks
     }
 
     @Test
-    public void testCrearHabito() throws ModelException, ControllerException {
-        when(gestionarHabitosNegocio.crearHabito(any(HabitoDTO.class))).thenReturn(habitoDTO);
+    public void testObtenerHabitos() throws ControllerException, ModelException {
+        // Simula el comportamiento esperado
+        when(habitoDAO.obtenerHabitos(any())).thenReturn(habitosMockList);
+        when(habitosMockList.isEmpty()).thenReturn(false); // Para evitar NullPointerException en el stream
 
-        HabitoDTO nuevoHabito = gestionarHabitosNegocio.crearHabito(habitoDTO);
+        // Crea un objeto Habito mock y simula la conversión a DTO
+        Habito mockHabito = new Habito();
+        when(habitosMockList.stream()).thenReturn(Stream.of(mockHabito));
+        when(gestionarHabitosNegocio.HabitoConvertirADTO(mockHabito)).thenReturn(habitoDTO);
 
-        assertNotNull(nuevoHabito);
-        verify(gestionarHabitosNegocio).crearHabito(habitoDTO);
-    }
-
-    @Test
-    public void testActualizarHabito() throws ModelException, ControllerException {
-        when(gestionarHabitosNegocio.actualizarHabito(any(HabitoDTO.class))).thenReturn(habitoDTO);
-
-        HabitoDTO actualizado = gestionarHabitosNegocio.actualizarHabito(habitoDTO);
-
-        assertNotNull(actualizado);
-        verify(gestionarHabitosNegocio).actualizarHabito(habitoDTO);
-    }
-
-
-    @Test
-    public void testConsultarCuenta() throws ModelException {
-        when(gestionarHabitosNegocio.consultarCuentaPorUsuario("testUser")).thenReturn(cuentaDTO);
-
-        CuentaDTO cuenta = gestionarHabitosNegocio.consultarCuentaPorUsuario("testUser");
-
-        assertNotNull(cuenta);
-        verify(gestionarHabitosNegocio).consultarCuentaPorUsuario("testUser");
-    }
-
-    @Test
-    public void testObtenerHabitos() throws ModelException, ControllerException {
-        when(gestionarHabitosNegocio.obtenerHabitos(any(CuentaDTO.class))).thenReturn(habitoDTOMockList);
-
+        // Llama al método a probar
         List<HabitoDTO> habitos = gestionarHabitosNegocio.obtenerHabitos(cuentaDTO);
 
+        // Afirmaciones
         assertNotNull(habitos);
-        verify(gestionarHabitosNegocio).obtenerHabitos(any(CuentaDTO.class));
+        assertFalse(habitos.isEmpty()); // Verifica que la lista no esté vacía
+        verify(habitoDAO, times(1)).obtenerHabitos(any()); // Verifica que se llamó al método en el DAO
     }
 
     @Test
-    public void testCuentaExiste() throws ModelException, ControllerException {
-        when(gestionarHabitosNegocio.cuentaExiste("testUser2")).thenReturn(true);
+    public void testCrearCuenta_CamposValidos() throws ControllerException, ModelException {
+        // Simulamos que el DTO tiene campos válidos
+        when(cuentaDTO.sonCamposValidos()).thenReturn(true);
 
-        boolean existe = gestionarHabitosNegocio.cuentaExiste("testUser2");
+        // Simula el comportamiento del DAO
+        when(habitoDAO.crearCuenta(any())).thenReturn(new Cuenta()); // Suponiendo que el DAO devuelve una nueva cuenta
 
-        assertTrue(existe);
-        verify(gestionarHabitosNegocio).cuentaExiste("testUser2");
+        // Llama al método a probar
+        CuentaDTO nuevaCuenta = gestionarHabitosNegocio.crearCuenta(cuentaDTO);
+
+        // Afirmaciones
+        assertNotNull(nuevaCuenta);
+        verify(habitoDAO, times(1)).crearCuenta(any()); // Verifica que se llamó al método en el DAO
     }
 
-@Test
-public void testEliminarHabito() throws ModelException, ControllerException {
-    // Simula el comportamiento del método para que devuelva true
-    when(gestionarHabitosNegocio.eliminarHabito(1L)).thenReturn(true);
+    @Test
+    public void testCrearCuenta_CamposInvalidos() throws ModelException {
+        // Simulamos que el DTO tiene campos inválidos
+        when(cuentaDTO.sonCamposValidos()).thenReturn(false);
 
-    // Llama al método y verifica que no se lance ninguna excepción
-    assertDoesNotThrow(() -> {
-        boolean eliminado = gestionarHabitosNegocio.eliminarHabito(1L);
-        assertTrue(eliminado); // Verifica que se haya eliminado
-    });
+        // Llama al método a probar y verifica que se lanza una excepción
+        ControllerException thrown = assertThrows(ControllerException.class, () -> {
+            gestionarHabitosNegocio.crearCuenta(cuentaDTO);
+        });
 
-    verify(gestionarHabitosNegocio).eliminarHabito(1L); // Verifica que se haya llamado al método
-}
-
+        assertEquals("No se puede crear cuenta porque no cumple con los datos necesarios", thrown.getMessage());
+        verify(habitoDAO, never()).crearCuenta(any()); // Verifica que no se llamó al DAO
+    }
 }

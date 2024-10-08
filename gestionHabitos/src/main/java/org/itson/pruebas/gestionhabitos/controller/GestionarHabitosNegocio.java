@@ -96,6 +96,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
         return habitos.stream().map(this::HabitoConvertirADTO).collect(Collectors.toList());
     }
 
+    //TODO
     @Override
     public List<HistorialHabitosDTO> consultarHistorialHabitos(Date date, CuentaDTO cuentaDTO) throws ControllerException {
         List<HistorialHabitos> habitos;
@@ -193,7 +194,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @param habito la entidad Habito a convertir
      * @return el DTO HabitoDTO que representa el hábito
      */
-    private HabitoDTO HabitoConvertirADTO(Habito habito) {
+    @Override
+    public HabitoDTO HabitoConvertirADTO(Habito habito) {
         return new HabitoDTO(
                 habito.getId(),
                 habito.getFrecuencia(),
@@ -210,6 +212,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @param habitoDTO el DTO HabitoDTO a convertir
      * @return la entidad Habito que representa el hábito
      */
+    @Override
     public Habito HabitoDTOConvertirAEntidad(HabitoDTO habitoDTO) {
         Habito habito = new Habito();
         habito.setDiasSemana(habitoDTO.getDiasSemana());
@@ -227,6 +230,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @param cuentaDTO el DTO CuentaDTO a convertir
      * @return la entidad Cuenta
      */
+    @Override
     public Cuenta cuentaDTOAEntidad(CuentaDTO cuentaDTO) {
         Cuenta cuenta = new Cuenta(cuentaDTO.getUsuario(),
                 passwordEncryptor.encryptPassword(cuentaDTO.getContraseña()),
@@ -240,6 +244,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @param cuenta Cuenta a convertir a DTO
      * @return CuenataDTO convertida
      */
+    @Override
     public CuentaDTO entidadACuentaDTO(Cuenta cuenta) {
         CuentaDTO cuentaDTO = new CuentaDTO();
         cuentaDTO.setUsuario(cuenta.getUsuario());
@@ -255,7 +260,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @param historial el objeto HistorialHabitos a convertir
      * @return el DTO HistorialHabitosDTO que representa el historial de hábitos
      */
-    private HistorialHabitosDTO historialConvertirADTO(HistorialHabitos historial) throws ControllerException {
+    @Override
+    public HistorialHabitosDTO historialConvertirADTO(HistorialHabitos historial) throws ControllerException {
         if (historial == null) {
             throw new ControllerException("Hábito nulo");
         }
@@ -274,7 +280,8 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @return la entidad HistorialHabitos que representa el historial de
      * hábitos
      */
-    private HistorialHabitos historialDTOConvertirAEntidad(HistorialHabitosDTO historialDTO) {
+    @Override
+    public HistorialHabitos historialDTOConvertirAEntidad(HistorialHabitosDTO historialDTO) {
         HistorialHabitos historial = new HistorialHabitos();
         historial.setId(historialDTO.getId());
         historial.setDia(historialDTO.getDia());
@@ -603,6 +610,7 @@ public class GestionarHabitosNegocio implements IGestionarHabitosNegocio {
      * @param historialHabitosDTO el DTO del historial de hábitos a convertir.
      * @return la entidad HistorialHabitos.
      */
+    @Override
     public HistorialHabitos HistorialHabitosDTOConvertirAEntidad(HistorialHabitosDTO historialHabitosDTO) {
         if (historialHabitosDTO == null) {
             return null;

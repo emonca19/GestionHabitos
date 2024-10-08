@@ -8,6 +8,9 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
+import org.itson.pruebas.gestionhabitos.model.Cuenta;
+import org.itson.pruebas.gestionhabitos.model.Habito;
+import org.itson.pruebas.gestionhabitos.model.HistorialHabitos;
 import org.itson.pruebas.gestionhabitos.model.ModelException;
 
 /**
@@ -199,4 +202,64 @@ public interface IGestionarHabitosNegocio {
     public String obtenerDia(LocalDate hoy);
     
      public List<HistorialHabitosDTO> obtenerHabitosDia(LocalDate dia, String diaString) throws ControllerException, NoSuchElementException;
+     
+     /**
+     * Convierte un HistorialHabitosDTO a una entidad HistorialHabitos.
+     *
+     * @param historialHabitosDTO el DTO del historial de hábitos a convertir.
+     * @return la entidad HistorialHabitos.
+     */
+    public HistorialHabitos HistorialHabitosDTOConvertirAEntidad(HistorialHabitosDTO historialHabitosDTO);
+    
+    /**
+     * Convierte una entidad Habito en un DTO HabitoDTO.
+     *
+     * @param habito la entidad Habito a convertir
+     * @return el DTO HabitoDTO que representa el hábito
+     */
+    public HabitoDTO HabitoConvertirADTO(Habito habito);
+    
+    /**
+     * Convierte un DTO HabitoDTO en una entidad Habito.
+     *
+     * @param habitoDTO el DTO HabitoDTO a convertir
+     * @return la entidad Habito que representa el hábito
+     */
+    public Habito HabitoDTOConvertirAEntidad(HabitoDTO habitoDTO);
+    
+    /**
+     * Convierte un DTO CuentaDTO en una entidad Cuenta.
+     *
+     * @param cuentaDTO el DTO CuentaDTO a convertir
+     * @return la entidad Cuenta
+     */
+    public Cuenta cuentaDTOAEntidad(CuentaDTO cuentaDTO);
+    
+    /**
+     * Convierte una entidad de cuenta a una cuentaDTO
+     *
+     * @param cuenta Cuenta a convertir a DTO
+     * @return CuenataDTO convertida
+     */
+    public CuentaDTO entidadACuentaDTO(Cuenta cuenta);
+    
+    /**
+     * Convierte un DTO HistorialHabitosDTO en una entidad HistorialHabitos.
+     *
+     * @param historialDTO el DTO HistorialHabitosDTO a convertir
+     * @return la entidad HistorialHabitos que representa el historial de
+     * hábitos
+     */
+    public HistorialHabitos historialDTOConvertirAEntidad(HistorialHabitosDTO historialDTO);
+    
+    /**
+     * Convierte una entidad HistorialHabitos en un DTO HistorialHabitosDTO.
+     *
+     * @param historial el objeto HistorialHabitos a convertir
+     * @return el DTO HistorialHabitosDTO que representa el historial de hábitos
+     * @throws org.itson.pruebas.gestionhabitos.controller.ControllerException
+     */
+    public HistorialHabitosDTO historialConvertirADTO(HistorialHabitos historial) throws ControllerException;
 }
+
+
