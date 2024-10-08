@@ -43,19 +43,11 @@ public class GestionarHabitosTestMockito {
     private EntityTransaction mockTransaction;
 
     @Mock
-    private CriteriaBuilder mockCriteriaBuilder;
-
-    @Mock
-    private CriteriaQuery<Habito> mockCriteriaQueryHabito;
-
-    @Mock
-    private Root<Habito> mockRootHabito;
-
-    @Mock
-    private TypedQuery<Habito> mockTypedQueryHabito;
+    private TypedQuery<HistorialHabitos> mockTypedQueryHistorialHabitos;
 
     @Mock
     private Query mockQuery; // Agrega esto
+
 
     @InjectMocks
     private GestionarHabitosDAO gestionarHabitosDAO;
@@ -69,6 +61,7 @@ public class GestionarHabitosTestMockito {
         when(mockEntityManager.createQuery(anyString())).thenReturn(mockQuery); // Agrega esto
         when(mockQuery.setParameter(anyString(), any())).thenReturn(mockQuery); // Asegúrate de que setParameter también funcione
         gestionarHabitosDAO = new GestionarHabitosDAO(mockConexion);
+
     }
 
     /**
@@ -348,40 +341,51 @@ public class GestionarHabitosTestMockito {
     }
 
     @Test
-void testGuardarYActualizarHistorial_ActualizarExistente() throws ModelException {
-    // Arrange
-    Date dia = new Date(); // Simula una fecha
-    Long idHabito = 1L;
+    void testGuardarYActualizarHistorial_ActualizarExistente() throws ModelException {
+        // Arrange
+        Date dia = new Date(); // Simula una fecha
+        Long idHabito = 1L;
 
-    // Crea un historial existente
-    HistorialHabitos historialExistente = new HistorialHabitos();
-    historialExistente.setDia(dia);
-    historialExistente.setCompletado(false);
-    historialExistente.setHabito(new Habito());
-    historialExistente.getHabito().setId(idHabito);
+        // Crea un historial existente
+        HistorialHabitos historialExistente = new HistorialHabitos();
+        historialExistente.setDia(dia);
+        historialExistente.setCompletado(false);
+        historialExistente.setHabito(new Habito());
+        historialExistente.getHabito().setId(idHabito);
 
-    // Crea un nuevo historial que debería actualizar el existente
-    HistorialHabitos historialNuevo = new HistorialHabitos();
-    historialNuevo.setDia(dia);
-    historialNuevo.setCompletado(true);
-    historialNuevo.setHabito(historialExistente.getHabito());
+        // Crea un nuevo historial que debería actualizar el existente
+        HistorialHabitos historialNuevo = new HistorialHabitos();
+        historialNuevo.setDia(dia);
+        historialNuevo.setCompletado(true);
+        historialNuevo.setHabito(historialExistente.getHabito());
 
-    // Mockear el comportamiento para que la búsqueda devuelva un historial existente
-    when(gestionarHabitosDAO.buscarPorFechaYIdHabito(historialNuevo.getDia(), idHabito))
-            .thenReturn(historialExistente);
+        // Mockear el EntityManager para asegurarse de que esté abierto
+        when(mockEntityManager.isOpen()).thenReturn(true);
 
-    // Mockear el comportamiento del EntityManager para el merge
-    when(mockEntityManager.merge(any(HistorialHabitos.class))).thenReturn(historialExistente);
-    when(mockEntityManager.isOpen()).thenReturn(true); // Asegúrate de que el EntityManager esté abierto
+        // Mockear el createQuery para devolver el TypedQuery mockeado
+        mockTypedQueryHistorialHabitos = mock(TypedQuery.class);
+        when(mockEntityManager.createQuery(anyString(), eq(HistorialHabitos.class)))
+                .thenReturn(mockTypedQueryHistorialHabitos);
 
-    // Act
-    HistorialHabitos resultado = gestionarHabitosDAO.guardarYActualizarHistorial(historialNuevo);
+        // Mockear los parámetros de la consulta
+        when(mockTypedQueryHistorialHabitos.setParameter(eq("diaSinHora"), any(Date.class)))
+                .thenReturn(mockTypedQueryHistorialHabitos);
+        when(mockTypedQueryHistorialHabitos.setParameter(eq("idHabito"), anyLong()))
+                .thenReturn(mockTypedQueryHistorialHabitos);
 
-    // Assert
-    assertNotNull(resultado);
-    assertTrue(resultado.isCompletado());
-    verify(mockEntityManager).merge(historialExistente); // Verificar que se llamó a merge
-}
+        // Mockear el resultado de la consulta para devolver el historial existente
+        when(mockTypedQueryHistorialHabitos.getSingleResult()).thenReturn(historialExistente);
 
+        // Mockear el comportamiento del EntityManager para el merge
+        when(mockEntityManager.merge(any(HistorialHabitos.class))).thenReturn(historialExistente);
+
+        // Act
+        HistorialHabitos resultado = gestionarHabitosDAO.guardarYActualizarHistorial(historialNuevo);
+
+        // Assert
+        assertNotNull(resultado);
+        assertTrue(resultado.isCompletado());
+        verify(mockEntityManager).merge(historialExistente); // Verificar que se llamó a merge
+    }
 
 }
