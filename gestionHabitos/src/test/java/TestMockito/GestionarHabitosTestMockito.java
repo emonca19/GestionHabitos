@@ -4,11 +4,6 @@
  */
 package TestMockito;
 
-import com.mycompany.subsistemamodelo.Cuenta;
-import com.mycompany.subsistemamodelo.GestionarHabitosDAO;
-import com.mycompany.subsistemamodelo.Habito;
-import com.mycompany.subsistemamodelo.HistorialHabitos;
-import com.mycompany.subsistemamodelo.IConexion;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -34,8 +29,13 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import com.mycompany.subsistemamodelo.ModelException;
-import com.mycompany.subsistemamodelo.ProgresoHabito;
+import org.itson.pruebas.gestionhabitos.model.Cuenta;
+import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
+import org.itson.pruebas.gestionhabitos.model.Habito;
+import org.itson.pruebas.gestionhabitos.model.HistorialHabitos;
+import org.itson.pruebas.gestionhabitos.model.IConexion;
+import org.itson.pruebas.gestionhabitos.model.ModelException;
+import org.itson.pruebas.gestionhabitos.model.ProgresoHabito;
 
 public class GestionarHabitosTestMockito {
 

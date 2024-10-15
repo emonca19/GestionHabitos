@@ -1,10 +1,6 @@
 package org.itson.pruebas.gestionhabitos.view;
 
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
-import com.mycompany.subsistemacontroller.ControllerException;
-import com.mycompany.subsistemacontroller.GestionarHabitosNegocio;
-import com.mycompany.subsistemacontroller.HistorialHabitosDTO;
-import com.mycompany.subsistemacontroller.IGestionarHabitosNegocio;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -29,6 +25,10 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import org.itson.pruebas.gestionhabitos.controller.ControllerException;
+import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
+import org.itson.pruebas.gestionhabitos.controller.HistorialHabitosDTO;
+import org.itson.pruebas.gestionhabitos.controller.IGestionarHabitosNegocio;
 
 /**
  *

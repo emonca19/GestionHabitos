@@ -1,17 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package com.mycompany.subsistemacontroller;
-import com.mycompany.subsistemamodelo.Conexion;
-import com.mycompany.subsistemamodelo.Cuenta;
-import com.mycompany.subsistemamodelo.GestionarHabitosDAO;
-import com.mycompany.subsistemamodelo.Habito;
-import com.mycompany.subsistemamodelo.HistorialHabitos;
-import com.mycompany.subsistemamodelo.IConexion;
-import com.mycompany.subsistemamodelo.IGestionarHabitosDAO;
-import com.mycompany.subsistemamodelo.ModelException;
-import com.mycompany.subsistemamodelo.ProgresoHabito;
+package org.itson.pruebas.gestionhabitos.controller;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
@@ -24,6 +12,15 @@ import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import org.itson.pruebas.gestionhabitos.model.Conexion;
+import org.itson.pruebas.gestionhabitos.model.Cuenta;
+import org.itson.pruebas.gestionhabitos.model.GestionarHabitosDAO;
+import org.itson.pruebas.gestionhabitos.model.Habito;
+import org.itson.pruebas.gestionhabitos.model.HistorialHabitos;
+import org.itson.pruebas.gestionhabitos.model.IConexion;
+import org.itson.pruebas.gestionhabitos.model.IGestionarHabitosDAO;
+import org.itson.pruebas.gestionhabitos.model.ModelException;
+import org.itson.pruebas.gestionhabitos.model.ProgresoHabito;
 import org.jasypt.util.password.StrongPasswordEncryptor;
 
 /**

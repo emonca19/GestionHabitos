@@ -4,9 +4,6 @@
  */
 package org.itson.pruebas.gestionhabitos.view;
 
-import com.mycompany.subsistemacontroller.ControllerException;
-import com.mycompany.subsistemacontroller.GestionarHabitosNegocio;
-import com.mycompany.subsistemacontroller.HabitoDTO;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -18,6 +15,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import org.itson.pruebas.gestionhabitos.controller.ControllerException;
+import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
+import org.itson.pruebas.gestionhabitos.controller.HabitoDTO;
 
 /**
  *

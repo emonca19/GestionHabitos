@@ -1,6 +1,6 @@
+package org.itson.pruebas.gestionhabitos.controller;
 
-
-package com.mycompany.subsistemacontroller;
+import org.itson.pruebas.gestionhabitos.model.*;
 
 /**
  * Excepción personalizada para errores del modelo.

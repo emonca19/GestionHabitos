@@ -1,8 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package com.mycompany.subsistemamodelo;
+package org.itson.pruebas.gestionhabitos.model;
+
 /**
  * Excepción personalizada para errores del modelo.
  *
@@ -53,4 +50,3 @@ public class ModelException extends Exception {
         super(cause);
     }
 }
-

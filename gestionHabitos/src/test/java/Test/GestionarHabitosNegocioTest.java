@@ -8,17 +8,6 @@ package Test;
  *
  * @author crist
  */
-import com.mycompany.subsistemacontroller.CuentaDTO;
-import com.mycompany.subsistemacontroller.GestionarHabitosNegocio;
-import com.mycompany.subsistemacontroller.HabitoDTO;
-import com.mycompany.subsistemacontroller.HistorialHabitosDTO;
-import com.mycompany.subsistemacontroller.IGestionarHabitosNegocio;
-import com.mycompany.subsistemacontroller.ProgresoHabitoDTO;
-import com.mycompany.subsistemacontroller.Sesion;
-import com.mycompany.subsistemamodelo.Cuenta;
-import com.mycompany.subsistemamodelo.Habito;
-import com.mycompany.subsistemamodelo.HistorialHabitos;
-import com.mycompany.subsistemamodelo.ModelException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -28,8 +17,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Date;
 import java.util.List;
-import com.mycompany.subsistemacontroller.ControllerException;
-
+import org.itson.pruebas.gestionhabitos.controller.ControllerException;
+import org.itson.pruebas.gestionhabitos.controller.CuentaDTO;
+import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
+import org.itson.pruebas.gestionhabitos.controller.HabitoDTO;
+import org.itson.pruebas.gestionhabitos.controller.HistorialHabitosDTO;
+import org.itson.pruebas.gestionhabitos.controller.IGestionarHabitosNegocio;
+import org.itson.pruebas.gestionhabitos.controller.ProgresoHabitoDTO;
+import org.itson.pruebas.gestionhabitos.controller.Sesion;
+import org.itson.pruebas.gestionhabitos.model.Cuenta;
+import org.itson.pruebas.gestionhabitos.model.Habito;
+import org.itson.pruebas.gestionhabitos.model.HistorialHabitos;
+import org.itson.pruebas.gestionhabitos.model.ModelException;
 
 public class GestionarHabitosNegocioTest {
 

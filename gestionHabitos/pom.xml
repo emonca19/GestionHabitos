@@ -103,16 +103,6 @@
             <scope>test</scope>
             <type>jar</type>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>SubsistemaController</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>SubsistemaModelo</artifactId>
-            <version>${project.version}</version>
-        </dependency>
     </dependencies>
 <!--    <build>
         <plugins>
@@ -137,5 +127,4 @@
         <maven.compiler.target>21</maven.compiler.target>
         <exec.mainClass>org.itson.pruebas.gestionhabitos.main.Main</exec.mainClass>
     </properties>
-    <name>SubistemaView</name>
 </project>

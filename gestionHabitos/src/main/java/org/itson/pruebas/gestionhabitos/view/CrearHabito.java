@@ -1,9 +1,5 @@
 package org.itson.pruebas.gestionhabitos.view;
 
-import com.mycompany.subsistemacontroller.ControllerException;
-import com.mycompany.subsistemacontroller.GestionarHabitosNegocio;
-import com.mycompany.subsistemacontroller.HabitoDTO;
-import com.mycompany.subsistemacontroller.Sesion;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.util.Date;
@@ -13,6 +9,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import org.itson.pruebas.gestionhabitos.controller.ControllerException;
+import org.itson.pruebas.gestionhabitos.controller.GestionarHabitosNegocio;
+import org.itson.pruebas.gestionhabitos.controller.HabitoDTO;
+import org.itson.pruebas.gestionhabitos.controller.HistorialHabitosDTO;
+import org.itson.pruebas.gestionhabitos.controller.Sesion;
+
 /**
  *
  * @author rover
