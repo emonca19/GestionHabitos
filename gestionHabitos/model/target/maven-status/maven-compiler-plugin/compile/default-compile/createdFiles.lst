@@ -1,0 +1,9 @@
+org\itson\pruebas\gestionhabitos\model\GestionarHabitosDAO.class
+org\itson\pruebas\gestionhabitos\model\Habito.class
+org\itson\pruebas\gestionhabitos\model\Cuenta.class
+org\itson\pruebas\gestionhabitos\model\HistorialHabitos.class
+org\itson\pruebas\gestionhabitos\model\ModelException.class
+org\itson\pruebas\gestionhabitos\model\IConexion.class
+org\itson\pruebas\gestionhabitos\model\ProgresoHabito.class
+org\itson\pruebas\gestionhabitos\model\IGestionarHabitosDAO.class
+org\itson\pruebas\gestionhabitos\model\Conexion.class
